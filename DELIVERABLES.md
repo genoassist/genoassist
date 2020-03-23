@@ -17,72 +17,72 @@
     <td colspan="3"><p align="center"><b>ASSEMBLY SOFTWARE INSTALLTION</b></p></td>
   </tr>
   <tr>
-    <td><a href="">#1</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/1">#1</a></td>
     <td>MEGAHIT installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
   <tr>
-    <td><a href="">#2</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/2">#2</a></td>
     <td>SPAdes installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#3</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/3">#3</a></td>
     <td>VICUNA installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#4</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/4">#4</a></td>
     <td>IVA installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#5</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/5">#5</a></td>
     <td>Tadpole installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#6</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/6">#6</a></td>
     <td>ABySS installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#7</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/7">#7</a></td>
     <td>FLye installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#8</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/8">#8</a></td>
     <td>Canu installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#9</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/9">#9</a></td>
     <td>FastQC installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#10</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/10">#10</a></td>
     <td>Trimmomatic installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#11</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/11">#11</a></td>
     <td>REAPR installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#12</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/12">#12</a></td>
     <td>QUAST installation using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#13</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/13">#13</a></td>
     <td>MAKER installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
    <tr>
-    <td><a href="">#14</a></td>
+    <td><a href="https://github.com/genomagic/genomagic/issues/14">#14</a></td>
     <td>All software installation script using Anaconda</td>
     <td>N/a</td>
   </tr>
