@@ -1,5 +1,5 @@
 // contains the definition of an assembly result
-package assembler
+package components
 
 // result represents the result of the assembly process
 type result struct {
