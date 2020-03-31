@@ -12,3 +12,15 @@ type Result interface {
 	// GetExitStatusCode returns the status code that was returned upon assembly completion
 	GetExitStatusCode()
 }
+
+// Component defines the operations that apply to slave components such as assemblers and parsers
+type Component interface {
+	// Process performs the work associated with this worker
+	Process() error
+}
+
+// Slave defines the operations that are accessible on a slave
+type Slave interface {
+	// Process performs the work that's dictated by the master
+	Process() error
+}
