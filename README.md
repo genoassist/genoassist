@@ -3,7 +3,7 @@
 </p>
 
 # GenoMagic
-An all-encompasing bioinformatics tool for genome assembly and annotation projects. 
+An all-encompasing bioinformatics tool for genome assembly and annotation projects. This project is still under development. Therefore, it is missing a *Usage* section; this will be added in the future.
 
 ## Architecture
 The overall model follows the master/slave architecture. The master is what users interact with. The users specify the files containing the contigs and what type of read they have e.g Illumina. The master takes the user's input and schedules assembly, parsing of results, and reporting, in that order. 
