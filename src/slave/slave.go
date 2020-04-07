@@ -16,10 +16,10 @@ const (
 )
 
 // the type of component that runs on a specific set of assembly files
-type ComponentType string
+type ComponentWorkType string
 
 // a mapping between work types and the associated components
-var WorkType = map[ComponentType]func(f string) components.Component{
+var WorkType = map[ComponentWorkType]func(f string) components.Component{
 	Assembly: assembler.NewAssembler,
 	Parse:    parser.NewParser,
 }
@@ -31,11 +31,11 @@ type slv struct {
 	// the file the slave is supposed to perform work on
 	fileName string
 	// the type of work that has to be performed by the slave
-	workType ComponentType
+	workType ComponentWorkType
 }
 
 // NewSlave creates and returns a new instance of a slave
-func NewSlave(dsc, fnm, wtp string) *slv {
+func NewSlave(dsc, fnm string, wtp ComponentWorkType) *slv {
 	return &slv{
 		description: dsc,
 		fileName:    fnm,
