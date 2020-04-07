@@ -19,7 +19,7 @@ const (
 type ComponentWorkType string
 
 // a mapping between work types and the associated components
-var WorkType = map[ComponentWorkType]func(f string) components.Component{
+var WorkType = map[ComponentWorkType]func(f string) (components.Component, error){
 	Assembly: assembler.NewAssembler,
 	Parse:    parser.NewParser,
 }
@@ -45,7 +45,10 @@ func NewSlave(dsc, fnm string, wtp ComponentWorkType) *slv {
 
 // Process performs the work that's dictated by the master
 func (s *slv) Process() error {
-	worker := WorkType[s.workType](s.fileName)
+	worker, err := WorkType[s.workType](s.fileName)
+	if err != nil {
+		return fmt.Errorf("failed to initialize worker, err: %v", err)
+	}
 	if err := worker.Process(); err != nil {
 		return fmt.Errorf("slave process failed, err: %v", err)
 	}

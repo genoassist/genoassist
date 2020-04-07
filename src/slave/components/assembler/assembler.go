@@ -2,6 +2,10 @@
 package assembler
 
 import (
+	"fmt"
+
+	"github.com/docker/docker/client"
+
 	"github.com/genomagic/src/slave/components"
 )
 
@@ -9,13 +13,21 @@ import (
 type asmbler struct {
 	// name of the file the assembler will operate on
 	fileName string
+	// the Docker client the assembler will use to spin up containers
+	dClient *client.Client
 }
 
 // NewAssembler returns a new assembler for the specified file
-func NewAssembler(fnm string) components.Component {
-	return &asmbler{
+func NewAssembler(fnm string) (components.Component, error) {
+	a := &asmbler{
 		fileName: fnm,
 	}
+	if cli, err := client.NewClientWithOpts(client.FromEnv); err != nil {
+		return nil, fmt.Errorf("failed to initialize Docker client, err: %v", err)
+	} else {
+		a.dClient = cli
+	}
+	return a, nil
 }
 
 // Process performs the work of the assembler

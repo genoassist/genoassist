@@ -11,10 +11,10 @@ type prser struct {
 }
 
 // NewParser creates and returns a new parser struct
-func NewParser(fnm string) components.Component {
+func NewParser(fnm string) (components.Component, error) {
 	return &prser{
 		fileName: fnm,
-	}
+	}, nil
 }
 
 // Process performs the work of the parser
