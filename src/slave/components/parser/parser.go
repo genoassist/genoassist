@@ -1,16 +1,23 @@
 package parser
 
+import (
+	"github.com/genomagic/src/slave/components"
+)
+
 // structure of the parser
 type prser struct {
-	fileName string // name of the file the parser will operate on
+	// name of the file the parser will operate on
+	fileName string
 }
 
-func NewParser(fnm string) interface{} {
+// NewParser creates and returns a new parser struct
+func NewParser(fnm string) components.Component {
 	return &prser{
 		fileName: fnm,
 	}
 }
 
+// Process performs the work of the parser
 func (p *prser) Process() error {
 	return nil
 }

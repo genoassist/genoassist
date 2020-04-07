@@ -8,11 +8,14 @@ import "github.com/genomagic/src/slave"
 // mst defines the master struct, which is used to coordinate slaves and launch assembly, parsing, and
 // reporting slaves
 type mst struct {
-	fileNames       []string          // a slice of file names that contain contigs to be assembled and analyzed
-	assemblyResults chan slave.Result // a collection of assembly results used by the assembly slave
-	parsingResults  chan slave.Result // a collection of parsing results used by the parsing slave
+	// a slice of file names that contain contigs to be assembled and analyzed
+	fileNames []string
+	// a collection of assembly results used by the assembly slave
+	assemblyResults chan slave.Result
+	// a collection of parsing results used by the parsing slave
+	parsingResults chan slave.Result
 }
 
-// Process launches the assembly of the contings it was created with
+// Process launches the assembly of the contigs it was created with
 func (m *mst) Process() {
 }
