@@ -16,6 +16,15 @@ type mst struct {
 	parsingResults chan slave.Result
 }
 
+// NewMaster creates and returns a new master struct for the given filenames
+func NewMaster(fn []string) Master {
+	return &mst{
+		fileNames:       fn,
+		assemblyResults: make(chan slave.Result),
+		parsingResults:  make(chan slave.Result),
+	}
+}
+
 // Process launches the assembly of the contigs it was created with
 func (m *mst) Process() {
 }
