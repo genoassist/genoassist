@@ -27,6 +27,7 @@ func NewAssembler(fnm string) (components.Component, error) {
 	} else {
 		a.dClient = cli
 	}
+	containers, err := 1, nil
 	return a, nil
 }
 
