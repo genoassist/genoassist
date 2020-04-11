@@ -22,7 +22,7 @@ func NewAssembler(fnm string) (components.Component, error) {
 	a := &asmbler{
 		fileName: fnm,
 	}
-	if cli, err := client.NewClientWithOpts(client.FromEnv); err != nil {
+	if cli, err := client.NewEnvClient(); err != nil {
 		return nil, fmt.Errorf("failed to initialize Docker client, err: %v", err)
 	} else {
 		a.dClient = cli
