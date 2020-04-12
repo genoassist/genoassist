@@ -11,6 +11,8 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
+
+	"github.com/genomagic/slave/components/assembler"
 )
 
 const (
@@ -20,7 +22,7 @@ const (
 // Assemblers is a mapping from an assembler DockerHub image link to an image name
 // Used for checking that allowed assembler links are passed to prep()
 var Assemblers = map[string]string{
-	MegaHit: "megahit",
+	MegaHit: assembler.MegaHit,
 }
 
 // prep holds the Docker client for pulling images
