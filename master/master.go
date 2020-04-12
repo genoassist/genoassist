@@ -3,28 +3,42 @@
 // assemblers that are integrated with genomagic
 package master
 
-import "github.com/genomagic/slave"
+import (
+	"fmt"
+
+	"github.com/genomagic/slave"
+)
 
 // mst defines the master struct, which is used to coordinate slaves and launch assembly, parsing, and
 // reporting slaves
 type mst struct {
-	// a raw sequencing FASTQ file for assembly
-	fileName string
+	// a path to a raw sequencing FASTQ file to perform assembly on
+	filePath string
 	// a collection of assembly results used by the assembly slave
 	assemblyResults chan slave.Result
 	// a collection of parsing results used by the parsing slave
 	parsingResults chan slave.Result
 }
 
-// NewMaster creates and returns a new master struct for the given filenames
+// NewMaster creates and returns a new master struct for the file located at the given file path
 func NewMaster(rSeqFile string) Master {
 	return &mst{
-		fileName:       rSeqFile,
+		filePath:        rSeqFile,
 		assemblyResults: make(chan slave.Result),
 		parsingResults:  make(chan slave.Result),
 	}
 }
 
 // Process launches the assembly of the contigs it was created with
-func (m *mst) Process() {
+func (m *mst) Process() error {
+	// first we perform the assembly
+	assemblySlave := slave.NewSlave("assembly process initiated by master", m.filePath, slave.Assembly)
+	if err := assemblySlave.Process(); err != nil {
+		return fmt.Errorf("slave assembly process failed with err: %v", err)
+	}
+	reportSlave := slave.NewSlave("reporting/parse process initiated by master", m.filePath, slave.Parse)
+	if err := reportSlave.Process(); err != nil {
+		return fmt.Errorf("slave parsing process failed with err: %v", err)
+	}
+	return nil
 }

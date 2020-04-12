@@ -12,7 +12,7 @@ import (
 func main() {
 	fileParam := "fastq"
 	fileValues := "raw_sequence.fastq"
-	fileUsage := "the FASTQ file containing raw sequence data for assembly"
+	fileUsage := "the path to the FASTQ file containing raw sequence data for assembly"
 	rawSequenceFile := flag.String(fileParam, fileValues, fileUsage)
 
 	prepParam := "prepper"
@@ -28,5 +28,7 @@ func main() {
 		}
 	}
 	mst := master.NewMaster(*rawSequenceFile)
-	mst.Process()
+	if err := mst.Process(); err != nil {
+		panic(fmt.Sprintf("failed to run master process, err: %v", err))
+	}
 }
