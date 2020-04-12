@@ -5,18 +5,15 @@ package main
 import (
 	"flag"
 	"fmt"
-	"strings"
-
 	"github.com/genomagic/master"
 	"github.com/genomagic/prepper"
 )
 
 func main() {
-	filesParam := "files"
-	filesValues := "file1.txt,file2.txt,..."
-	filesUsage := "the file names of the files that store contigs to assemble, parse, and compute statistics for"
-	filesSeparator := ","
-	files := flag.String(filesParam, filesValues, filesUsage)
+	fileParam := "fastq"
+	fileValues := "raw_sequence.fastq"
+	fileUsage := "the FASTQ file containing raw sequence data for assembly"
+	rawSequenceFile := flag.String(fileParam, fileValues, fileUsage)
 
 	prepParam := "prepper"
 	prepUsage := "whether to install all the necessary Docker containers for assembly as a preparatory step"
@@ -30,7 +27,6 @@ func main() {
 			panic(fmt.Sprintf("failed to prep GenoMagic, err: %v", err))
 		}
 	}
-	fileNames := strings.Split(*files, filesSeparator)
-	mst := master.NewMaster(fileNames)
+	mst := master.NewMaster(*rawSequenceFile)
 	mst.Process()
 }

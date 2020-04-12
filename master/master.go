@@ -8,8 +8,8 @@ import "github.com/genomagic/slave"
 // mst defines the master struct, which is used to coordinate slaves and launch assembly, parsing, and
 // reporting slaves
 type mst struct {
-	// a slice of file names that contain contigs to be assembled and analyzed
-	fileNames []string
+	// a raw sequencing FASTQ file for assembly
+	fileName string
 	// a collection of assembly results used by the assembly slave
 	assemblyResults chan slave.Result
 	// a collection of parsing results used by the parsing slave
@@ -17,9 +17,9 @@ type mst struct {
 }
 
 // NewMaster creates and returns a new master struct for the given filenames
-func NewMaster(fn []string) Master {
+func NewMaster(rSeqFile string) Master {
 	return &mst{
-		fileNames:       fn,
+		fileName:       rSeqFile,
 		assemblyResults: make(chan slave.Result),
 		parsingResults:  make(chan slave.Result),
 	}
