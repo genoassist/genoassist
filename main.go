@@ -4,8 +4,10 @@ package main
 
 import (
 	"flag"
-	"github.com/genomagic/master"
 	"strings"
+
+	"github.com/genomagic/master"
+
 )
 
 func main() {
