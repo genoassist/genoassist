@@ -3,7 +3,7 @@
 // assemblers that are integrated with genomagic
 package master
 
-import "github.com/genomagic/src/slave"
+import "github.com/genomagic/slave"
 
 // mst defines the master struct, which is used to coordinate slaves and launch assembly, parsing, and
 // reporting slaves

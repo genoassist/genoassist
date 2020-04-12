@@ -6,7 +6,7 @@ import (
 
 	"github.com/docker/docker/client"
 
-	"github.com/genomagic/src/slave/components"
+	"github.com/genomagic/slave/components"
 )
 
 // structure of the assembler
