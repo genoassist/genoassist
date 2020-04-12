@@ -13,7 +13,7 @@ func main() {
 	fileParam := "fastq"
 	fileValues := "raw_sequence.fastq"
 	fileUsage := "the FASTQ file containing raw sequence data for assembly"
-	raw_sequence_file := flag.String(fileParam, fileValues, fileUsage)
+	rawSequenceFile := flag.String(fileParam, fileValues, fileUsage)
 
 	prepParam := "prepper"
 	prepUsage := "whether to install all the necessary Docker containers for assembly as a preparatory step"
@@ -27,6 +27,6 @@ func main() {
 			panic(fmt.Sprintf("failed to prep GenoMagic, err: %v", err))
 		}
 	}
-	mst := master.NewMaster(*raw_sequence_file)
+	mst := master.NewMaster(*rawSequenceFile)
 	mst.Process()
 }
