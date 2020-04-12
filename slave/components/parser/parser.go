@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"github.com/genomagic/src/slave/components"
+	"github.com/genomagic/slave/components"
 )
 
 // structure of the parser
