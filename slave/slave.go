@@ -19,7 +19,7 @@ const (
 type ComponentWorkType string
 
 // a mapping between work types and the associated components
-var WorkType = map[ComponentWorkType]func(f string) (components.Component, error){
+var WorkType = map[ComponentWorkType]func(filePath, process string) (components.Component, error){
 	Assembly: assembler.NewAssembler,
 	Parse:    parser.NewParser,
 }
