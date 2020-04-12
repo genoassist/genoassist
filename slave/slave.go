@@ -29,7 +29,7 @@ type slv struct {
 	// name/description of the work performed by the slave
 	description string
 	// the file the slave is supposed to perform work on
-	fileName string
+	filePath string
 	// the type of work that has to be performed by the slave
 	workType ComponentWorkType
 }
@@ -38,14 +38,14 @@ type slv struct {
 func NewSlave(dsc, fnm string, wtp ComponentWorkType) *slv {
 	return &slv{
 		description: dsc,
-		fileName:    fnm,
+		filePath:    fnm,
 		workType:    wtp,
 	}
 }
 
 // Process performs the work that's dictated by the master
 func (s *slv) Process() error {
-	worker, err := WorkType[s.workType](s.fileName)
+	worker, err := WorkType[s.workType](s.filePath)
 	if err != nil {
 		return fmt.Errorf("failed to initialize worker, err: %v", err)
 	}

@@ -13,8 +13,8 @@ import (
 
 // structure of the assembler
 type asmbler struct {
-	// name of the file the assembler will operate on
-	fileName string
+	// path to the file the assembler will operate on
+	filePath string
 	// the Docker client the assembler will use to spin up containers
 	dClient *client.Client
 }
@@ -23,7 +23,7 @@ type asmbler struct {
 // TODO: this needs to take in an assembler name
 func NewAssembler(fnm string) (components.Component, error) {
 	a := &asmbler{
-		fileName: fnm,
+		filePath: fnm,
 	}
 	cli, err := client.NewEnvClient()
 	if err != nil {
