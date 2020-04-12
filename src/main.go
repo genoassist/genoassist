@@ -4,8 +4,11 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"strings"
+
 	"github.com/genomagic/src/master"
+	"github.com/genomagic/src/prepper"
 )
 
 func main() {
@@ -15,9 +18,18 @@ func main() {
 	filesSeparator := ","
 	files := flag.String(filesParam, filesValues, filesUsage)
 
+	prepParam := "prepper"
+	prepUsage := "whether to install all the necessary Docker containers for assembly as a preparatory step"
+	prep := flag.Bool(prepParam, true, prepUsage)
+
 	// parsing the flags has to be done after setting up all the flags
 	flag.Parse()
 
+	if *prep {
+		if err := prepper.NewPrep(); err != nil {
+			panic(fmt.Sprintf("failed to prep GenoMagic, err: %v", err))
+		}
+	}
 	fileNames := strings.Split(*files, filesSeparator)
 	mst := master.NewMaster(fileNames)
 	mst.Process()
