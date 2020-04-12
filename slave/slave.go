@@ -5,9 +5,9 @@ package slave
 import (
 	"fmt"
 
-	"github.com/genomagic/slave/components/parser"
-	"github.com/genomagic/slave/components/assembler"
 	"github.com/genomagic/slave/components"
+	"github.com/genomagic/slave/components/assembler"
+	"github.com/genomagic/slave/components/parser"
 )
 
 const (

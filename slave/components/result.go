@@ -4,9 +4,9 @@ package components
 // rst represents the rst of the assembly process
 type rst struct {
 	// the message associated with the rst
-	message    string
+	message string
 	// the error of the process
-	err        error
+	err error
 	// exit status code of the assembler
 	exitStatus int
 }
