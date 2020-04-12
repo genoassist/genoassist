@@ -11,9 +11,10 @@ type prser struct {
 }
 
 // NewParser creates and returns a new parser struct
-func NewParser(fnm string) (components.Component, error) {
+// TODO: parser needs to take in an additional param for the assembler results to process, left as _ to satisfy interface
+func NewParser(filePath, _ string) (components.Component, error) {
 	return &prser{
-		filePath: fnm,
+		filePath: filePath,
 	}, nil
 }
 
