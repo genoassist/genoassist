@@ -10,10 +10,10 @@ import (
 )
 
 func main() {
-	filesParam := "fastq"
-	filesValues := "raw_sequence.fastq"
-	filesUsage := "the FASTQ file containing raw sequence data for assembly"
-	raw_sequence_file := flag.String(filesParam, filesValues, filesUsage)
+	fileParam := "fastq"
+	fileValues := "raw_sequence.fastq"
+	fileUsage := "the FASTQ file containing raw sequence data for assembly"
+	raw_sequence_file := flag.String(fileParam, fileValues, fileUsage)
 
 	prepParam := "prepper"
 	prepUsage := "whether to install all the necessary Docker containers for assembly as a preparatory step"
