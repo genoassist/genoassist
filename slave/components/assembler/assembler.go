@@ -11,6 +11,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
+
 	"github.com/genomagic/slave/components"
 )
 
@@ -91,6 +92,7 @@ func (a *asmbler) imageExists() (bool, error) {
 
 // Process performs the work of the assembler
 func (a *asmbler) Process() error {
+	// TODO: need to pass appropriate params to the MegaHit container
 	resp, err := a.dClient.ContainerCreate(a.ctx, &container.Config{
 		Tty:     true,
 		Image:   a.assemblerName,
