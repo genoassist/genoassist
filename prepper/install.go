@@ -9,7 +9,6 @@ import (
 	"os"
 
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 
 	"github.com/genomagic/slave/components/assembler"
@@ -56,24 +55,6 @@ func (p *prep) prep(dImageLink string) error {
 	}
 	if _, err := io.Copy(os.Stdout, reader); err != nil {
 		return fmt.Errorf("failed to copy stdout to internal reader, err: %v", err)
-	}
-
-	resp, err := p.dClient.ContainerCreate(p.ctx, &container.Config{
-		Tty:   true,
-		Image: Assemblers[dImageLink],
-	}, nil, nil, "")
-	if err != nil {
-		return fmt.Errorf("failed to create container, err: %v", err)
-	}
-
-	if err := p.dClient.ContainerStart(p.ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
-		return fmt.Errorf("failed to start container, err: %v", err)
-	}
-
-	if status, err := p.dClient.ContainerWait(p.ctx, resp.ID); err != nil {
-		return fmt.Errorf("failed to wait for container to start up, err: %v", err)
-	} else if status != 1 {
-		return fmt.Errorf("received status code != 1, status code: %d", status)
 	}
 	return nil
 }
