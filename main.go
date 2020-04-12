@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/genomagic/src/master"
-	"github.com/genomagic/src/prepper"
+	"github.com/genomagic/master"
+	"github.com/genomagic/prepper"
 )
 
 func main() {
