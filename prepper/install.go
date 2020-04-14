@@ -11,18 +11,8 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 
-	"github.com/genomagic/slave/components/assembler"
+	"github.com/genomagic/constants"
 )
-
-const (
-	MegaHit = "docker.io/vout/megahit" // https://github.com/voutcn/megahit
-)
-
-// Assemblers is a mapping from an assembler DockerHub image link to an image name
-// Used for checking that allowed assembler links are passed to prep()
-var Assemblers = map[string]string{
-	MegaHit: assembler.MegaHit,
-}
 
 // prep holds the Docker client for pulling images
 type prep struct {
@@ -41,15 +31,15 @@ func NewPrep() error {
 		ctx:     ctx,
 		dClient: cli,
 	}
-	return p.prep(MegaHit)
+	return p.prep(constants.AvailableAssemblers[constants.MegaHit])
 }
 
 // prep pulls and creates the container of the given docker image link
-func (p *prep) prep(dImageLink string) error {
-	if Assemblers[dImageLink] == "" {
-		return fmt.Errorf("passed assembler DockerHub link not recognized, allowed links: %v\n", Assemblers)
+func (p *prep) prep(a *constants.AssemblerDetails) error {
+	if a == nil {
+		return fmt.Errorf("prep given nil AssemblerDetails")
 	}
-	reader, err := p.dClient.ImagePull(p.ctx, dImageLink, types.ImagePullOptions{})
+	reader, err := p.dClient.ImagePull(p.ctx, a.DHubURL, types.ImagePullOptions{})
 	if err != nil {
 		return fmt.Errorf("failed to pull image from DockerHub, err: %v", err)
 	}

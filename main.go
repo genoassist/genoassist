@@ -5,13 +5,16 @@ package main
 import (
 	"flag"
 	"fmt"
+
 	"github.com/genomagic/master"
 	"github.com/genomagic/prepper"
 )
 
+const dummyFASTQ = "dummy_sequence.fastq"
+
 func main() {
 	fileParam := "fastq"
-	fileValues := "raw_sequence.fastq"
+	fileValues := dummyFASTQ
 	fileUsage := "the path to the FASTQ file containing raw sequence data for assembly"
 	rawSequenceFile := flag.String(fileParam, fileValues, fileUsage)
 
@@ -21,6 +24,12 @@ func main() {
 
 	// parsing the flags has to be done after setting up all the flags
 	flag.Parse()
+
+	// If -fastq flag is not given, print the default usage message
+	if *rawSequenceFile == dummyFASTQ {
+		flag.PrintDefaults()
+		panic(fmt.Sprintf("the flag -fastq <path/to/sequence.fastq> is required"))
+	}
 
 	if *prep {
 		if err := prepper.NewPrep(); err != nil {

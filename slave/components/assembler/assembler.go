@@ -12,15 +12,9 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 
+	"github.com/genomagic/constants"
 	"github.com/genomagic/slave/components"
 )
-
-const (
-	MegaHit = "megahit"
-)
-
-// AvailableAssemblers is a slice of assemblers that are currently supported
-var AvailableAssemblers = map[string]bool{MegaHit: true}
 
 // structure of the assembler
 type asmbler struct {
@@ -38,8 +32,8 @@ type asmbler struct {
 
 // NewAssembler returns a new assembler for the specified file
 func NewAssembler(filePath, assembler string) (components.Component, error) {
-	if !AvailableAssemblers[assembler] {
-		return nil, fmt.Errorf("assembler not recognized, available assemblers: %v", AvailableAssemblers)
+	if constants.AvailableAssemblers[assembler] == nil {
+		return nil, fmt.Errorf("assembler not recognized")
 	}
 
 	a := &asmbler{
@@ -55,25 +49,24 @@ func NewAssembler(filePath, assembler string) (components.Component, error) {
 		a.dClient = cli
 	}
 
-	if exists, err := a.imageExists(); err != nil {
+	if assemblerID, err := a.getImageID(); err != nil {
 		return nil, err
-	} else if exists {
-		a.dImageID = assembler
 	} else {
-		return nil, fmt.Errorf("failed to find Dockeri image for assembler: %s", assembler)
+		a.dImageID = assemblerID
 	}
 	return a, nil
 }
 
-// imageExists attempts to find the Docker image of the assembler that is passed to NewAssembler
-func (a *asmbler) imageExists() (bool, error) {
+// getImageID attempts to find the Docker image of the assembler that is passed to NewAssembler
+func (a *asmbler) getImageID() (string, error) {
 	images, err := a.dClient.ImageList(a.ctx, types.ImageListOptions{})
 	if err != nil {
-		return false, fmt.Errorf("failed to get available Docker images, err: %v", err)
+		return "", fmt.Errorf("failed to get available Docker images, err: %v", err)
 	} else if len(images) == 0 {
-		return false, fmt.Errorf("imageExists found no images")
+		return "", fmt.Errorf("getImageID found no images")
 	}
 	found := false
+	assemblerID := ""
 	for _, im := range images {
 		if found {
 			break
@@ -81,24 +74,25 @@ func (a *asmbler) imageExists() (bool, error) {
 		for _, tag := range im.RepoTags {
 			if strings.Contains(tag, a.assemblerName) {
 				found = true
+				assemblerID = im.ID
 			}
 		}
 	}
 	if !found {
-		return false, fmt.Errorf("failed to find a Docker container for the given assembler")
+		return "", fmt.Errorf("failed to find a Docker container for the given assembler")
 	}
-	return found, nil
+	return assemblerID, nil
 }
 
 // Process performs the work of the assembler
 func (a *asmbler) Process() error {
-	// TODO: need to pass appropriate params to the MegaHit container
-	resp, err := a.dClient.ContainerCreate(a.ctx, &container.Config{
+	ctConfig := &container.Config{
 		Tty:     true,
-		Image:   a.assemblerName,
-		Cmd:     []string{""},
+		Image:   a.dImageID,
+		Cmd:     []string{""}, // TODO: need to pass appropriate params to the MegaHit container
 		Volumes: map[string]struct{}{},
-	}, nil, nil, "")
+	}
+	resp, err := a.dClient.ContainerCreate(a.ctx, ctConfig, nil, nil, "")
 	if err != nil {
 		return fmt.Errorf("failed to create container, err: %v", err)
 	}
@@ -107,11 +101,10 @@ func (a *asmbler) Process() error {
 		return fmt.Errorf("failed to start container, err: %v", err)
 	}
 
-	if status, err := a.dClient.ContainerWait(a.ctx, resp.ID); err != nil {
+	if _, err = a.dClient.ContainerWait(a.ctx, resp.ID); err != nil {
 		return fmt.Errorf("failed to wait for container to start up, err: %v", err)
-	} else if status != 1 {
-		return fmt.Errorf("received status code != 1, status code: %d", status)
 	}
+
 	out, err := a.dClient.ContainerLogs(a.ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
 		panic(err)
