@@ -14,7 +14,7 @@ import (
 func main() {
 	fileParam := "fastq"
 	fileValues := "raw_sequence.fastq"
-	fileUsage := "the path to the FASTQ file containing raw sequence data for assembly"
+	fileUsage := "*REQUIRED* the path to the FASTQ file containing raw sequence data for assembly"
 	rawSequenceFile := flag.String(fileParam, fileValues, fileUsage)
 
 	prepParam := "prepper"
