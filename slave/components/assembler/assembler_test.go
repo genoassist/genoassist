@@ -8,6 +8,7 @@ import (
 )
 
 // manually testing New and Process for now
+// TODO: figure out a way to test the assembler
 func TestNewAssembler(t *testing.T) {
 	a, err := NewAssembler("", constants.MegaHit)
 	if err != nil {
