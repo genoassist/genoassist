@@ -3,8 +3,6 @@ package constants
 
 const (
 	MegaHit = "megahit"
-
-	DummyFASTQ = "dummy_sequence.fastq"
 )
 
 // assemblerDetails holds the details of each assembler
