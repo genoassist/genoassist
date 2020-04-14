@@ -12,15 +12,9 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 
+	"github.com/genomagic/constants"
 	"github.com/genomagic/slave/components"
 )
-
-const (
-	MegaHit = "megahit"
-)
-
-// AvailableAssemblers is a slice of assemblers that are currently supported
-var AvailableAssemblers = map[string]bool{MegaHit: true}
 
 // structure of the assembler
 type asmbler struct {
@@ -38,8 +32,8 @@ type asmbler struct {
 
 // NewAssembler returns a new assembler for the specified file
 func NewAssembler(filePath, assembler string) (components.Component, error) {
-	if !AvailableAssemblers[assembler] {
-		return nil, fmt.Errorf("assembler not recognized, available assemblers: %v", AvailableAssemblers)
+	if constants.AvailableAssemblers[assembler] == nil {
+		return nil, fmt.Errorf("assembler not recognized")
 	}
 
 	a := &asmbler{

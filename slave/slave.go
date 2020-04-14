@@ -5,6 +5,7 @@ package slave
 import (
 	"fmt"
 
+	"github.com/genomagic/constants"
 	"github.com/genomagic/slave/components"
 	"github.com/genomagic/slave/components/assembler"
 	"github.com/genomagic/slave/components/parser"
@@ -45,7 +46,7 @@ func NewSlave(dsc, fnm string, wtp ComponentWorkType) *slv {
 
 // Process performs the work that's dictated by the master
 func (s *slv) Process() error {
-	worker, err := WorkType[s.workType](s.filePath)
+	worker, err := WorkType[s.workType](s.filePath, constants.MegaHit)
 	if err != nil {
 		return fmt.Errorf("failed to initialize worker, err: %v", err)
 	}
