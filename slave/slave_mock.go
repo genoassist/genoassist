@@ -15,14 +15,12 @@ type mockSlv struct {
 	filePath string
 	// the type of work that has to be performed by the slave
 	workType ComponentWorkType
-	// the error to throw when calling process
-	throw error
 	// whether to fail the worker process
 	fail bool
 }
 
 // NewMockSlave creates and returns a new instance of a slave
-func NewMockSlave(dsc, fnm string, wtp ComponentWorkType) *mockSlv {
+func NewMockSlave(dsc, fnm string, wtp ComponentWorkType, fail bool) *mockSlv {
 	return &mockSlv{
 		description: dsc,
 		filePath:    fnm,
@@ -32,7 +30,7 @@ func NewMockSlave(dsc, fnm string, wtp ComponentWorkType) *mockSlv {
 
 // Process mocks the original slave process function
 func (s *mockSlv) Process() error {
-	args := s.Called(s.workType, s.filePath, s.workType, s.fail)
+	_ = s.Called(s.workType, s.filePath, s.workType, s.fail)
 	wrkr := WorkType[s.workType]
 	if wrkr == nil {
 		return fmt.Errorf("failed to initialize worker")
@@ -40,5 +38,5 @@ func (s *mockSlv) Process() error {
 	if s.fail {
 		return fmt.Errorf("slave process failed")
 	}
-	return args.Error(3)
+	return nil
 }
