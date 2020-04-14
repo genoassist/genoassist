@@ -32,9 +32,36 @@ The overall model follows the master/slave architecture. The master is what user
 2. Build the `main.go` file  
 `$ go build main.go`
 
-3. Run the binary  
-`$ ./main`  
+## 4. Running GenoMagic
 
-## 4. Feedback and bug reports
+After building the binary, the program can be run as follows:
+```
+$ ./main
+```
+
+The available flags are:
+
+<table>
+<tr>
+<th>Flag</th>
+<th>Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>fastq</code></td>
+<td>./path/to/sequence.fastq</td>
+<td>Yes</td>
+<td>Path to the raw sequencing FASTQ file</td>
+</tr>
+<tr>
+<td><code>prep</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>No</td>
+    <td>Whether to install necessary files background files. <i>Should be done at least once</i></td>
+</tr>
+</table>
+
+## 5. Feedback and bug reports
 Please submit any and all feedbacks as issues to this repository.
 
