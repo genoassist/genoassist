@@ -5,6 +5,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
+
 	"github.com/genomagic/master"
 	"github.com/genomagic/prepper"
 )
@@ -21,6 +23,12 @@ func main() {
 
 	// parsing the flags has to be done after setting up all the flags
 	flag.Parse()
+
+	// If no flags are given, print the default usage message
+	if numFlags := flag.NFlag(); numFlags == 0 {
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
 
 	if *prep {
 		if err := prepper.NewPrep(); err != nil {
