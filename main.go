@@ -5,7 +5,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 
 	"github.com/genomagic/master"
 	"github.com/genomagic/prepper"
@@ -26,9 +25,8 @@ func main() {
 
 	// If -fastq flag is not given, print the default usage message
 	if *rawSequenceFile == "dummy_sequence.fastq" {
-		panic(fmt.Sprintf("the flag -fastq <path/to/sequence.fastq> is required"))
 		flag.PrintDefaults()
-		os.Exit(1)
+		panic(fmt.Sprintf("the flag -fastq <path/to/sequence.fastq> is required"))
 	}
 
 	if *prep {
