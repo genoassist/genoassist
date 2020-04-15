@@ -10,8 +10,8 @@ import (
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
-
 	"github.com/genomagic/constants"
 	"github.com/genomagic/slave/components"
 )
@@ -89,7 +89,24 @@ func (a *asmbler) Process() error {
 		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(a.filePath, a.outPath),
 		Volumes: map[string]struct{}{},
 	}
-	resp, err := a.dClient.ContainerCreate(a.ctx, ctConfig, nil, nil, "")
+	hostConfig := &container.HostConfig{
+		Mounts: []mount.Mount{
+			{ // Binding the file provided by the user to the docker container
+				Type:		mount.TypeBind,
+				Source:		a.filePath,
+				Target:		"/raw_sequence_input.fastq",
+				ReadOnly:	false,
+			},
+			{ // Binding the output directory provided by the user to the docker container
+				Type:		mount.TypeBind,
+				Source:		a.outPath,
+				Target:		"/output",
+				ReadOnly:	false,
+			},
+		},
+	}
+
+	resp, err := a.dClient.ContainerCreate(a.ctx, ctConfig, hostConfig, nil, "")
 	if err != nil {
 		return fmt.Errorf("failed to create container, err: %v", err)
 	}
@@ -110,5 +127,6 @@ func (a *asmbler) Process() error {
 	if _, err := io.Copy(os.Stdout, out); err != nil {
 		return fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
+	fmt.Printf("[GenoMagic] Megahit run was complete. Your output is stored at: %s",a.outPath)
 	return nil
 }
