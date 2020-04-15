@@ -5,6 +5,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 
 	"github.com/genomagic/master"
 	"github.com/genomagic/prepper"
@@ -22,10 +23,14 @@ func main() {
 	prepUsage := "whether to install all the necessary Docker containers for assembly as a preparatory step"
 	prep := flag.Bool(prepParam, true, prepUsage)
 
+	outParam := "out"
+	outValue, _ := os.Getwd()
+	outUsage := "the path to the directory where results will be stored, defaults to current working directory"
+	out := flag.String(outParam, outValue, outUsage)
+
 	// parsing the flags has to be done after setting up all the flags
 	flag.Parse()
 
-	// If -fastq flag is not given, print the default usage message
 	if *rawSequenceFile == dummyFASTQ {
 		flag.PrintDefaults()
 		panic(fmt.Sprintf("the flag -fastq <path/to/sequence.fastq> is required"))
@@ -36,7 +41,7 @@ func main() {
 			panic(fmt.Sprintf("failed to prep GenoMagic, err: %v", err))
 		}
 	}
-	mst := master.NewMaster(*rawSequenceFile)
+	mst := master.NewMaster(*rawSequenceFile, *out)
 	if err := mst.Process(); err != nil {
 		panic(fmt.Sprintf("failed to run master process, err: %v", err))
 	}
