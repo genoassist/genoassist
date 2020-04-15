@@ -12,7 +12,7 @@ type prser struct {
 
 // NewParser creates and returns a new parser struct
 // TODO: parser needs to take in an additional param for the assembler results to process, left as _ to satisfy interface
-func NewParser(filePath, _ string) (components.Component, error) {
+func NewParser(filePath, _, _ string) (components.Component, error) {
 	return &prser{
 		filePath: filePath,
 	}, nil

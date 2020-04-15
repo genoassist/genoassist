@@ -18,27 +18,24 @@ import (
 
 // structure of the assembler
 type asmbler struct {
-	// assembler type e.g MegaHit
-	assemblerName string
-	// path to the file the assembler will operate on
-	filePath string
-	// the Docker client the assembler will use to spin up containers
-	dClient *client.Client
-	// the image ID of the struct assembler
-	dImageID string
-	// context of requests performed to the Docker daemon
-	ctx context.Context
+	assemblerName string          // assembler type e.g MegaHit
+	filePath      string          // path to the file the assembler will operate on
+	outPath       string          // path to the directory where results are stored
+	dClient       *client.Client  // the Docker client the assembler will use to spin up containers
+	dImageID      string          // the image ID of the struct assembler
+	ctx           context.Context // context of requests performed to the Docker daemon
 }
 
 // NewAssembler returns a new assembler for the specified file
-func NewAssembler(filePath, assembler string) (components.Component, error) {
-	if constants.AvailableAssemblers[assembler] == nil {
+func NewAssembler(fp, op, am string) (components.Component, error) {
+	if constants.AvailableAssemblers[am] == nil {
 		return nil, fmt.Errorf("assembler not recognized")
 	}
 
 	a := &asmbler{
-		assemblerName: assembler,
-		filePath:      filePath,
+		assemblerName: am,
+		filePath:      fp,
+		outPath:       op,
 		ctx:           context.Background(),
 	}
 
@@ -89,7 +86,7 @@ func (a *asmbler) Process() error {
 	ctConfig := &container.Config{
 		Tty:     true,
 		Image:   a.dImageID,
-		Cmd:     []string{""}, // TODO: need to pass appropriate params to the MegaHit container
+		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(a.filePath, a.outPath),
 		Volumes: map[string]struct{}{},
 	}
 	resp, err := a.dClient.ContainerCreate(a.ctx, ctConfig, nil, nil, "")
