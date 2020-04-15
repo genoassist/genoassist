@@ -5,7 +5,7 @@
 
 ---
 
-### Table of contents
+# Table of contents
 
 1. [About](#1-about) </br>
 1. [Architecture](#2-architecture)
