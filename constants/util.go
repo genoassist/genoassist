@@ -21,7 +21,11 @@ var AvailableAssemblers = map[string]*AssemblerDetails{
 		Name:    MegaHit,
 		DHubURL: "docker.io/vout/megahit", // https://github.com/voutcn/megahit
 		Comm: func(i, o string) []string {
-			return []string{"--test"} // TODO: fill in appropriate params for MegaHit
+			// Runs megahit program with following flags:
+			//	-r raw_sequence_input.fastq
+			//	-o /output/genomagic-megahit_output
+			// NOTE: input filePath and outPath are mapped to docker during creation
+			return []string{"-r", "/raw_sequence_input.fastq", "-o", "/output/genomagic-megahit_output"}
 		},
 	},
 }
