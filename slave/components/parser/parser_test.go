@@ -27,7 +27,7 @@ func TestNewParser(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			_, err := NewParser(tt.filePath, "")
+			_, err := NewParser(tt.filePath, "", "")
 			if err != nil {
 				assert.EqualError(t, err, tt.expectedErr.Error())
 			}
@@ -51,7 +51,7 @@ func TestPrser_Process(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			p, err := NewParser(tt.filePath, "")
+			p, err := NewParser(tt.filePath, "", "")
 			// this test should have no errors from initializing a parser
 			if err != nil {
 				panic(fmt.Sprintf("TestPrser_Process failed to initialize the parser, err: %v", err))

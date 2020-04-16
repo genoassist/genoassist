@@ -19,7 +19,7 @@ func main() {
 	fileUsage := "the path to the FASTQ file containing raw sequence data for assembly"
 	rawSequenceFile := flag.String(fileParam, fileValues, fileUsage)
 
-	prepParam := "prepper"
+	prepParam := "prep"
 	prepUsage := "whether to install all the necessary Docker containers for assembly as a preparatory step"
 	prep := flag.Bool(prepParam, true, prepUsage)
 

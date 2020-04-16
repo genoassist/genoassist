@@ -39,7 +39,7 @@ func NewAssembler(fp, op, am string) (components.Component, error) {
 		ctx:           context.Background(),
 	}
 
-	cli, err := client.NewEnvClient()
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Docker client, err: %v", err)
 	} else {
@@ -115,13 +115,14 @@ func (a *asmbler) Process() error {
 		return fmt.Errorf("failed to start container, err: %v", err)
 	}
 
-	if _, err = a.dClient.ContainerWait(a.ctx, resp.ID); err != nil {
+	_, errCh := a.dClient.ContainerWait(a.ctx, resp.ID, "")
+	if err := <-errCh; err != nil {
 		return fmt.Errorf("failed to wait for container to start up, err: %v", err)
 	}
 
 	out, err := a.dClient.ContainerLogs(a.ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to get container logs, err: %v", err)
 	}
 
 	if _, err := io.Copy(os.Stdout, out); err != nil {
