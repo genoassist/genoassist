@@ -116,9 +116,13 @@ func (a *asmbler) Process() error {
 		return fmt.Errorf("failed to start container, err: %v", err)
 	}
 
-	_, errCh := a.dClient.ContainerWait(a.ctx, resp.ID, "")
-	if err := <-errCh; err != nil {
-		return fmt.Errorf("failed to wait for container to start up, err: %v", err)
+	statCh, errCh := a.dClient.ContainerWait(a.ctx, resp.ID, container.WaitConditionNotRunning)
+	select {
+	case err := <-errCh:
+		if err != nil {
+			return fmt.Errorf("failed to wait for container to start up, err: %v", err)
+		}
+	case <-statCh:
 	}
 
 	out, err := a.dClient.ContainerLogs(a.ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
