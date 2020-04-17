@@ -1,15 +1,11 @@
 ---
 name: Question
-about: A question about GenoMagic
-title: Question: <brief description>
+about: Describe this issue template's purpose here.
+title: 'Question: <question you would like help with>'
 labels: question
 assignees: ''
+
 ---
 
-<p align="center">
-    <b>GenoMagic Question</b>
-</p>
-
-**Description**
-
-{description of what you would like to achieve and do not know how to}
+**Problem**
+What problem are you trying to solve? How can we help?
