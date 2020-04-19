@@ -1,5 +1,5 @@
 // contains the definition of an rst
-package main
+package result
 
 // TODO: Implement this so that it is consistent with what processor returns and reporter accepts
 
