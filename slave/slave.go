@@ -5,10 +5,10 @@ package slave
 import (
 	"fmt"
 
+	"github.com/genomagic/result"
 	"github.com/genomagic/constants"
-	"github.com/genomagic/slave/components"
-	"github.com/genomagic/slave/components/assembler"
 	"github.com/genomagic/slave/components/parser"
+	"github.com/genomagic/slave/components/assembler"
 )
 
 const (
@@ -19,11 +19,6 @@ const (
 // the type of component that runs on a specific set of assembly files
 type ComponentWorkType string
 
-// a mapping between work types and the associated components
-var WorkType = map[ComponentWorkType]func(fp, op, pr string) (components.Component, error){
-	Assembly: assembler.NewAssembler,
-	Parse:    parser.NewParser,
-}
 
 // slv defines the structure of a slave
 type slv struct {
