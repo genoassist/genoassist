@@ -6,16 +6,17 @@ package master
 import (
 	"fmt"
 
+	"github.com/genomagic/result"
 	"github.com/genomagic/slave"
 )
 
 // mst defines the master struct, which is used to coordinate slaves and launch assembly, parsing, and
 // reporting slaves
 type mst struct {
-	filePath        string            // a path to a raw sequencing FASTQ file to perform assembly on
-	outPath         string            // a path to the location where results will be stored
-	assemblyResults chan slave.Result // a collection of assembly results used by the assembly slave
-	parsingResults  chan slave.Result // a collection of parsing results used by the parsing slave
+	filePath        string             // a path to a raw sequencing FASTQ file to perform assembly on
+	outPath         string             // a path to the location where results will be stored
+	assemblyResults chan result.Result // a collection of assembly results used by the assembly slave
+	parsingResults  chan result.Result // a collection of parsing results used by the parsing slave
 }
 
 // NewMaster creates and returns a new master struct for the file located at the given file path
@@ -23,8 +24,8 @@ func NewMaster(rsf, out string) Master {
 	return &mst{
 		filePath:        rsf,
 		outPath:         out,
-		assemblyResults: make(chan slave.Result),
-		parsingResults:  make(chan slave.Result),
+		assemblyResults: make(chan result.Result),
+		parsingResults:  make(chan result.Result),
 	}
 }
 
