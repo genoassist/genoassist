@@ -64,7 +64,7 @@ func (s *slv) Process() (*result.Result, error) {
 		// Run the MegaHit Parser process
 		_, err = parserWorker.Process()
 		if err != nil {
-			return nil, fmt.Errorf("parser slave process failed, err: #{err}")
+			return nil, fmt.Errorf("parser slave process failed, err: %v", err)
 		}
 		return nil, nil
 	}
