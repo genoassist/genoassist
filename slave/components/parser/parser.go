@@ -10,18 +10,21 @@ import (
 // structure of the parser
 type prser struct {
 	// path of the file the parser will operate on
-	filePath string
+	filePath         string
+	outPath          string
+	assemblerProcess string
 }
 
 // New creates and returns a new parser struct
-// TODO: parser needs to take in an additional param for the assembler results to process, left as _ to satisfy interface
-func New(filePath, _, _ string) (components.Component, error) {
+func New(filePath, outPath, asmblrProcess string) (components.Component, error) {
 	if filePath == "" {
 		return nil, fmt.Errorf("cannot initialize parser with an empty file path")
 	}
 
 	return &prser{
-		filePath: filePath,
+		filePath:         filePath,
+		outPath:          outPath,
+		assemblerProcess: asmblrProcess,
 	}, nil
 }
 
