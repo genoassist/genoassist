@@ -5,10 +5,4 @@ package result
 
 // Result defines the operations that apply to an assembly result
 type Result interface {
-	// GetMessage returns the message that represents the result of the assembly, empty if successful
-	GetMessage() string
-	// GetError returns the error that was created during the process, nil if successful
-	GetError() error
-	// GetExitStatusCode returns the status code that was returned upon assembly completion
-	GetExitStatusCode()
 }
