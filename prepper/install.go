@@ -20,10 +20,10 @@ type prep struct {
 	dClient *client.Client  // Docker client
 }
 
-// NewPrep initializes a prep struct and
-func NewPrep() error {
+// New initializes a prep struct and
+func New() error {
 	ctx := context.Background()
-	cli, err := client.NewEnvClient()
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return fmt.Errorf("failed to initialize Docker client, err: %v", err)
 	}
