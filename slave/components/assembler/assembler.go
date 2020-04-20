@@ -85,7 +85,7 @@ func (a *asmbler) getImageID() (string, error) {
 }
 
 // Process performs the work of the assembler
-func (a *asmbler) Process() (result.Result,error) {
+func (a *asmbler) Process() (*result.Result,error) {
 	ctConfig := &container.Config{
 		Tty:     true,
 		Image:   a.dImageID,

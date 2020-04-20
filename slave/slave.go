@@ -39,7 +39,7 @@ func NewSlave(dsc, fnm, out string, wtp ComponentWorkType) *slv {
 }
 
 // Process performs the work that's dictated by the master
-func (s *slv) Process() (result.Result,error) {
+func (s *slv) Process() (*result.Result, error) {
 
 	if s.workType == Assembly { // if assembly slave is created
 
