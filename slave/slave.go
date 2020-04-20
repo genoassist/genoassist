@@ -19,7 +19,6 @@ const (
 // the type of component that runs on a specific set of assembly files
 type ComponentWorkType string
 
-
 // slv defines the structure of a slave
 type slv struct {
 	description string            // name/description of the work performed by the slave
@@ -45,17 +44,17 @@ func (s *slv) Process() (*result.Result, error) {
 
 		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
 		// Create a new MegaHit assembler
-		assemblerWorker,err := assembler.NewAssembler(s.filePath,s.outPath,constants.MegaHit)
+		assemblerWorker, err := assembler.NewAssembler(s.filePath, s.outPath, constants.MegaHit)
 		if err != nil {
-			return nil,fmt.Errorf("failed to initialize assembler worker, err %v", err)
+			return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
 		}
 
 		// Run the MegaHit Assembly process
 		_, err = assemblerWorker.Process()
 		if err != nil {
-			return nil,fmt.Errorf("assembler slave process failed, err: %v",err)
+			return nil, fmt.Errorf("assembler slave process failed, err: %v", err)
 		}
-		return nil,nil
+		return nil, nil
 
 	} else {
 		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
@@ -63,16 +62,16 @@ func (s *slv) Process() (*result.Result, error) {
 		// Create a parser for MegaHit
 		parserWorker, err := parser.NewParser(s.filePath, s.outPath, constants.MegaHit)
 		if err != nil {
-			return nil,fmt.Errorf("failed to initialize parser worker, err #{err}")
+			return nil, fmt.Errorf("failed to initialize parser worker, err #{err}")
 		}
 
 		// TODO: Send the parser output to master, left _ for now.
 		// Run the MegaHit Parser process
 		_, err = parserWorker.Process()
 		if err != nil {
-			return nil,fmt.Errorf("parser slave process failed, err: #{err}")
+			return nil, fmt.Errorf("parser slave process failed, err: #{err}")
 		}
 
-		return nil,nil
+		return nil, nil
 	}
 }
