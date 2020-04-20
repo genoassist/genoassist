@@ -5,12 +5,21 @@ package result
 
 // rst represents the result that the parser function returns and is used by reporting component of genomagic
 type rst struct {
-
 }
 
-// NewResult creates a new result struct and returns it
-func NewResult(msg string, err error, est int) *rst {
-	return &rst{
+// New creates a new result struct and returns it
+func New(msg string, err error, est int) Result {
+	return &rst{}
+}
 
-	}
+func (r rst) GetMessage() string {
+	panic("implement me")
+}
+
+func (r rst) GetError() error {
+	panic("implement me")
+}
+
+func (r rst) GetExitStatusCode() {
+	panic("implement me")
 }

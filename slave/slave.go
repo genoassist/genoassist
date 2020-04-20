@@ -5,10 +5,10 @@ package slave
 import (
 	"fmt"
 
-	"github.com/genomagic/result"
 	"github.com/genomagic/constants"
-	"github.com/genomagic/slave/components/parser"
+	"github.com/genomagic/result"
 	"github.com/genomagic/slave/components/assembler"
+	"github.com/genomagic/slave/components/parser"
 )
 
 const (
@@ -27,8 +27,8 @@ type slv struct {
 	workType    ComponentWorkType // the type of work that has to be performed by the slave
 }
 
-// NewSlave creates and returns a new instance of a slave
-func NewSlave(dsc, fnm, out string, wtp ComponentWorkType) *slv {
+// New creates and returns a new instance of a slave
+func New(dsc, fnm, out string, wtp ComponentWorkType) *slv {
 	return &slv{
 		description: dsc,
 		filePath:    fnm,
@@ -39,17 +39,14 @@ func NewSlave(dsc, fnm, out string, wtp ComponentWorkType) *slv {
 
 // Process performs the work that's dictated by the master
 func (s *slv) Process() (*result.Result, error) {
-
 	if s.workType == Assembly { // if assembly slave is created
-
 		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
 		// Create a new MegaHit assembler
-		assemblerWorker, err := assembler.NewAssembler(s.filePath, s.outPath, constants.MegaHit)
+		assemblerWorker, err := assembler.New(s.filePath, s.outPath, constants.MegaHit)
 		if err != nil {
 			return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
 		}
 
-		// Run the MegaHit Assembly process
 		_, err = assemblerWorker.Process()
 		if err != nil {
 			return nil, fmt.Errorf("assembler slave process failed, err: %v", err)
@@ -58,9 +55,7 @@ func (s *slv) Process() (*result.Result, error) {
 
 	} else {
 		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
-
-		// Create a parser for MegaHit
-		parserWorker, err := parser.NewParser(s.filePath, s.outPath, constants.MegaHit)
+		parserWorker, err := parser.New(s.filePath, s.outPath, constants.MegaHit)
 		if err != nil {
 			return nil, fmt.Errorf("failed to initialize parser worker, err #{err}")
 		}
@@ -71,7 +66,6 @@ func (s *slv) Process() (*result.Result, error) {
 		if err != nil {
 			return nil, fmt.Errorf("parser slave process failed, err: #{err}")
 		}
-
 		return nil, nil
 	}
 }

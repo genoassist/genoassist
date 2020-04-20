@@ -19,8 +19,8 @@ type mst struct {
 	parsingResults  chan result.Result // a collection of parsing results used by the parsing slave
 }
 
-// NewMaster creates and returns a new master struct for the file located at the given file path
-func NewMaster(rsf, out string) Master {
+// New creates and returns a new master struct for the file located at the given file path
+func New(rsf, out string) Master {
 	return &mst{
 		filePath:        rsf,
 		outPath:         out,
@@ -32,15 +32,14 @@ func NewMaster(rsf, out string) Master {
 // Process launches the assembly of the contigs it was created with
 func (m *mst) Process() error {
 	// first we perform the assembly
-	assemblySlave := slave.NewSlave("assembly process initiated by master", m.filePath, m.outPath, slave.Assembly)
-	if _,err := assemblySlave.Process(); err != nil {
+	assemblySlave := slave.New("assembly process initiated by master", m.filePath, m.outPath, slave.Assembly)
+	if _, err := assemblySlave.Process(); err != nil {
 		return fmt.Errorf("slave assembly process failed with err: %v", err)
 	}
 
-
-	parserSlave := slave.NewSlave("reporting/parse process initiated by master", m.filePath, m.outPath, slave.Parse)
+	parserSlave := slave.New("reporting/parse process initiated by master", m.filePath, m.outPath, slave.Parse)
 	// TODO: Take the result obtained from Parse process and feed it into result
-	if _,err := parserSlave.Process(); err != nil {
+	if _, err := parserSlave.Process(); err != nil {
 		return fmt.Errorf("slave parsing process failed with err: %v", err)
 	}
 	return nil

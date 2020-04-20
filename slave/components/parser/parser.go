@@ -2,8 +2,8 @@ package parser
 
 import (
 	"fmt"
-	"github.com/genomagic/result"
 
+	"github.com/genomagic/result"
 	"github.com/genomagic/slave/components"
 )
 
@@ -13,10 +13,9 @@ type prser struct {
 	filePath string
 }
 
-// NewParser creates and returns a new parser struct
+// New creates and returns a new parser struct
 // TODO: parser needs to take in an additional param for the assembler results to process, left as _ to satisfy interface
-
-func NewParser(filePath, _, _ string) (components.Component, error) {
+func New(filePath, _, _ string) (components.Component, error) {
 	if filePath == "" {
 		return nil, fmt.Errorf("cannot initialize parser with an empty file path")
 	}
@@ -27,6 +26,6 @@ func NewParser(filePath, _, _ string) (components.Component, error) {
 }
 
 // Process performs the work of the parser
-func (p *prser) Process() (*result.Result,error) {
-	return nil,nil
+func (p *prser) Process() (*result.Result, error) {
+	return nil, nil
 }

@@ -40,7 +40,7 @@ func TestSlaveProcess(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			s := NewMockSlave(tt.name, tt.filePath, tt.workType, tt.shouldFail)
+			s := NewMock(tt.name, tt.filePath, tt.workType, tt.shouldFail)
 			s.Mock.On("Process", tt.workType, tt.filePath, tt.workType, tt.shouldFail).Return(tt.expectedErr)
 			err := s.Process()
 			if err != nil {

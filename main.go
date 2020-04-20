@@ -37,11 +37,11 @@ func main() {
 	}
 
 	if *prep {
-		if err := prepper.NewPrep(); err != nil {
+		if err := prepper.New(); err != nil {
 			panic(fmt.Sprintf("failed to prep GenoMagic, err: %v", err))
 		}
 	}
-	mst := master.NewMaster(*rawSequenceFile, *out)
+	mst := master.New(*rawSequenceFile, *out)
 	if err := mst.Process(); err != nil {
 		panic(fmt.Sprintf("failed to run master process, err: %v", err))
 	}

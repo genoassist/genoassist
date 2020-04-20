@@ -7,18 +7,14 @@ import (
 // mockSlv is a slave mock
 type mockSlv struct {
 	mock.Mock
-	// name/description of the work performed by the slave
-	description string
-	// the file the slave is supposed to perform work on
-	filePath string
-	// the type of work that has to be performed by the slave
-	workType ComponentWorkType
-	// whether to fail the worker process
-	fail bool
+	description string            // name/description of the work performed by the slave
+	filePath    string            // the file the slave is supposed to perform work on
+	workType    ComponentWorkType // the type of work that has to be performed by the slave
+	fail        bool              // whether to fail the worker process
 }
 
-// NewMockSlave creates and returns a new instance of a slave
-func NewMockSlave(dsc, fnm string, wtp ComponentWorkType, fail bool) *mockSlv {
+// NewMock creates and returns a new instance of a slave
+func NewMock(dsc, fnm string, wtp ComponentWorkType, fail bool) *mockSlv {
 	return &mockSlv{
 		description: dsc,
 		filePath:    fnm,
