@@ -33,11 +33,14 @@ func NewMaster(rsf, out string) Master {
 func (m *mst) Process() error {
 	// first we perform the assembly
 	assemblySlave := slave.NewSlave("assembly process initiated by master", m.filePath, m.outPath, slave.Assembly)
-	if err := assemblySlave.Process(); err != nil {
+	if _,err := assemblySlave.Process(); err != nil {
 		return fmt.Errorf("slave assembly process failed with err: %v", err)
 	}
-	reportSlave := slave.NewSlave("reporting/parse process initiated by master", m.filePath, m.outPath, slave.Parse)
-	if err := reportSlave.Process(); err != nil {
+
+
+	parserSlave := slave.NewSlave("reporting/parse process initiated by master", m.filePath, m.outPath, slave.Parse)
+	// TODO: Take the result obtained from Parse process and feed it into result
+	if _,err := parserSlave.Process(); err != nil {
 		return fmt.Errorf("slave parsing process failed with err: %v", err)
 	}
 	return nil

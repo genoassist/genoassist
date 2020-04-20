@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"github.com/genomagic/result"
 
 	"github.com/genomagic/slave/components"
 )
@@ -26,6 +27,6 @@ func NewParser(filePath, _, _ string) (components.Component, error) {
 }
 
 // Process performs the work of the parser
-func (p *prser) Process() error {
-	return nil
+func (p *prser) Process() (*result.Result,error) {
+	return nil,nil
 }

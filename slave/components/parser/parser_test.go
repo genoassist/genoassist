@@ -56,7 +56,7 @@ func TestPrser_Process(t *testing.T) {
 			if err != nil {
 				panic(fmt.Sprintf("TestPrser_Process failed to initialize the parser, err: %v", err))
 			}
-			err = p.Process()
+			_, err = p.Process()
 			if err != nil {
 				assert.EqualError(t, err, tt.expectedErr.Error())
 			}

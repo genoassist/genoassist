@@ -5,10 +5,10 @@ package slave
 import (
 	"fmt"
 
+	"github.com/genomagic/result"
 	"github.com/genomagic/constants"
-	"github.com/genomagic/slave/components"
-	"github.com/genomagic/slave/components/assembler"
 	"github.com/genomagic/slave/components/parser"
+	"github.com/genomagic/slave/components/assembler"
 )
 
 const (
@@ -18,12 +18,6 @@ const (
 
 // the type of component that runs on a specific set of assembly files
 type ComponentWorkType string
-
-// a mapping between work types and the associated components
-var WorkType = map[ComponentWorkType]func(fp, op, pr string) (components.Component, error){
-	Assembly: assembler.NewAssembler,
-	Parse:    parser.NewParser,
-}
 
 // slv defines the structure of a slave
 type slv struct {
@@ -44,13 +38,40 @@ func NewSlave(dsc, fnm, out string, wtp ComponentWorkType) *slv {
 }
 
 // Process performs the work that's dictated by the master
-func (s *slv) Process() error {
-	worker, err := WorkType[s.workType](s.filePath, s.outPath, constants.MegaHit)
-	if err != nil {
-		return fmt.Errorf("failed to initialize worker, err: %v", err)
+func (s *slv) Process() (*result.Result, error) {
+
+	if s.workType == Assembly { // if assembly slave is created
+
+		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
+		// Create a new MegaHit assembler
+		assemblerWorker, err := assembler.NewAssembler(s.filePath, s.outPath, constants.MegaHit)
+		if err != nil {
+			return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
+		}
+
+		// Run the MegaHit Assembly process
+		_, err = assemblerWorker.Process()
+		if err != nil {
+			return nil, fmt.Errorf("assembler slave process failed, err: %v", err)
+		}
+		return nil, nil
+
+	} else {
+		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
+
+		// Create a parser for MegaHit
+		parserWorker, err := parser.NewParser(s.filePath, s.outPath, constants.MegaHit)
+		if err != nil {
+			return nil, fmt.Errorf("failed to initialize parser worker, err #{err}")
+		}
+
+		// TODO: Send the parser output to master, left _ for now.
+		// Run the MegaHit Parser process
+		_, err = parserWorker.Process()
+		if err != nil {
+			return nil, fmt.Errorf("parser slave process failed, err: #{err}")
+		}
+
+		return nil, nil
 	}
-	if err := worker.Process(); err != nil {
-		return fmt.Errorf("slave process failed, err: %v", err)
-	}
-	return nil
 }

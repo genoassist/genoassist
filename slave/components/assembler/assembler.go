@@ -13,6 +13,8 @@ import (
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
 
+
+	"github.com/genomagic/result"
 	"github.com/genomagic/constants"
 	"github.com/genomagic/slave/components"
 )
@@ -83,7 +85,7 @@ func (a *asmbler) getImageID() (string, error) {
 }
 
 // Process performs the work of the assembler
-func (a *asmbler) Process() error {
+func (a *asmbler) Process() (*result.Result,error) {
 	ctConfig := &container.Config{
 		Tty:     true,
 		Image:   a.dImageID,
@@ -109,29 +111,29 @@ func (a *asmbler) Process() error {
 
 	resp, err := a.dClient.ContainerCreate(a.ctx, ctConfig, hostConfig, nil, "")
 	if err != nil {
-		return fmt.Errorf("failed to create container, err: %v", err)
+		return nil,fmt.Errorf("failed to create container, err: %v", err)
 	}
 
 	if err := a.dClient.ContainerStart(a.ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
-		return fmt.Errorf("failed to start container, err: %v", err)
+		return nil,fmt.Errorf("failed to start container, err: %v", err)
 	}
 
 	statCh, errCh := a.dClient.ContainerWait(a.ctx, resp.ID, container.WaitConditionNotRunning)
 	select {
 	case err := <-errCh:
 		if err != nil {
-			return fmt.Errorf("failed to wait for container to start up, err: %v", err)
+			return nil,fmt.Errorf("failed to wait for container to start up, err: %v", err)
 		}
 	case <-statCh:
 	}
 
 	out, err := a.dClient.ContainerLogs(a.ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
-		return fmt.Errorf("failed to get container logs, err: %v", err)
+		return nil,fmt.Errorf("failed to get container logs, err: %v", err)
 	}
 
 	if _, err := io.Copy(os.Stdout, out); err != nil {
-		return fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
+		return nil,fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
-	return nil
+	return nil,nil
 }
