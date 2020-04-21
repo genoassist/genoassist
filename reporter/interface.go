@@ -4,8 +4,8 @@ package reporter
 type Reporter interface {
 	// Process constructs the report for the given assembler results
 	Process() error
-	// getL50 computes and returns the L50 score of the report contigs
-	getL50() (int32, error)
-	// getN50 computes and returns the N50 score of the report contigs
-	getN50() (int32, error)
+	// GetL50 returns the computed L50 value stored on the report
+	GetL50() int32
+	// GetN50 returns the N50 score of the report contigs
+	GetN50() int32
 }
