@@ -2,10 +2,9 @@ package reporter
 
 import (
 	"fmt"
-
-	"github.com/genomagic/result"
 )
 
-func getL50(r *result.Result) error {
-	return fmt.Errorf("getL50 not implemented yet")
+// getL50 computes and returns the L50 score of the report contigs
+func (r *report) getL50() (float32, error) {
+	return .0, fmt.Errorf("getL50 not implemented yet")
 }
