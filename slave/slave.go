@@ -60,12 +60,10 @@ func (s *slv) Process() (*result.Result, error) {
 			return nil, fmt.Errorf("failed to initialize parser worker, err #{err}")
 		}
 
-		// TODO: Send the parser output to master, left _ for now.
-		// Run the MegaHit Parser process
-		_, err = parserWorker.Process()
+		results, err := parserWorker.Process()
 		if err != nil {
-			return nil, fmt.Errorf("parser slave process failed, err: #{err}")
+			return nil, fmt.Errorf("parser slave process failed, err: %v", err)
 		}
-		return nil, nil
+		return results, nil
 	}
 }
