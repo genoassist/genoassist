@@ -88,7 +88,7 @@ func (a *asmbler) Process() (*result.Result, error) {
 	ctConfig := &container.Config{
 		Tty:     true,
 		Image:   a.dImageID,
-		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(a.filePath, a.outPath),
+		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(),
 		Volumes: map[string]struct{}{},
 	}
 	hostConfig := &container.HostConfig{

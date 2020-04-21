@@ -7,12 +7,12 @@ import (
 
 // rst represents the result that the parser function returns and is used by reporting component of genomagic
 type rst struct {
-	sequences []seq.Sequence
+	Sequences []seq.Sequence // slice of assembly contigs
 }
 
 // New creates a new result struct and returns it
 func New(seqs []seq.Sequence) Result {
 	return &rst{
-		sequences: seqs,
+		Sequences: seqs,
 	}
 }

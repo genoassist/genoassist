@@ -31,14 +31,13 @@ func New(rsf, out string) Master {
 
 // Process launches the assembly of the contigs it was created with
 func (m *mst) Process() error {
-	// first we perform the assembly
 	assemblySlave := slave.New("assembly process initiated by master", m.filePath, m.outPath, slave.Assembly)
 	if _, err := assemblySlave.Process(); err != nil {
 		return fmt.Errorf("slave assembly process failed with err: %v", err)
 	}
 
 	parserSlave := slave.New("reporting/parse process initiated by master", m.filePath, m.outPath, slave.Parse)
-	// TODO: Take the result obtained from Parse process and feed it into result
+	// TODO: Take the result obtained from Parse process and feed it into the reporter
 	if _, err := parserSlave.Process(); err != nil {
 		return fmt.Errorf("slave parsing process failed with err: %v", err)
 	}
