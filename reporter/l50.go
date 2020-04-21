@@ -7,5 +7,5 @@ import (
 )
 
 func getL50(r *result.Result) error {
-	return fmt.Errorf("not implemented yet")
+	return fmt.Errorf("getL50 not implemented yet")
 }
