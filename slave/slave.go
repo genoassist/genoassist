@@ -28,7 +28,7 @@ type slv struct {
 }
 
 // New creates and returns a new instance of a slave
-func New(dsc, fnm, out string, wtp ComponentWorkType) *slv {
+func New(dsc, fnm, out string, wtp ComponentWorkType) Slave {
 	return &slv{
 		description: dsc,
 		filePath:    fnm,
@@ -38,7 +38,7 @@ func New(dsc, fnm, out string, wtp ComponentWorkType) *slv {
 }
 
 // Process performs the work that's dictated by the master
-func (s *slv) Process() (*result.Result, error) {
+func (s *slv) Process() (result.Result, error) {
 	if s.workType == Assembly { // if assembly slave is created
 		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
 		// Create a new MegaHit assembler
@@ -60,10 +60,10 @@ func (s *slv) Process() (*result.Result, error) {
 			return nil, fmt.Errorf("failed to initialize parser worker, err #{err}")
 		}
 
-		results, err := parserWorker.Process()
+		result, err := parserWorker.Process()
 		if err != nil {
 			return nil, fmt.Errorf("parser slave process failed, err: %v", err)
 		}
-		return results, nil
+		return result, nil
 	}
 }
