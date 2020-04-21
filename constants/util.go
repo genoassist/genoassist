@@ -1,34 +1,40 @@
 // constants holds all the constants shared between packages
 package constants
 
+import "path"
+
 const (
-	MegaHit = "megahit"
+	GenoMagic = "genomagic"
+
+	BaseOut  = "/output"
+	RawSeqIn = "/raw_sequence_input.fastq"
+
+	MegaHit    = "megahit"
+	MegaHitOut = GenoMagic + "_megahit_out"
 )
 
 // getAssemblerCommand returns the Docker container command associated with an assembler
-type getAssemblerCommand func(i, o string) []string
+type getAssemblerCommand func() []string
 
 // assemblerDetails holds the details of each assembler
 type AssemblerDetails struct {
-	Name    string              // assembler name
-	DHubURL string              // DockerHub url of the assembler image
-	OutputDir string
-	Comm    getAssemblerCommand // function to return the Docker command of the assembler
+	Name             string              // assembler name
+	DHubURL          string              // DockerHub url of the assembler image
+	OutputDir        string              // output directory where to read assembled sequences from, no longer bound to Docker
+	AssemblyFileName string              // name of the resulting assembly file
+	Comm             getAssemblerCommand // function to return the Docker command of the assembler
 }
 
 // AvailableAssemblers defines the structs of currently integrated assemblers
-// TODO: Need to find a better way to incorporate the "genomagic-megahit_output" so that both OutputDir and return statement can make use of this
 var AvailableAssemblers = map[string]*AssemblerDetails{
-	MegaHit: &AssemblerDetails{
-		Name:    MegaHit,
-		DHubURL: "docker.io/vout/megahit", // https://github.com/voutcn/megahit
-		OutputDir: "genomagic-megahit_output",
-		Comm: func(i, o string) []string {
-			// Runs megahit program with following flags:
-			//	-r raw_sequence_input.fastq
-			//	-o /output/genomagic-megahit_output
-			// NOTE: input filePath and outPath are mapped to docker during creation
-			return []string{"-r", "/raw_sequence_input.fastq", "-o", "/output/genomagic-megahit_output" }
+	MegaHit: {
+		Name:             MegaHit,
+		DHubURL:          "docker.io/vout/megahit", // https://github.com/voutcn/megahit
+		OutputDir:        MegaHitOut,
+		AssemblyFileName: "/final.contigs.fa",
+		Comm: func() []string {
+			// NOTE: input filePath and outPath are mapped to Docker mounts during creation (slave/components/assembler/assembler.go:87)
+			return []string{"-r", RawSeqIn, "-o", path.Join(BaseOut, MegaHitOut)}
 		},
 	},
 }
