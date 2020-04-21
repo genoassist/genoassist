@@ -78,7 +78,7 @@ func TestReport_Process(t *testing.T) {
 			assemblyName: TestAssembly,
 			result:       result.New(TestAssembly, goodSeqs),
 			expectedN50:  8,
-			expectedL50:  0,
+			expectedL50:  3,
 			expectedErr:  nil,
 		},
 	}

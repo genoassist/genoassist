@@ -23,7 +23,7 @@ func (r *report) getL50() (int32, error) {
 
 	L50 := 0
 	L50Len := 0
-	for ch.Len() > 0 && L50Len <= halfAssemblyLen {
+	for ch.Len() > 0 && L50Len < halfAssemblyLen {
 		el := ch.Pop().(int)
 		if el > halfAssemblyLen {
 			continue
