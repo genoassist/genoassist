@@ -14,7 +14,8 @@ type rst struct {
 // New creates a new result struct and returns it
 func New(an string, seqs []seq.Sequence) Result {
 	return &rst{
-		Sequences: seqs,
+		assemblyName: an,
+		Sequences:    seqs,
 	}
 }
 
