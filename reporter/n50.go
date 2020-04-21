@@ -14,10 +14,13 @@ func (r *report) getN50() (int32, error) {
 		assemblyLen += seq.Len()
 	}
 	halfAssemblyLen := assemblyLen / 2
+	if halfAssemblyLen == 0 {
+		return 0, fmt.Errorf("failed to compute N50 due to potentially missing contigs")
+	}
 	sumToHalf := 0
 	for i, cl := range contigLens {
 		if sumToHalf == halfAssemblyLen || sumToHalf > halfAssemblyLen {
-			return contigLens[i+1], nil
+			return int32(contigLens[i]), nil
 		}
 		sumToHalf += cl
 	}
