@@ -13,6 +13,7 @@ const (
 )
 
 func TestIntHeap(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name               string
 		heap               *IntHeap
