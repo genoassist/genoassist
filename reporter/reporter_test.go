@@ -2,7 +2,6 @@ package reporter
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"os"
 	"path"
@@ -12,6 +11,7 @@ import (
 	"github.com/biogo/biogo/io/seqio/fasta"
 	"github.com/biogo/biogo/seq"
 	"github.com/biogo/biogo/seq/linear"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/genomagic/result"
 )

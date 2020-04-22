@@ -18,13 +18,13 @@ func (r *report) getL50() (int32, error) {
 
 	halfAssemblyLen := assemblyLen / 2
 	if halfAssemblyLen == 0 {
-		return 0, fmt.Errorf("failed to compute N50 due to potentially missing contigs")
+		return 0, fmt.Errorf("failed to compute L50 due to potentially missing contigs")
 	}
 
 	L50 := 0
 	L50Len := 0
 	for ch.Len() > 0 && L50Len < halfAssemblyLen {
-		el := ch.Pop().(int)
+		el := heap.Pop(ch).(int)
 		if el > halfAssemblyLen {
 			continue
 		} else {

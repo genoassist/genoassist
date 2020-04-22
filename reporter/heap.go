@@ -8,9 +8,9 @@ func (h IntHeap) Len() int {
 	return len(h)
 }
 
-// Less tells whether elements at position i is less than the one at position j
+// Less tells whether elements at position j is less than the one at position i
 func (h IntHeap) Less(i, j int) bool {
-	return h[i] < h[j]
+	return h[i] > h[j]
 }
 
 // Swap swaps two elements in the heap
