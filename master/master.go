@@ -6,6 +6,7 @@ package master
 import (
 	"fmt"
 
+	"github.com/genomagic/reporter"
 	"github.com/genomagic/result"
 	"github.com/genomagic/slave"
 )
@@ -38,8 +39,14 @@ func (m *mst) Process() error {
 
 	parserSlave := slave.New("reporting/parse process initiated by master", m.filePath, m.outPath, slave.Parse)
 	// TODO: Take the result obtained from Parse process and feed it into the reporter
-	if _, err := parserSlave.Process(); err != nil {
+	res, err := parserSlave.Process()
+	if err != nil {
 		return fmt.Errorf("slave parsing process failed with err: %v", err)
+	}
+
+	rep := reporter.New("", res)
+	if err := rep.Process(); err != nil {
+		return fmt.Errorf("failed to construct report")
 	}
 	return nil
 }

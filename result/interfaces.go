@@ -3,6 +3,12 @@
 // its components to do work in a decoupled manner
 package result
 
+import "github.com/biogo/biogo/seq"
+
 // Result defines the operations that apply to an assembly result
 type Result interface {
+	// GetAssemblyName returns the name of the assembly the result was created for
+	GetAssemblyName() string
+	// GetSequences returns the contigs the result contains
+	GetSequences() []seq.Sequence
 }
