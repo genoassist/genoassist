@@ -11,8 +11,8 @@ import (
 type report struct {
 	assemblyName string        // name of the assembly the report represents
 	result       result.Result // a collection of assembly results, which includes the assembly contigs
-	n50          float32       // n50 score of the assembly
-	l50          float32       // l50 score of the assembly
+	N50          int32         // N50 score of the assembly
+	L50          int32         // L50 score of the assembly
 }
 
 // New returns a new instance of a report
@@ -25,15 +25,25 @@ func New(an string, rs result.Result) Reporter {
 
 // Process constructs the report for the given assembler results
 func (r *report) Process() error {
-	if v, err := r.getL50(); err != nil {
-		return fmt.Errorf("failed to compute L50 for assembly: %s", r.result.GetAssemblyName())
-	} else {
-		r.l50 = v
-	}
 	if v, err := r.getN50(); err != nil {
-		return fmt.Errorf("failed to compute N50 for assembly: %s", r.result.GetAssemblyName())
+		return fmt.Errorf("failed to compute N50 for assembly %s, err: %v", r.result.GetAssemblyName(), err)
 	} else {
-		r.n50 = v
+		r.N50 = v
+	}
+	if v, err := r.getL50(); err != nil {
+		return fmt.Errorf("failed to compute L50 for assembly %s, err: %v", r.result.GetAssemblyName(), err)
+	} else {
+		r.L50 = v
 	}
 	return nil
+}
+
+// GetN50 returns the computed N50 value stored on the report
+func (r *report) GetN50() int32 {
+	return r.N50
+}
+
+// GetL50 returns the computed L50 value stored on the report
+func (r *report) GetL50() int32 {
+	return r.L50
 }
