@@ -39,14 +39,18 @@ func (m *mst) Process() error {
 
 	parserSlave := slave.New("reporting/parse process initiated by master", m.filePath, m.outPath, slave.Parse)
 	// TODO: Take the result obtained from Parse process and feed it into the reporter
-	res, err := parserSlave.Process()
+	results, err := parserSlave.Process()
 	if err != nil {
 		return fmt.Errorf("slave parsing process failed with err: %v", err)
 	}
 
-	rep := reporter.New("", res)
-	if err := rep.Process(); err != nil {
-		return fmt.Errorf("failed to construct report")
+	var reports []reporter.Reporter
+	for _, r := range results {
+		rep := reporter.New("", r)
+		if err := rep.Process(); err != nil {
+			return fmt.Errorf("failed to construct report")
+		}
+		reports = append(reports, rep)
 	}
 	return nil
 }
