@@ -39,10 +39,8 @@ func New(dsc, fnm, out string, wtp ComponentWorkType) Slave {
 
 // Process performs the work that's dictated by the master
 func (s *slv) Process() ([]result.Result, error) {
-	if s.workType == Assembly { // if assembly slave is created
-		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
-		// Create a new MegaHit assembler
-		for k, _ := range constants.AvailableAssemblers {
+	if s.workType == Assembly {
+		for k := range constants.AvailableAssemblers {
 			assemblerWorker, err := assembler.New(s.filePath, s.outPath, k)
 			if err != nil {
 				return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
@@ -55,9 +53,8 @@ func (s *slv) Process() ([]result.Result, error) {
 		}
 		return nil, nil
 	} else {
-		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
 		var results []result.Result
-		for k, _ := range constants.AvailableAssemblers {
+		for k := range constants.AvailableAssemblers {
 			parserWorker, err := parser.New(s.filePath, s.outPath, k)
 			if err != nil {
 				return nil, fmt.Errorf("failed to initialize parser worker, err: %v", err)
