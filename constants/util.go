@@ -11,6 +11,9 @@ const (
 
 	MegaHit    = "megahit"
 	MegaHitOut = GenoMagic + "_megahit_out"
+
+	Abyss    = "abyss"
+	AbyssOut = GenoMagic + "_abyss_out"
 )
 
 // getAssemblerCommand returns the Docker container command associated with an assembler
@@ -35,6 +38,15 @@ var AvailableAssemblers = map[string]*AssemblerDetails{
 		Comm: func() []string {
 			// NOTE: input filePath and outPath are mapped to Docker mounts during creation (slave/components/assembler/assembler.go:87)
 			return []string{"-r", RawSeqIn, "-o", path.Join(BaseOut, MegaHitOut)}
+		},
+	},
+	Abyss: {
+		Name:             Abyss,
+		DHubURL:          "docker.io/bcgsc/abyss", // https://github.com/bcgsc/abyss
+		OutputDir:        AbyssOut,
+		AssemblyFileName: "/final.contigs.fa",
+		Comm: func() []string {
+			return []string{""}
 		},
 	},
 }

@@ -96,13 +96,13 @@ func (a *asmbler) Process() (result.Result, error) {
 			{ // Binding the file provided by the user to the docker container
 				Type:     mount.TypeBind,
 				Source:   a.filePath,
-				Target:   "/raw_sequence_input.fastq",
+				Target:   constants.RawSeqIn,
 				ReadOnly: false,
 			},
 			{ // Binding the output directory provided by the user to the docker container
 				Type:     mount.TypeBind,
 				Source:   a.outPath,
-				Target:   "/output",
+				Target:   constants.BaseOut,
 				ReadOnly: false,
 			},
 		},
