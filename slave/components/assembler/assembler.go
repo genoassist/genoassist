@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -91,6 +92,21 @@ func (a *asmbler) Process() (result.Result, error) {
 		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(),
 		Volumes: map[string]struct{}{},
 	}
+
+	// we have assemblers that have special conditions, such as creating non-existing folders
+	// run the condition functions before mounting
+	if constants.AvailableAssemblers[a.assemblerName].ConditionsPresent {
+		for i, f := range constants.AvailableAssemblers[a.assemblerName].Conditions {
+			switch f {
+			case constants.CreateDir:
+				out := constants.AvailableAssemblers[a.assemblerName].OutputDir
+				if err := os.Mkdir(path.Join(a.outPath, out), 0755); err != nil {
+					return nil, fmt.Errorf("failed to fulfil condition %d for assembler %s, err: %v", i, a.assemblerName, err)
+				}
+			}
+		}
+	}
+
 	hostConfig := &container.HostConfig{
 		Mounts: []mount.Mount{
 			{ // Binding the file provided by the user to the docker container
