@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -91,18 +92,25 @@ func (a *asmbler) Process() (result.Result, error) {
 		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(),
 		Volumes: map[string]struct{}{},
 	}
+
+	// we have assemblers that have special conditions, such as creating non-existing folders
+	// run the condition functions before mounting
+	if err := a.applyConditions(); err != nil {
+		return nil, err
+	}
+
 	hostConfig := &container.HostConfig{
 		Mounts: []mount.Mount{
 			{ // Binding the file provided by the user to the docker container
 				Type:     mount.TypeBind,
 				Source:   a.filePath,
-				Target:   "/raw_sequence_input.fastq",
+				Target:   constants.RawSeqIn,
 				ReadOnly: false,
 			},
 			{ // Binding the output directory provided by the user to the docker container
 				Type:     mount.TypeBind,
 				Source:   a.outPath,
-				Target:   "/output",
+				Target:   constants.BaseOut,
 				ReadOnly: false,
 			},
 		},
@@ -135,4 +143,20 @@ func (a *asmbler) Process() (result.Result, error) {
 		return nil, fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
 	return nil, nil
+}
+
+// applyConditions iterates over the conditions of a specific assemblers and attempts to fulfil the specific conditions
+func (a *asmbler) applyConditions() error {
+	if constants.AvailableAssemblers[a.assemblerName].ConditionsPresent {
+		for i, f := range constants.AvailableAssemblers[a.assemblerName].Conditions {
+			switch f {
+			case constants.CreateDir:
+				out := constants.AvailableAssemblers[a.assemblerName].OutputDir
+				if err := os.Mkdir(path.Join(a.outPath, out), 0755); err != nil {
+					return fmt.Errorf("failed to fulfil condition %d for assembler %s, err: %v", i, a.assemblerName, err)
+				}
+			}
+		}
+	}
+	return nil
 }

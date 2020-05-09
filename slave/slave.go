@@ -38,32 +38,33 @@ func New(dsc, fnm, out string, wtp ComponentWorkType) Slave {
 }
 
 // Process performs the work that's dictated by the master
-func (s *slv) Process() (result.Result, error) {
-	if s.workType == Assembly { // if assembly slave is created
-		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
-		// Create a new MegaHit assembler
-		assemblerWorker, err := assembler.New(s.filePath, s.outPath, constants.MegaHit)
-		if err != nil {
-			return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
-		}
+func (s *slv) Process() ([]result.Result, error) {
+	if s.workType == Assembly {
+		for k := range constants.AvailableAssemblers {
+			assemblerWorker, err := assembler.New(s.filePath, s.outPath, k)
+			if err != nil {
+				return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
+			}
 
-		_, err = assemblerWorker.Process()
-		if err != nil {
-			return nil, fmt.Errorf("assembler slave process failed, err: %v", err)
+			_, err = assemblerWorker.Process()
+			if err != nil {
+				return nil, fmt.Errorf("assembler slave process failed, err: %v", err)
+			}
 		}
 		return nil, nil
-
 	} else {
-		// TODO: Wrap this code in some sort of loop so that this runs for every available assembler
-		parserWorker, err := parser.New(s.filePath, s.outPath, constants.MegaHit)
-		if err != nil {
-			return nil, fmt.Errorf("failed to initialize parser worker, err #{err}")
+		var results []result.Result
+		for k := range constants.AvailableAssemblers {
+			parserWorker, err := parser.New(s.filePath, s.outPath, k)
+			if err != nil {
+				return nil, fmt.Errorf("failed to initialize parser worker, err: %v", err)
+			}
+			res, err := parserWorker.Process()
+			if err != nil {
+				return nil, fmt.Errorf("parser slave process failed, err: %v", err)
+			}
+			results = append(results, res)
 		}
-
-		result, err := parserWorker.Process()
-		if err != nil {
-			return nil, fmt.Errorf("parser slave process failed, err: %v", err)
-		}
-		return result, nil
+		return results, nil
 	}
 }
