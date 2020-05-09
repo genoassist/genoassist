@@ -95,16 +95,8 @@ func (a *asmbler) Process() (result.Result, error) {
 
 	// we have assemblers that have special conditions, such as creating non-existing folders
 	// run the condition functions before mounting
-	if constants.AvailableAssemblers[a.assemblerName].ConditionsPresent {
-		for i, f := range constants.AvailableAssemblers[a.assemblerName].Conditions {
-			switch f {
-			case constants.CreateDir:
-				out := constants.AvailableAssemblers[a.assemblerName].OutputDir
-				if err := os.Mkdir(path.Join(a.outPath, out), 0755); err != nil {
-					return nil, fmt.Errorf("failed to fulfil condition %d for assembler %s, err: %v", i, a.assemblerName, err)
-				}
-			}
-		}
+	if err := a.applyConditions(); err != nil {
+		return nil, err
 	}
 
 	hostConfig := &container.HostConfig{
@@ -151,4 +143,20 @@ func (a *asmbler) Process() (result.Result, error) {
 		return nil, fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
 	return nil, nil
+}
+
+// applyConditions iterates over the conditions of a specific assemblers and attempts to fulfil the specific conditions
+func (a *asmbler) applyConditions() error {
+	if constants.AvailableAssemblers[a.assemblerName].ConditionsPresent {
+		for i, f := range constants.AvailableAssemblers[a.assemblerName].Conditions {
+			switch f {
+			case constants.CreateDir:
+				out := constants.AvailableAssemblers[a.assemblerName].OutputDir
+				if err := os.Mkdir(path.Join(a.outPath, out), 0755); err != nil {
+					return fmt.Errorf("failed to fulfil condition %d for assembler %s, err: %v", i, a.assemblerName, err)
+				}
+			}
+		}
+	}
+	return nil
 }
