@@ -37,8 +37,14 @@ func main() {
 	}
 
 	if *prep {
-		if err := prepper.New(); err != nil {
-			panic(fmt.Sprintf("failed to prep GenoMagic, err: %v", err))
+		errs := prepper.New()
+		for len(errs) > 0 {
+			select {
+			case err := <-errs:
+				fmt.Printf("[WARNING] encountered error pulling Docker images, err: %v\n", err)
+			default:
+				continue
+			}
 		}
 	}
 	mst := master.New(*rawSequenceFile, *out)

@@ -21,17 +21,25 @@ type prep struct {
 }
 
 // New initializes a prep struct and
-func New() error {
+func New() chan error {
 	ctx := context.Background()
+	errs := make(chan error, len(constants.AvailableAssemblers))
+
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		return fmt.Errorf("failed to initialize Docker client, err: %v", err)
+		errs <- fmt.Errorf("failed to initialize Docker client, err: %v", err)
+		return errs
 	}
 	p := &prep{
 		ctx:     ctx,
 		dClient: cli,
 	}
-	return p.prep(constants.AvailableAssemblers[constants.MegaHit])
+	for _, aa := range constants.AvailableAssemblers {
+		go func(a *constants.AssemblerDetails) {
+			errs <- p.prep(a)
+		}(aa)
+	}
+	return errs
 }
 
 // prep pulls and creates the container of the given docker image link
