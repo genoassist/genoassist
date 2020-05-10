@@ -95,12 +95,13 @@ var (
 			DHubURL:          "docker.io/nanozoo/flye", // https://github.com/fenderglass/Flye
 			OutputDir:        FlyeOut,
 			AssemblyFileName: "assembly.fasta",
-			Comm: func() []string {
+			Comm: func(threads int) []string {
 				return []string{
 					`flye`,
 					`--genome-size 5m`,
 					fmt.Sprintf("--nano-raw %s", RawSeqIn),
 					fmt.Sprintf("--out-dir %s", path.Join(BaseOut, FlyeOut)),
+					fmt.Sprintf("--threads %d", threads),
 				}
 			},
 			ConditionsPresent: false,
