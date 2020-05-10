@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sync"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -20,18 +21,36 @@ type prep struct {
 	dClient *client.Client  // Docker client
 }
 
-// New initializes a prep struct and
-func New() error {
+// New attempts to install all the necessary Docker images for GenoMagic. New launches go routines for installing
+// the necessary images and collects the errors in a channel. When the go routines are finished, an error channel
+// is returned, with the consumer being responsible to report whether errors have occurred and alert users about
+// whether a specific assembler will be skipped
+func New() chan error {
 	ctx := context.Background()
+	errs := make(chan error, len(constants.AvailableAssemblers))
+
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		return fmt.Errorf("failed to initialize Docker client, err: %v", err)
+		errs <- fmt.Errorf("failed to initialize Docker client, err: %v", err)
+		return errs
 	}
 	p := &prep{
 		ctx:     ctx,
 		dClient: cli,
 	}
-	return p.prep(constants.AvailableAssemblers[constants.MegaHit])
+
+	// we are launching the pulling of Docker containers in go routines, but we have to wait for them to finish
+	// in order to return the final error channel
+	var wg sync.WaitGroup
+	wg.Add(len(constants.AvailableAssemblers))
+	for _, aa := range constants.AvailableAssemblers {
+		go func(a *constants.AssemblerDetails) {
+			errs <- p.prep(a)
+			wg.Done()
+		}(aa)
+	}
+	wg.Wait()
+	return errs
 }
 
 // prep pulls and creates the container of the given docker image link
