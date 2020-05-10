@@ -13,8 +13,9 @@ import (
 
 const (
 	// default flag values
-	dummyFASTQ     = "dummy_sequence.fastq"
-	defaultThreads = 2
+	dummyFASTQ      = "dummy_sequence.fastq"
+	defaultThreads  = 2
+	tempThreadLimit = 10
 )
 
 func main() {
@@ -36,6 +37,9 @@ func main() {
 	threadsParam := "threads"
 	threadsUsage := "the number of threads that is passed to the assembler programs"
 	numThreads := flag.Int(threadsParam, defaultThreads, threadsUsage)
+	if *numThreads > tempThreadLimit {
+		panic(fmt.Sprintf("Cannot run with a thread number greater than %d", tempThreadLimit))
+	}
 
 	// parsing the flags has to be done after setting up all the flags
 	flag.Parse()
@@ -50,6 +54,7 @@ func main() {
 			panic(fmt.Sprintf("failed to prep GenoMagic, err: %v", err))
 		}
 	}
+
 	mst := master.New(*rawSequenceFile, *out, *numThreads)
 	if err := mst.Process(); err != nil {
 		panic(fmt.Sprintf("failed to run master process, err: %v", err))

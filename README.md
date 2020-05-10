@@ -1,5 +1,5 @@
-<p align="center">
-    <img src="https://user-images.githubusercontent.com/19979068/77257398-9cedfe80-6c39-11ea-890a-9167ffd1b374.png">
+<p style="align-content: center">
+    <img src="https://user-images.githubusercontent.com/19979068/77257398-9cedfe80-6c39-11ea-890a-9167ffd1b374.png" alt="">
     <br /><i>An all-encompassing Bioinformatics tool for genome assembly and annotation projects</i><br>
 </p>
 
@@ -71,11 +71,11 @@ The available flags are:
         <td>The path to the directory where results will be stored, defaults to current working directory</td>
     </tr>
     <tr>
-            <td><code>threads</code></td>
-            <td><code>integer</code></td>
-            <td>No</td>
-            <td>The number of threads to use for assembly and output parsing processes</td>
-        </tr>
+        <td><code>threads</code></td>
+        <td><code>integer</code></td>
+        <td>No</td>
+        <td>The number of threads to use for assembly and output parsing processes</td>
+    </tr>
 </table>
 
 ## 5. Feedback and bug reports

@@ -29,7 +29,8 @@ const (
 )
 
 type (
-	// getAssemblerCommand returns the Docker container command associated with an assembler
+	// getAssemblerCommand returns the Docker container command associated with an assembler. The commands expects the
+	// number of thread to be specified, as assemblers can run on multiple threads
 	getAssemblerCommand func(threads int) []string
 
 	// Condition that is run by the condition command
@@ -74,7 +75,7 @@ var (
 				return []string{
 					`k=25`,
 					`name=final`,
-					fmt.Sprintf("j=%s", string(threads)),
+					fmt.Sprintf("j=%d", threads),
 					fmt.Sprintf("in='%s'", RawSeqIn),
 					fmt.Sprintf("--directory=%s", path.Join(BaseOut, AbyssOut)),
 					"contigs",

@@ -29,12 +29,12 @@ type slv struct {
 }
 
 // New creates and returns a new instance of a slave
-func New(dsc, fnm, out string, thrds int, wtp ComponentWorkType) Slave {
+func New(dsc, fnm, out string, thr int, wtp ComponentWorkType) Slave {
 	return &slv{
 		description: dsc,
 		filePath:    fnm,
 		outPath:     out,
-		numThreads:  thrds,
+		numThreads:  thr,
 		workType:    wtp,
 	}
 }
