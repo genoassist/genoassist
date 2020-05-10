@@ -24,6 +24,10 @@ const (
 	Abyss    = "abyss"
 	AbyssOut = GenoMagic + "_abyss_out"
 
+	// Flye specific constants
+	Flye    = "flye"
+	FlyeOut = GenoMagic + "_flye_out"
+
 	// CreateDir informs the condition function to create a directory for an assembler
 	CreateDir = "CreateDir"
 )
@@ -82,6 +86,21 @@ var (
 			Conditions: []Condition{
 				CreateDir,
 			},
+		},
+		Flye: {
+			Name:             Flye,
+			DHubURL:          "docker.io/nanozoo/flye", // https://github.com/fenderglass/Flye
+			OutputDir:        FlyeOut,
+			AssemblyFileName: "assembly.fasta",
+			Comm: func() []string {
+				return []string{
+					`flye`,
+					`--genome-size 5m`,
+					fmt.Sprintf("--nano-raw %s", RawSeqIn),
+					fmt.Sprintf("--out-dir %s", path.Join(BaseOut, FlyeOut)),
+				}
+			},
+			ConditionsPresent: false,
 		},
 	}
 )
