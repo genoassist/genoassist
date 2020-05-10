@@ -30,7 +30,7 @@ const (
 
 type (
 	// getAssemblerCommand returns the Docker container command associated with an assembler
-	getAssemblerCommand func() []string
+	getAssemblerCommand func(threads int) []string
 
 	// Condition that is run by the condition command
 	Condition string
@@ -55,7 +55,7 @@ var (
 			DHubURL:          "docker.io/vout/megahit", // https://github.com/voutcn/megahit
 			OutputDir:        MegaHitOut,
 			AssemblyFileName: "/final.contigs.fa",
-			Comm: func() []string {
+			Comm: func(threads int) []string {
 				// NOTE: input filePath and outPath are mapped to Docker mounts during creation (slave/components/assembler/assembler.go:87)
 				return []string{
 					"-r", RawSeqIn,
@@ -69,7 +69,7 @@ var (
 			DHubURL:          "docker.io/bcgsc/abyss", // https://github.com/bcgsc/abyss
 			OutputDir:        AbyssOut,
 			AssemblyFileName: "final-contigs.fa",
-			Comm: func() []string {
+			Comm: func(threads int) []string {
 				return []string{
 					`k=25`,
 					`name=final`,

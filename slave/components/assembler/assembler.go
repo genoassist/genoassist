@@ -91,7 +91,7 @@ func (a *asmbler) Process() (result.Result, error) {
 	ctConfig := &container.Config{
 		Tty:     true,
 		Image:   a.dImageID,
-		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(),
+		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(a.numThreads),
 		Volumes: map[string]struct{}{},
 	}
 
