@@ -59,6 +59,7 @@ var (
 				// NOTE: input filePath and outPath are mapped to Docker mounts during creation (slave/components/assembler/assembler.go:87)
 				return []string{
 					"-r", RawSeqIn,
+					fmt.Sprintf("-t %d", threads),
 					"-o", path.Join(BaseOut, MegaHitOut),
 				}
 			},
@@ -73,6 +74,7 @@ var (
 				return []string{
 					`k=25`,
 					`name=final`,
+					fmt.Sprintf("j=%s", string(threads)),
 					fmt.Sprintf("in='%s'", RawSeqIn),
 					fmt.Sprintf("--directory=%s", path.Join(BaseOut, AbyssOut)),
 					"contigs",
