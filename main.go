@@ -50,7 +50,7 @@ func main() {
 			panic(fmt.Sprintf("failed to prep GenoMagic, err: %v", err))
 		}
 	}
-	mst := master.New(*rawSequenceFile, *out)
+	mst := master.New(*rawSequenceFile, *out, *numThreads)
 	if err := mst.Process(); err != nil {
 		panic(fmt.Sprintf("failed to run master process, err: %v", err))
 	}
