@@ -70,6 +70,12 @@ The available flags are:
         <td>No</td>
         <td>The path to the directory where results will be stored, defaults to current working directory</td>
     </tr>
+    <tr>
+            <td><code>threads</code></td>
+            <td><code>integer</code></td>
+            <td>No</td>
+            <td>The number of threads to use for assembly and output parsing processes</td>
+        </tr>
 </table>
 
 ## 5. Feedback and bug reports
