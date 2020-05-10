@@ -43,8 +43,8 @@ The available flags are:
     <tr>
         <th>Flag</th>
         <th>Value</th>
-            <th>Required</th>
-            <th>Description</th>
+        <th>Required</th>
+        <th>Description</th>
     </tr>
     <tr>
         <td><code>fastq</code></td>
