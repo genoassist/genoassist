@@ -8,9 +8,9 @@
 # Table of contents
 
 1. [About](#1-about) </br>
-1. [Architecture](#2-architecture)
-1. [Installation](#3-installation)
-1. [Running](#4-running-genomagic)
+1. [Installation](#2-installation)
+1. [GenoMagic Usage](#3-genomagic-usage)
+1. [Architecture](#4-architecture)
 1. [Feedback and bug reports](#5-feedback-and-bug-reports)
 
 ## 1. About
