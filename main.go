@@ -11,7 +11,12 @@ import (
 	"github.com/genomagic/prepper"
 )
 
-const dummyFASTQ = "dummy_sequence.fastq"
+const (
+	// default flag values
+	dummyFASTQ      = "dummy_sequence.fastq"
+	defaultThreads  = 2
+	tempThreadLimit = 10
+)
 
 func main() {
 	fileParam := "fastq"
@@ -28,6 +33,14 @@ func main() {
 	outUsage := "the path to the directory where results will be stored, defaults to current working directory"
 	out := flag.String(outParam, outValue, outUsage)
 
+	// TODO: add a check to make sure numThreads does not exceed the limit of host computer
+	threadsParam := "threads"
+	threadsUsage := "the number of threads that is passed to the assembler programs"
+	numThreads := flag.Int(threadsParam, defaultThreads, threadsUsage)
+	if *numThreads > tempThreadLimit {
+		panic(fmt.Sprintf("Cannot run with a thread number greater than %d", tempThreadLimit))
+	}
+
 	// parsing the flags has to be done after setting up all the flags
 	flag.Parse()
 
@@ -37,11 +50,18 @@ func main() {
 	}
 
 	if *prep {
-		if err := prepper.New(); err != nil {
-			panic(fmt.Sprintf("failed to prep GenoMagic, err: %v", err))
+		errs := prepper.New()
+		for len(errs) > 0 {
+			select {
+			case err := <-errs:
+				fmt.Printf("[WARNING] encountered error pulling Docker images, err: %v\n", err)
+			default:
+				continue
+			}
 		}
 	}
-	mst := master.New(*rawSequenceFile, *out)
+
+	mst := master.New(*rawSequenceFile, *out, *numThreads)
 	if err := mst.Process(); err != nil {
 		panic(fmt.Sprintf("failed to run master process, err: %v", err))
 	}
