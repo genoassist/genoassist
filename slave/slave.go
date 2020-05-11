@@ -5,6 +5,7 @@ package slave
 import (
 	"fmt"
 
+	"github.com/genomagic/config_parser"
 	"github.com/genomagic/constants"
 	"github.com/genomagic/result"
 	"github.com/genomagic/slave/components/assembler"
@@ -21,20 +22,22 @@ type ComponentWorkType string
 
 // slv defines the structure of a slave
 type slv struct {
-	description string            // name/description of the work performed by the slave
-	filePath    string            // the file the slave is supposed to perform work on
-	outPath     string            // a path to the location where results will be stored
-	numThreads  int               // number of threads to use for slave processes
-	workType    ComponentWorkType // the type of work that has to be performed by the slave
+	description string                // name/description of the work performed by the slave
+	filePath    string                // the file the slave is supposed to perform work on
+	outPath     string                // a path to the location where results will be stored
+	numThreads  int                   // number of threads to use for slave processes
+	config      *config_parser.Config // the GenoMagic configuration that is passed through YAML config file
+	workType    ComponentWorkType     // the type of work that has to be performed by the slave
 }
 
 // New creates and returns a new instance of a slave
-func New(dsc, fnm, out string, thr int, wtp ComponentWorkType) Slave {
+func New(dsc, fnm, out string, thr int, cfg *config_parser.Config, wtp ComponentWorkType) Slave {
 	return &slv{
 		description: dsc,
 		filePath:    fnm,
 		outPath:     out,
 		numThreads:  thr,
+		config:      cfg,
 		workType:    wtp,
 	}
 }
@@ -43,7 +46,7 @@ func New(dsc, fnm, out string, thr int, wtp ComponentWorkType) Slave {
 func (s *slv) Process() ([]result.Result, error) {
 	if s.workType == Assembly {
 		for k := range constants.AvailableAssemblers {
-			assemblerWorker, err := assembler.New(s.filePath, s.outPath, k, s.numThreads)
+			assemblerWorker, err := assembler.New(s.filePath, s.outPath, k, s.numThreads, s.config)
 			if err != nil {
 				return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
 			}

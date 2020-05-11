@@ -4,6 +4,8 @@ package constants
 import (
 	"fmt"
 	"path"
+
+	"github.com/genomagic/config_parser"
 )
 
 const (
@@ -31,7 +33,7 @@ const (
 type (
 	// getAssemblerCommand returns the Docker container command associated with an assembler. The commands expects the
 	// number of thread to be specified, as assemblers can run on multiple threads
-	getAssemblerCommand func(threads int) []string
+	getAssemblerCommand func(threads int, config config_parser.Config) []string
 
 	// Condition that is run by the condition command
 	Condition string
@@ -56,7 +58,7 @@ var (
 			DHubURL:          "docker.io/vout/megahit", // https://github.com/voutcn/megahit
 			OutputDir:        MegaHitOut,
 			AssemblyFileName: "/final.contigs.fa",
-			Comm: func(threads int) []string {
+			Comm: func(threads int, cfg config_parser.Config) []string {
 				// NOTE: input filePath and outPath are mapped to Docker mounts during creation (slave/components/assembler/assembler.go:87)
 				return []string{
 					"-r", RawSeqIn,
@@ -71,7 +73,7 @@ var (
 			DHubURL:          "docker.io/bcgsc/abyss", // https://github.com/bcgsc/abyss
 			OutputDir:        AbyssOut,
 			AssemblyFileName: "final-contigs.fa",
-			Comm: func(threads int) []string {
+			Comm: func(threads int, cfg config_parser.Config) []string {
 				return []string{
 					`k=25`,
 					`name=final`,
