@@ -1,0 +1,12 @@
+assemblers:
+  megahit:
+    kmers: "27"
+  abyss:
+    kmers: "27"
+  flye:
+    seqType: "nano"
+    genomeSize: "5m"
+genomagic:
+  inputFilePath: "/Users/tayabsoomro/Documents/Projects/Genomagic/TestFolder/test-data/reads1.fastq"
+  outputPath: "/Users/tayabsoomro/Documents/Projects/Genomagic/TestFolder/test-data"
+  threads: 2
