@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/genomagic/config_parser"
 	"github.com/genomagic/master"
 	"github.com/genomagic/prepper"
 )
@@ -14,6 +15,7 @@ import (
 const (
 	// default flag values
 	dummyFASTQ      = "dummy_sequence.fastq"
+	dummyYAML       = "noyaml.yaml"
 	defaultThreads  = 2
 	tempThreadLimit = 10
 )
@@ -41,8 +43,29 @@ func main() {
 		panic(fmt.Sprintf("Cannot run with a thread number greater than %d", tempThreadLimit))
 	}
 
+	yamlParam := "yaml"
+	yamlValue := dummyYAML
+	yamlUsage := "the path to the YAML configuration file which will supersede all other flags"
+	yaml := flag.String(yamlParam, yamlValue, yamlUsage)
+
 	// parsing the flags has to be done after setting up all the flags
 	flag.Parse()
+
+	var (
+		cfg *config_parser.Config
+		err error
+	)
+	if *yaml != dummyYAML { // if YAML config file was provided
+		cfg, err = config_parser.ParseConfig(*yaml)
+		if err != nil {
+			panic(fmt.Sprintf("the YAML config file was incorrect, err: %v", err))
+		}
+
+		// overriding the GenoMagic core flags if a YAML file is provided
+		*rawSequenceFile = cfg.GenoMagic.InputFilePath
+		*out = cfg.GenoMagic.OutputPath
+		*numThreads = cfg.GenoMagic.Threads
+	}
 
 	if *rawSequenceFile == dummyFASTQ {
 		flag.PrintDefaults()
