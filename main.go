@@ -54,7 +54,9 @@ func main() {
 		for len(errs) > 0 {
 			select {
 			case err := <-errs:
-				fmt.Printf("[WARNING] encountered error pulling Docker images, err: %v\n", err)
+				if err != nil {
+					fmt.Printf("[WARNING] encountered error pulling Docker images, err: %v\n", err)
+				}
 			default:
 				continue
 			}
