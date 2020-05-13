@@ -75,7 +75,7 @@ var (
 			AssemblyFileName: "final-contigs.fa",
 			Comm: func(cfg config_parser.Config) []string {
 				return []string{
-					fmt.Sprintf("k=%d", cfg.Assemblers.Abyss.KMers),
+					fmt.Sprintf("k=%s", cfg.Assemblers.Abyss.KMers),
 					`name=final`,
 					fmt.Sprintf("j=%d", cfg.GenoMagic.Threads),
 					fmt.Sprintf("in='%s'", RawSeqIn),
