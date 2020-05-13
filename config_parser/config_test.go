@@ -1,8 +1,10 @@
 package config_parser
 
 import (
-	"github.com/stretchr/testify/assert"
+	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_ParseConfig(t *testing.T) {
@@ -71,6 +73,18 @@ func Test_ParseConfig(t *testing.T) {
 				},
 			},
 			expectedError: nil,
+		},
+		{
+			name:           "test_process_returns_error_when_invalid_file_path_to_YAML_is_provided",
+			filePath:       "",
+			expectedConfig: nil,
+			expectedError:  fmt.Errorf("cannot read file %s, err: open : no such file or directory", ""),
+		},
+		{
+			name:           "test_process_returns_error_when_wrong_YAML_config_filepath_is_provided",
+			filePath:       "wrong_file.fasta",
+			expectedConfig: nil,
+			expectedError:  fmt.Errorf("cannot unmarshall the contents of the yamlFile into the struct, err: yaml: unmarshal errors:\n  line 1: cannot unmarshal !!str `` into config_parser.Config"),
 		},
 	}
 	for _, tt := range testCases {
