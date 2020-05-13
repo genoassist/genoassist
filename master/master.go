@@ -17,18 +17,16 @@ import (
 type mst struct {
 	filePath        string                // a path to a raw sequencing FASTQ file to perform assembly on
 	outPath         string                // a path to the location where results will be stored
-	numThreads      int                   // number of threads to use for slave processes
 	config          *config_parser.Config // the configuration of GenoMagic obtained through YAML config file
 	assemblyResults chan result.Result    // a collection of assembly results used by the assembly slave
 	parsingResults  chan result.Result    // a collection of parsing results used by the parsing slave
 }
 
 // New creates and returns a new master struct for the file located at the given file path
-func New(rsf, out string, numThreads int, cfg *config_parser.Config) Master {
+func New(rsf, out string, cfg *config_parser.Config) Master {
 	return &mst{
 		filePath:        rsf,
 		outPath:         out,
-		numThreads:      numThreads,
 		config:          cfg,
 		assemblyResults: make(chan result.Result),
 		parsingResults:  make(chan result.Result),
@@ -37,12 +35,12 @@ func New(rsf, out string, numThreads int, cfg *config_parser.Config) Master {
 
 // Process launches the assembly of the contigs it was created with
 func (m *mst) Process() error {
-	assemblySlave := slave.New("assembly process initiated by master", m.filePath, m.outPath, m.numThreads, m.config, slave.Assembly)
+	assemblySlave := slave.New("assembly process initiated by master", m.filePath, m.outPath, m.config, slave.Assembly)
 	if _, err := assemblySlave.Process(); err != nil {
 		return fmt.Errorf("slave assembly process failed with err: %v", err)
 	}
 
-	parserSlave := slave.New("reporting/parse process initiated by master", m.filePath, m.outPath, m.numThreads, m.config, slave.Parse)
+	parserSlave := slave.New("reporting/parse process initiated by master", m.filePath, m.outPath, m.config, slave.Parse)
 	// TODO: Take the result obtained from Parse process and feed it into the reporter
 	results, err := parserSlave.Process()
 	if err != nil {

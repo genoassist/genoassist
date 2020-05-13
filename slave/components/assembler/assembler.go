@@ -25,7 +25,6 @@ type asmbler struct {
 	assemblerName string                // assembler type e.g MegaHit
 	filePath      string                // path to the file the assembler will operate on
 	outPath       string                // path to the directory where results are stored
-	numThreads    int                   // number of threads to use for assemblers
 	dClient       *client.Client        // the Docker client the assembler will use to spin up containers
 	dImageID      string                // the image ID of the struct assembler
 	config        *config_parser.Config // the GenoMagic configuration as passed through YAML config file
@@ -33,7 +32,7 @@ type asmbler struct {
 }
 
 // New returns a new assembler for the specified file
-func New(fp, op, am string, thrds int, cfg *config_parser.Config) (components.Component, error) {
+func New(fp, op, am string, cfg *config_parser.Config) (components.Component, error) {
 	if constants.AvailableAssemblers[am] == nil {
 		return nil, fmt.Errorf("assembler not recognized")
 	}
@@ -42,7 +41,6 @@ func New(fp, op, am string, thrds int, cfg *config_parser.Config) (components.Co
 		assemblerName: am,
 		filePath:      fp,
 		outPath:       op,
-		numThreads:    thrds,
 		config:        cfg,
 		ctx:           context.Background(),
 	}
@@ -94,7 +92,7 @@ func (a *asmbler) Process() (result.Result, error) {
 	ctConfig := &container.Config{
 		Tty:     true,
 		Image:   a.dImageID,
-		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(a.numThreads, *a.config),
+		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(*a.config),
 		Volumes: map[string]struct{}{},
 	}
 
