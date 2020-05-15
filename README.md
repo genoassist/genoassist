@@ -48,7 +48,7 @@ The available flags are:
     </tr>
     <tr>
         <td><code>fastq</code></td>
-        <td>./path/to/sequence.fastq</td>
+        <td>/path/to/sequence.fastq</td>
         <td>Yes</td>
         <td>The path to the FASTQ file containing raw sequence data for assembly</td>
     </tr>
@@ -61,7 +61,7 @@ The available flags are:
     </tr>
     <tr>
         <td><code>out</code></td>
-        <td>./path/to/output/directory</td>
+        <td>/path/to/output/directory</td>
         <td>No</td>
         <td>The path to the directory where results will be stored, defaults to current working directory</td>
     </tr>
@@ -79,7 +79,7 @@ The available flags are:
     </tr>
 </table>
 
-Note: all pahts used with GenoMagic have to be absolute paths (a Docker requirement).
+Note: all paths used with GenoMagic have to be absolute paths (a Docker requirement).
 
 ### Simple usage
 If you simply want to perform assembly and allow GenoMagic to use its default parameters, use:
