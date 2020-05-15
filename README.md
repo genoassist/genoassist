@@ -71,6 +71,12 @@ The available flags are:
         <td>No</td>
         <td>The number of threads to use for assembly and output parsing processes</td>
     </tr>
+    <tr>
+        <td><code>yaml</code></td>
+        <td>/path/to/config.yaml</td>
+        <td>No</td>
+        <td>The YAML config file used by GenoMagic for providing detailed parameters for each assembler</td>
+    </tr>
 </table>
 
 Note: all pahts used with GenoMagic have to be absolute paths (a Docker requirement).
