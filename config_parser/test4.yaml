@@ -1,0 +1,11 @@
+assemblers:
+  megahit:
+    kmers: "27"
+  abyss:
+    kmers: "27"
+genomagic:
+  inputFilePath: "/test/input1.fastq"
+  outputPath: "/test/output"
+  threads: 2
+redundant:
+  field: "this is redundant data"
