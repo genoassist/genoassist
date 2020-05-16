@@ -19,6 +19,7 @@ const (
 )
 
 func main() {
+	// TODO: refactor this to only take in the YAML file
 	fileParam := "fastq"
 	fileValues := dummyFASTQ
 	fileUsage := "the path to the FASTQ file containing raw sequence data for assembly"
@@ -41,11 +42,9 @@ func main() {
 	// parsing the flags has to be done after setting up all the flags
 	flag.Parse()
 
-	var (
-		cfg *config_parser.Config
-		err error
-	)
-	if *yaml != dummyYAML { // if YAML config file was provided
+	var cfg *config_parser.Config
+	var err error
+	if *yaml != dummyYAML {
 		cfg, err = config_parser.ParseConfig(*yaml)
 		if err != nil {
 			panic(fmt.Sprintf("the YAML config file was incorrect, err: %v", err))
