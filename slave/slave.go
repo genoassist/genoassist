@@ -5,13 +5,12 @@ package slave
 import (
 	"fmt"
 
-	"github.com/genomagic/slave/components/quality_controller"
-
 	"github.com/genomagic/config_parser"
 	"github.com/genomagic/constants"
 	"github.com/genomagic/result"
 	"github.com/genomagic/slave/components/assembler"
 	"github.com/genomagic/slave/components/parser"
+	"github.com/genomagic/slave/components/quality_controller"
 )
 
 const (

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/docker/docker/client"
+
 	"github.com/genomagic/config_parser"
 )
 

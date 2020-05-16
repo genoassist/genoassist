@@ -18,7 +18,11 @@ type errorCorrection struct {
 
 // NewErrorCorrection constructs and returns an errorCorrection struct, which implements the Controller interface
 func NewErrorCorrection(dockerCli *client.Client, config *config_parser.Config, fileToDecontaminate string) Controller {
-	return &errorCorrection{}
+	return &errorCorrection{
+		dockerCLI:       dockerCli,
+		config:          config,
+		toDecontaminate: fileToDecontaminate,
+	}
 }
 
 // Process performs the error correction process

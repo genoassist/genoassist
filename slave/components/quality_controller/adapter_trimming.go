@@ -15,10 +15,10 @@ type adapterTrimming struct {
 }
 
 // NewAdapterTrimming constructs and returns a new instance of adapterTrimming, which implements the Controller interface
-func NewAdapterTrimming(d *client.Client, c *config_parser.Config) Controller {
+func NewAdapterTrimming(dockerCli *client.Client, config *config_parser.Config) Controller {
 	return &adapterTrimming{
-		dockerCLI: d,
-		config:    c,
+		dockerCLI: dockerCli,
+		config:    config,
 	}
 }
 
