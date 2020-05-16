@@ -31,4 +31,7 @@ func (q *qualityController) Process() (string, error) {
 	trimmer := NewAdapterTrimming(cli, q.config)
 	correctedFile, err = trimmer.Process()
 
+	decontaminator := NewDecontamination(cli, q.config, correctedFile)
+	correctedFile, err := decontaminator.Process()
+
 }
