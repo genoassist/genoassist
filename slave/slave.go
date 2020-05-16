@@ -13,8 +13,9 @@ import (
 )
 
 const (
-	Assembly = "assembly"
-	Parse    = "parse"
+	Assembly       = "assembly"
+	Parse          = "parse"
+	QualityControl = "quality_control"
 )
 
 // the type of component that runs on a specific set of assembly files
