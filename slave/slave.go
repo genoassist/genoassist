@@ -10,6 +10,7 @@ import (
 	"github.com/genomagic/result"
 	"github.com/genomagic/slave/components/assembler"
 	"github.com/genomagic/slave/components/parser"
+	"github.com/genomagic/slave/components/quality_controller"
 )
 
 const (
@@ -43,7 +44,8 @@ func New(dsc, fnm, out string, cfg *config_parser.Config, wtp ComponentWorkType)
 
 // Process performs the work that's dictated by the master
 func (s *slv) Process() ([]result.Result, error) {
-	if s.workType == Assembly {
+	switch s.workType {
+	case Assembly:
 		for k := range constants.AvailableAssemblers {
 			assemblerWorker, err := assembler.New(s.filePath, s.outPath, k, s.config)
 			if err != nil {
@@ -56,7 +58,7 @@ func (s *slv) Process() ([]result.Result, error) {
 			}
 		}
 		return nil, nil
-	} else {
+	case Parse:
 		var results []result.Result
 		for k := range constants.AvailableAssemblers {
 			parserWorker, err := parser.New(s.filePath, s.outPath, k)
@@ -70,5 +72,15 @@ func (s *slv) Process() ([]result.Result, error) {
 			results = append(results, res)
 		}
 		return results, nil
+	case QualityControl:
+		qualityController := quality_controller.NewQualityController(s.config)
+		if newSeqFilePath, err := qualityController.Process(); err != nil {
+			return nil, fmt.Errorf("quality control slave failed, err: %s", err)
+		} else {
+			s.config.GenoMagic.InputFilePath = newSeqFilePath
+		}
+		return nil, nil
+	default:
+		return nil, fmt.Errorf("slave presented with unknown operation")
 	}
 }
