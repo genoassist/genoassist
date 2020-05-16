@@ -3,7 +3,7 @@ package quality_controller
 type AdapterTrimming struct {
 }
 
-func New() Controller {
+func NewAdapterTrimming() Controller {
 	return &AdapterTrimming{}
 }
 
