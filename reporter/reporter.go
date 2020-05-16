@@ -25,7 +25,7 @@ func New(an string, rs result.Result) Reporter {
 
 // Process constructs the report for the given assembler results
 func (r *report) Process() error {
-	if v, err := r.getN50(); err != nil {
+	if v, err := r.getNx(50); err != nil { //compute the N50 metric of a the assembly
 		return fmt.Errorf("failed to compute N50 for assembly %s, err: %v", r.result.GetAssemblyName(), err)
 	} else {
 		r.N50 = v
