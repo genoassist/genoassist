@@ -10,15 +10,15 @@ import (
 type adapterTrimming struct {
 	// dockerCLI is used for launching a Docker container that perform adapter trimming
 	dockerCLI *client.Client
-	// genoConfig is the GenoMagic global configuration
-	genoConfig *config_parser.Config
+	// config is the GenoMagic global configuration
+	config *config_parser.Config
 }
 
 // NewAdapterTrimming constructs and returns a new instance of adapterTrimming, which implements the Controller interface
 func NewAdapterTrimming(d *client.Client, c *config_parser.Config) Controller {
 	return &adapterTrimming{
-		dockerCLI:  d,
-		genoConfig: c,
+		dockerCLI: d,
+		config:    c,
 	}
 }
 
