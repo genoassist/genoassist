@@ -1,6 +1,8 @@
 package quality_controller
 
 import (
+	"context"
+
 	"github.com/docker/docker/client"
 
 	"github.com/genomagic/config_parser"
@@ -8,6 +10,8 @@ import (
 
 // errorCorrection is a representation of the error correction process
 type errorCorrection struct {
+	// context of the process
+	ctx context.Context
 	// dockerCLI is used for launching a Docker container that perform adapter trimming
 	dockerCLI *client.Client
 	// config is the GenoMagic global configuration
@@ -17,8 +21,9 @@ type errorCorrection struct {
 }
 
 // NewErrorCorrection constructs and returns an errorCorrection struct, which implements the Controller interface
-func NewErrorCorrection(dockerCli *client.Client, config *config_parser.Config, fileToDecontaminate string) Controller {
+func NewErrorCorrection(ctx context.Context, dockerCli *client.Client, config *config_parser.Config, fileToDecontaminate string) Controller {
 	return &errorCorrection{
+		ctx:             ctx,
 		dockerCLI:       dockerCli,
 		config:          config,
 		toDecontaminate: fileToDecontaminate,

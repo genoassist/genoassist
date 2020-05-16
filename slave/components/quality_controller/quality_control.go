@@ -1,6 +1,7 @@
 package quality_controller
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/docker/docker/client"
@@ -23,25 +24,26 @@ func NewQualityController(c *config_parser.Config) Controller {
 
 // Process launches the trimming, decontamination, and error correction process
 func (q *qualityController) Process() (string, error) {
+	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return "", fmt.Errorf("failed to initialize Docker client, err: %s", err)
 	}
 
 	var correctedFile string
-	trimmer := NewAdapterTrimming(cli, q.config)
+	trimmer := NewAdapterTrimming(ctx, cli, q.config)
 	correctedFile, err = trimmer.Process()
 	if err != nil {
 		return "", fmt.Errorf("failed to perform raw sequence adapter trimming, err: %s", err)
 	}
 
-	decontaminator := NewDecontamination(cli, q.config, correctedFile)
+	decontaminator := NewDecontamination(ctx, cli, q.config, correctedFile)
 	correctedFile, err = decontaminator.Process()
 	if err != nil {
 		return "", fmt.Errorf("failed to perform trimmed file decontamination, err: %s", err)
 	}
 
-	corrector := NewErrorCorrection(cli, q.config, correctedFile)
+	corrector := NewErrorCorrection(ctx, cli, q.config, correctedFile)
 	correctedFile, err = corrector.Process()
 	if err != nil {
 		return "", fmt.Errorf("failed to perform error correction on the decontaminated file, err: %s", err)

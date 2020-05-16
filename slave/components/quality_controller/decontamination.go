@@ -1,6 +1,8 @@
 package quality_controller
 
 import (
+	"context"
+
 	"github.com/docker/docker/client"
 
 	"github.com/genomagic/config_parser"
@@ -8,6 +10,8 @@ import (
 
 // decontamination is the representation of the decontamination process
 type decontamination struct {
+	// context of the process
+	ctx context.Context
 	// dockerCLI is used for launching a Docker container that perform adapter trimming
 	dockerCLI *client.Client
 	// config is the GenoMagic global configuration
@@ -17,8 +21,9 @@ type decontamination struct {
 }
 
 // NewDecontamination constructs and returns a new decontamination struct, which implements the Controller interface
-func NewDecontamination(dockerCli *client.Client, config *config_parser.Config, fileToDecontaminate string) Controller {
+func NewDecontamination(ctx context.Context, dockerCli *client.Client, config *config_parser.Config, fileToDecontaminate string) Controller {
 	return &decontamination{
+		ctx:             ctx,
 		dockerCLI:       dockerCli,
 		config:          config,
 		toDecontaminate: fileToDecontaminate,
