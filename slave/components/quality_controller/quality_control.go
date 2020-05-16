@@ -30,8 +30,20 @@ func (q *qualityController) Process() (string, error) {
 	var correctedFile string
 	trimmer := NewAdapterTrimming(cli, q.config)
 	correctedFile, err = trimmer.Process()
+	if err != nil {
+		return "", fmt.Errorf("failed to perform raw sequence adapter trimming, err: %s", err)
+	}
 
 	decontaminator := NewDecontamination(cli, q.config, correctedFile)
-	correctedFile, err := decontaminator.Process()
+	correctedFile, err = decontaminator.Process()
+	if err != nil {
+		return "", fmt.Errorf("failed to perform trimmed file decontamination, err: %s", err)
+	}
 
+	corrector := NewErrorCorrection(cli, q.config, correctedFile)
+	correctedFile, err = corrector.Process()
+	if err != nil {
+		return "", fmt.Errorf("failed to perform error correction on the decontaminated file, err: %s", err)
+	}
+	return correctedFile, nil
 }

@@ -35,13 +35,17 @@ func New(rsf, out string, cfg *config_parser.Config) Master {
 
 // Process launches the assembly of the contigs it was created with
 func (m *mst) Process() error {
+	qualityControlSlave := slave.New("quality control process initiated by master", m.filePath, m.outPath, m.config, slave.QualityControl)
+	if _, err := qualityControlSlave.Process(); err != nil {
+		return fmt.Errorf("slave quality control process failed, err: %s", err)
+	}
+
 	assemblySlave := slave.New("assembly process initiated by master", m.filePath, m.outPath, m.config, slave.Assembly)
 	if _, err := assemblySlave.Process(); err != nil {
 		return fmt.Errorf("slave assembly process failed with err: %v", err)
 	}
 
 	parserSlave := slave.New("reporting/parse process initiated by master", m.filePath, m.outPath, m.config, slave.Parse)
-	// TODO: Take the result obtained from Parse process and feed it into the reporter
 	results, err := parserSlave.Process()
 	if err != nil {
 		return fmt.Errorf("slave parsing process failed with err: %v", err)
