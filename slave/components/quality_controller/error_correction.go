@@ -85,7 +85,7 @@ func (e *errorCorrection) Process() (string, error) {
 			"-correct",
 			"-d", path.Join(e.config.GenoMagic.OutputPath, "canu-corr"),
 			"-p", "run1",
-			fmt.Sprint("genomeSize=%d", e.config.Assemblers.Flye.GenomeSize),
+			fmt.Sprintf("genomeSize=%d", e.config.Assemblers.Flye.GenomeSize),
 			"-nanopore-raw", e.toDecontaminate,
 		},
 		Image: img,
