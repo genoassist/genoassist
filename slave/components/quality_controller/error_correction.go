@@ -72,7 +72,7 @@ func getImageID(client *client.Client, ctx context.Context, term string) (string
 // Process performs the error correction process
 func (e *errorCorrection) Process() (string, error) {
 	// correctedFile is the placeholder filename where the corrected reads are going to be stored.
-	var correctedFile = path.Join(constants.BaseOut, "corrected.fastq")
+	var correctedFile = path.Join(constants.BaseOut, "canu-corr", "correction", "run1.corrected.fastq")
 
 	img, err := getImageID(e.dockerCLI, e.ctx, "greatfireball/canu")
 	if err != nil {
@@ -83,7 +83,7 @@ func (e *errorCorrection) Process() (string, error) {
 		Tty: true,
 		Cmd: []string{
 			"-correct",
-			"-d", path.Join(e.config.GenoMagic.OutputPath, "canu-corr"),
+			"-d", path.Join(constants.BaseOut, "canu-corr"),
 			"-p", "run1",
 			fmt.Sprintf("genomeSize=%s", e.config.Assemblers.Flye.GenomeSize),
 			"-nanopore-raw", e.toDecontaminate,
