@@ -2,36 +2,27 @@ package slave
 
 import (
 	"github.com/stretchr/testify/mock"
+
+	"github.com/genomagic/config_parser"
 )
 
-// mockSlv is a slave mock
-type mockSlv struct {
+// SlaveMock is a slave mock
+type Mock struct {
 	mock.Mock
-	description string            // name/description of the work performed by the slave
-	filePath    string            // the file the slave is supposed to perform work on
-	workType    ComponentWorkType // the type of work that has to be performed by the slave
-	fail        bool              // whether to fail the worker process
+	config   *config_parser.Config
+	workType ComponentWorkType
 }
 
 // NewMock creates and returns a new instance of a slave
-func NewMock(dsc, fnm string, wtp ComponentWorkType, fail bool) *mockSlv {
-	return &mockSlv{
-		description: dsc,
-		filePath:    fnm,
-		workType:    wtp,
+func NewMock(config *config_parser.Config, workType ComponentWorkType) *Mock {
+	return &Mock{
+		config:   config,
+		workType: workType,
 	}
 }
 
 // Process mocks the original slave process function
-func (s *mockSlv) Process() error {
-	_ = s.Called(s.workType, s.filePath, s.workType, s.fail)
-	// TODO: Need to find another way to test this, left commented for now.
-	//wrkr := WorkType[s.workType]
-	//if wrkr == nil {
-	//	return fmt.Errorf("failed to initialize worker")
-	//}
-	//if s.fail {
-	//	return fmt.Errorf("slave process failed")
-	//}
-	return nil
+func (s *Mock) Process() error {
+	args := s.Mock.Called()
+	return args.Error(0)
 }
