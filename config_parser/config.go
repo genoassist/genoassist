@@ -2,8 +2,9 @@ package config_parser
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
+
+	"gopkg.in/yaml.v2"
 )
 
 type (
@@ -19,9 +20,10 @@ type (
 	}
 
 	GenoMagicConfig struct {
-		InputFilePath string `yaml:"inputFilePath"`
-		OutputPath    string `yaml:"outputPath"`
-		Threads       int    `yaml:"threads"`
+		InputFilePath   string `yaml:"inputFilePath"`
+		OutputPath      string `yaml:"outputPath"`
+		Threads         int    `yaml:"threads"`
+		GetDockerImages bool   `yaml:"getDockerImages"`
 	}
 
 	MegahitConfig struct {
