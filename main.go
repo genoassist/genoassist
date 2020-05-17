@@ -5,7 +5,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 
 	"github.com/genomagic/config_parser"
 	"github.com/genomagic/master"
@@ -19,21 +18,6 @@ const (
 )
 
 func main() {
-	// TODO: refactor this to only take in the YAML file
-	fileParam := "fastq"
-	fileValues := dummyFASTQ
-	fileUsage := "the path to the FASTQ file containing raw sequence data for assembly"
-	rawSequenceFile := flag.String(fileParam, fileValues, fileUsage)
-
-	prepParam := "prep"
-	prepUsage := "whether to install all the necessary Docker containers for assembly as a preparatory step"
-	prep := flag.Bool(prepParam, true, prepUsage)
-
-	outParam := "out"
-	outValue, _ := os.Getwd()
-	outUsage := "the path to the directory where results will be stored, defaults to current working directory"
-	out := flag.String(outParam, outValue, outUsage)
-
 	yamlParam := "yaml"
 	yamlValue := dummyYAML
 	yamlUsage := "the path to the YAML configuration file which will supersede all other flags"
@@ -43,24 +27,17 @@ func main() {
 	flag.Parse()
 
 	var cfg *config_parser.Config
-	var err error
-	if *yaml != dummyYAML {
-		cfg, err = config_parser.ParseConfig(*yaml)
-		if err != nil {
-			panic(fmt.Sprintf("the YAML config file was incorrect, err: %v", err))
-		}
-
-		// overriding the GenoMagic core flags if a YAML file is provided
-		*rawSequenceFile = cfg.GenoMagic.InputFilePath
-		*out = cfg.GenoMagic.OutputPath
-	}
-
-	if *rawSequenceFile == dummyFASTQ {
+	if *yaml == dummyYAML {
 		flag.PrintDefaults()
-		panic(fmt.Sprintf("the flag -fastq <path/to/sequence.fastq> is required"))
+		panic(fmt.Sprintf("the flag -yaml=<path/to/config.yaml> is required"))
 	}
 
-	if *prep {
+	cfg, err := config_parser.ParseConfig(*yaml)
+	if err != nil {
+		panic(fmt.Sprintf("the YAML config file was incorrect, err: %v", err))
+	}
+
+	if cfg.GenoMagic.Prep {
 		errs := prepper.New()
 		for len(errs) > 0 {
 			select {
