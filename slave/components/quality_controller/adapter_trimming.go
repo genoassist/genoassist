@@ -121,7 +121,7 @@ func (a *adapterTrimming) Process() (string, error) {
 	}
 
 	if _, err := io.Copy(os.Stdout, out); err != nil {
-		return "", fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v")
+		return "", fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
 	return TrimmedFileName, nil
 }
