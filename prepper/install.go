@@ -22,7 +22,7 @@ type prep struct {
 	// context of the requests
 	ctx context.Context
 	// Docker client
-	dClient *client.Client
+	dockerCLI *client.Client
 }
 
 // New attempts to install all the necessary Docker images for GenoMagic. New launches go routines for installing
@@ -42,8 +42,8 @@ func New(config *config_parser.Config) chan error {
 		return errs
 	}
 	p := &prep{
-		ctx:     ctx,
-		dClient: cli,
+		ctx:       ctx,
+		dockerCLI: cli,
 	}
 
 	// TODO: iterate over necessary quality control Docker images as well
@@ -66,7 +66,7 @@ func (p *prep) prep(a *constants.AssemblerDetails) error {
 	if a == nil {
 		return fmt.Errorf("prep given nil AssemblerDetails")
 	}
-	reader, err := p.dClient.ImagePull(p.ctx, a.DHubURL, types.ImagePullOptions{})
+	reader, err := p.dockerCLI.ImagePull(p.ctx, a.DHubURL, types.ImagePullOptions{})
 	if err != nil {
 		return fmt.Errorf("failed to pull image from DockerHub, err: %v", err)
 	}

@@ -36,7 +36,7 @@ func New(fp, op, ap string) (components.Component, error) {
 }
 
 // Process performs the work of the parser
-func (p *prser) Process() (result.Result, error) {
+func (p *prser) Process() (*result.Result, error) {
 	outDir := constants.AvailableAssemblers[p.assemblerName].OutputDir
 	contigsFile := constants.AvailableAssemblers[p.assemblerName].AssemblyFileName
 	ioRdr, err := os.Open(path.Join(p.outPath, outDir, contigsFile))

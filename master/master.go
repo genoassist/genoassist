@@ -8,47 +8,39 @@ import (
 
 	"github.com/genomagic/config_parser"
 	"github.com/genomagic/reporter"
-	"github.com/genomagic/result"
 	"github.com/genomagic/slave"
 )
 
-// mst defines the master struct, which is used to coordinate slaves and launch assembly, parsing, and
+// masterProcess defines the master struct, which is used to coordinate slaves and launch assembly, parsing, and
 // reporting slaves
-type mst struct {
-	filePath        string                // a path to a raw sequencing FASTQ file to perform assembly on
-	outPath         string                // a path to the location where results will be stored
-	config          *config_parser.Config // the configuration of GenoMagic obtained through YAML config file
-	assemblyResults chan result.Result    // a collection of assembly results used by the assembly slave
-	parsingResults  chan result.Result    // a collection of parsing results used by the parsing slave
+type masterProcess struct {
+	// config is the configuration of GenoMagic obtained through YAML config file
+	config *config_parser.Config
 }
 
 // New creates and returns a new master struct for the file located at the given file path
-func New(rsf, out string, cfg *config_parser.Config) Master {
-	return &mst{
-		filePath:        rsf,
-		outPath:         out,
-		config:          cfg,
-		assemblyResults: make(chan result.Result),
-		parsingResults:  make(chan result.Result),
+func New(config *config_parser.Config) Master {
+	return &masterProcess{
+		config: config,
 	}
 }
 
 // Process launches the assembly of the contigs it was created with
-func (m *mst) Process() error {
-	qualityControlSlave := slave.New("quality control process initiated by master", m.filePath, m.outPath, m.config, slave.QualityControl)
+func (m *masterProcess) Process() error {
+	qualityControlSlave := slave.New(m.config, slave.QualityControl)
 	if _, err := qualityControlSlave.Process(); err != nil {
 		return fmt.Errorf("slave quality control process failed, err: %s", err)
 	}
 
-	assemblySlave := slave.New("assembly process initiated by master", m.filePath, m.outPath, m.config, slave.Assembly)
+	assemblySlave := slave.New(m.config, slave.Assembly)
 	if _, err := assemblySlave.Process(); err != nil {
-		return fmt.Errorf("slave assembly process failed with err: %v", err)
+		return fmt.Errorf("slave assembly process failed with err: %s", err)
 	}
 
-	parserSlave := slave.New("reporting/parse process initiated by master", m.filePath, m.outPath, m.config, slave.Parse)
+	parserSlave := slave.New(m.config, slave.Parse)
 	results, err := parserSlave.Process()
 	if err != nil {
-		return fmt.Errorf("slave parsing process failed with err: %v", err)
+		return fmt.Errorf("slave parsing process failed with err: %s", err)
 	}
 
 	var reports []reporter.Reporter
