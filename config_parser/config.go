@@ -20,10 +20,10 @@ type (
 	}
 
 	GenoMagicConfig struct {
-		InputFilePath   string `yaml:"inputFilePath"`
-		OutputPath      string `yaml:"outputPath"`
-		Threads         int    `yaml:"threads"`
-		GetDockerImages bool   `yaml:"getDockerImages"`
+		InputFilePath string `yaml:"inputFilePath"`
+		OutputPath    string `yaml:"outputPath"`
+		Threads       int    `yaml:"threads"`
+		Prep          bool   `yaml:"prep"`
 	}
 
 	MegahitConfig struct {

@@ -7,4 +7,4 @@ genomagic:
   inputFilePath: "/test/input1.fastq"
   outputPath: "/test/output"
   threads: 2
-  getDockerImages: true
+  prep: true
