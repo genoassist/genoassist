@@ -23,10 +23,10 @@ type mst struct {
 }
 
 // New creates and returns a new master struct for the file located at the given file path
-func New(rsf, out string, cfg *config_parser.Config) Master {
+func New(cfg *config_parser.Config) Master {
 	return &mst{
-		filePath:        rsf,
-		outPath:         out,
+		filePath:        cfg.GenoMagic.InputFilePath,
+		outPath:         cfg.GenoMagic.OutputPath,
 		config:          cfg,
 		assemblyResults: make(chan result.Result),
 		parsingResults:  make(chan result.Result),

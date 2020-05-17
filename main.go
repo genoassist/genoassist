@@ -74,7 +74,7 @@ func main() {
 		}
 	}
 
-	mst := master.New(*rawSequenceFile, *out, cfg)
+	mst := master.New(cfg)
 	if err := mst.Process(); err != nil {
 		panic(fmt.Sprintf("failed to run master process, err: %v", err))
 	}
