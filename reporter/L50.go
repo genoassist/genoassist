@@ -5,12 +5,12 @@ import (
 	"fmt"
 )
 
-// getL50 computes and returns the L50 score of the report contigs
+// getL50 computes and returns the L50 score of the Report contigs
 // https://en.wikipedia.org/wiki/N50,_L50,_and_related_statistics#L50
-func (r *report) getL50() (int32, error) {
+func (r *Report) getL50() (int32, error) {
 	assemblyLen := 0
 	ch := &IntHeap{}
-	for _, seq := range r.result.GetSequences() {
+	for _, seq := range r.result.Sequences {
 		ch.Push(seq.Len())
 		assemblyLen += seq.Len()
 	}

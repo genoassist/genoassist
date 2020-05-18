@@ -57,40 +57,53 @@ func TestReport_Process(t *testing.T) {
 	}
 
 	tests := []struct {
-		name         string
-		assemblyName string
-		result       result.Result
-		expectedN50  int32
-		expectedL50  int32
-		expectedErr  error
+		name           string
+		assemblyName   string
+		result         *result.Result
+		expectedN50    int32
+		expectedN50Err error
+		expectedL50    int32
+		expectedL50Err error
+		expectedErr    error
 	}{
 		{
-			name:         "test_returns_expected_N50_failure",
-			assemblyName: TestAssembly,
-			result:       result.New(TestAssembly, badSeqs),
-			expectedN50:  0,
-			expectedL50:  0,
+			name:           "test_returns_expected_N50_failure",
+			assemblyName:   TestAssembly,
+			result:         result.New(TestAssembly, badSeqs),
+			expectedN50:    0,
+			expectedN50Err: fmt.Errorf("the reporter process has not been executed"),
+			expectedL50:    0,
+			expectedL50Err: fmt.Errorf("the reporter process has not been executed"),
 			expectedErr: fmt.Errorf("failed to compute N50 for assembly %s, err: %v",
 				TestAssembly, fmt.Errorf("failed to compute N50 due to potentially missing contigs")),
 		},
 		{
-			name:         "test_returns_expected_stats",
-			assemblyName: TestAssembly,
-			result:       result.New(TestAssembly, goodSeqs),
-			expectedN50:  8,
-			expectedL50:  3,
-			expectedErr:  nil,
+			name:           "test_returns_expected_stats",
+			assemblyName:   TestAssembly,
+			result:         result.New(TestAssembly, goodSeqs),
+			expectedN50:    8,
+			expectedN50Err: nil,
+			expectedL50:    3,
+			expectedL50Err: nil,
+			expectedErr:    nil,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			rep := New(TestAssembly, tt.result)
-			err := rep.Process()
-			if err != nil {
+			if err := rep.Process(); err != nil {
 				assert.EqualError(t, err, tt.expectedErr.Error())
 			}
-			assert.Equal(t, tt.expectedN50, rep.GetN50())
-			assert.Equal(t, tt.expectedL50, rep.GetL50())
+			if n50, n50err := rep.GetN50(); n50err != nil {
+				assert.EqualError(t, tt.expectedN50Err, n50err.Error())
+			} else {
+				assert.Equal(t, tt.expectedN50, n50)
+			}
+			if l50, l50err := rep.GetL50(); l50err != nil {
+				assert.EqualError(t, tt.expectedL50Err, l50err.Error())
+			} else {
+				assert.Equal(t, tt.expectedL50, l50)
+			}
 		})
 	}
 }
