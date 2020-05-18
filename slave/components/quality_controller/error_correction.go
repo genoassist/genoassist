@@ -38,34 +38,6 @@ func NewErrorCorrection(ctx context.Context, dockerCli *client.Client, config *c
 	}
 }
 
-// TODO: Replace this function into a constants file where this can be used by other quality control processes
-// getImageID attempts to find the Docker image by given term
-func getImageID(client *client.Client, ctx context.Context, term string) (string, error) {
-	images, err := client.ImageList(ctx, types.ImageListOptions{})
-	if err != nil {
-		return "", fmt.Errorf("failed to get available Docker images, err: %v", err)
-	} else if len(images) == 0 {
-		return "", fmt.Errorf("getImageID found no images")
-	}
-	found := false
-	assemblerID := ""
-	for _, im := range images {
-		if found {
-			break
-		}
-		for _, tag := range im.RepoTags {
-			if strings.Contains(tag, term) {
-				found = true
-				assemblerID = im.ID
-			}
-		}
-	}
-	if !found {
-		return "", fmt.Errorf("failed to find a Docker container for the given assembler")
-	}
-	return assemblerID, nil
-}
-
 // Process performs the error correction process
 func (e *errorCorrection) Process() (string, error) {
 	// correctedFile is the placeholder filename where the corrected reads are going to be stored.
