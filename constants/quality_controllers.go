@@ -1,3 +1,4 @@
+// constants holds all the constants shared between packages
 package constants
 
 const (
