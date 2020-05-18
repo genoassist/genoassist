@@ -18,6 +18,7 @@ type (
 )
 
 var (
+	// AvailableQualityControllers defines the mapping of quality controller names to their associated details
 	AvailableQualityControllers = map[string]*QualityControllerDetails{
 		Canu: {
 			dHubURL: "dockerhub.io/greatfireball/canu",
