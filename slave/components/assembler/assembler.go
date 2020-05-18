@@ -20,7 +20,7 @@ import (
 	"github.com/genomagic/slave/components"
 )
 
-// structure of the assembler
+// assemblyProcess is the structure of the assembler process
 type assemblyProcess struct {
 	assemblerName string                // assembler type e.g MegaHit
 	filePath      string                // path to the file the assembler will operate on
