@@ -6,17 +6,14 @@ import (
 	"io"
 	"os"
 	"path"
-	"strings"
-
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/api/types/mount"
-	"github.com/genomagic/constants"
 
 	"github.com/docker/docker/api/types"
-
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
 
 	"github.com/genomagic/config_parser"
+	"github.com/genomagic/constants"
 )
 
 // errorCorrection is a representation of the error correction process
@@ -72,7 +69,7 @@ func getImageID(client *client.Client, ctx context.Context, term string) (string
 // Process performs the error correction process
 func (e *errorCorrection) Process() (string, error) {
 	// correctedFile is the placeholder filename where the corrected reads are going to be stored.
-	var correctedFile = path.Join(constants.BaseOut, "canu-corr", "correction", "run1.corrected.fastq")
+	correctedFile := path.Join(constants.BaseOut, "canu-corr", "correction", "run1.corrected.fastq")
 
 	img, err := getImageID(e.dockerCLI, e.ctx, "greatfireball/canu")
 	if err != nil {
