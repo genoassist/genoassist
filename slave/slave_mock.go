@@ -6,7 +6,7 @@ import (
 	"github.com/genomagic/config_parser"
 )
 
-// SlaveMock is a slave mock
+// Mock is a slave mock
 type Mock struct {
 	mock.Mock
 	config   *config_parser.Config
