@@ -66,11 +66,11 @@ func getImageID(client *client.Client, ctx context.Context, term string) (string
 func (a *adapterTrimming) Process() (string, error) {
 
 	// TrimmedFileName is the filename where the trimmed reads are going to be stored.
-	var TrimmedFileName = path.Join(constants.BaseOut, "trimmed.fastq")
+	TrimmedFileName := path.Join(constants.BaseOut, "trimmed.fastq")
 
 	img, err := getImageID(a.dockerCLI, a.ctx, "replikation/porechop")
 	if err != nil {
-		return "", fmt.Errorf("cannot get image ID for fjukstad/trimmomatic, err: %v", err)
+		return "", fmt.Errorf("cannot get image ID for replikation/porechop, err: %v", err)
 	}
 
 	ctConfig := &container.Config{
