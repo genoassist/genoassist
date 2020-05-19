@@ -37,71 +37,32 @@ This project is still under development.
 If you are missing packages, run `go mod vendor` to collect the necessary packages
 
 ## 3. GenoMagic usage
-The available flags are:
- 
-<table>
-    <tr>
-        <th>Flag</th>
-        <th>Value</th>
-        <th>Required</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td><code>fastq</code></td>
-        <td>/path/to/sequence.fastq</td>
-        <td>Yes</td>
-        <td>The path to the FASTQ file containing raw sequence data for assembly</td>
-    </tr>
-    <tr>
-        <td><code>prep</code></td>
-        <td><code>true</code> / <code>false</code></td>
-        <td>No</td>
-        <td>whether to install all the necessary Docker containers for assembly as a preparatory step. 
-            Should be done at least once</td>
-    </tr>
-    <tr>
-        <td><code>out</code></td>
-        <td>/path/to/output/directory</td>
-        <td>No</td>
-        <td>The path to the directory where results will be stored, defaults to current working directory</td>
-    </tr>
-    <tr>
-        <td><code>threads</code></td>
-        <td><code>integer</code></td>
-        <td>No</td>
-        <td>The number of threads to use for assembly and output parsing processes</td>
-    </tr>
-    <tr>
-        <td><code>yaml</code></td>
-        <td>/path/to/config.yaml</td>
-        <td>No</td>
-        <td>The YAML config file used by GenoMagic for providing detailed parameters for each assembler</td>
-    </tr>
-</table>
+
+GenoMagic only requires a YAML file that contains the configuration it should use to run its processes. A template can 
+be found in this repository. For convenience, here's an example specification:
+
+```yaml
+assemblers:
+  megahit:
+    kmers: "27"
+  abyss:
+    kmers: "27"
+genomagic:
+  inputFilePath: "/test/raw_sequences.fastq"
+  outputPath: "/test/output"
+  threads: 2
+  prep: true
+```
 
 Note: all paths used with GenoMagic have to be absolute paths (a Docker requirement).
 
-### Simple usage
-If you simply want to perform assembly and allow GenoMagic to use its default parameters, use:
-```
-$ ./main -fastq=/path/to/reads.fastq
-```
-
 ### Installing Docker images through GenoMagic
+
 If you are encountering problems with Docker, make sure that:
 1. The Docker daemon is running in the background
-1. You have the necessary Docker images, which can be installed via GenoMagic by using:
-```
-$ ./main -prep=true -fastq=/path/to/reads.fastq
-```
-This will pull the necessary Docker images for the assemblers that GenoMagic runs.
-
-### Specifying your own output directory
-GenoMagic assumes the current working directory as the output directory, but it can also drop its output into a 
-different directory:
-```
-$ ./main -fastq=/path/to/reads.fastq -out=/path/to/output/directory
-``` 
+1. You have the necessary Docker images, which can be installed via GenoMagic specifying `prep: true` under `genomagic`
+in the specified YAML configuration. This will install the necessary Docker images for the containers that GenoMagic 
+runs.
 
 ## 4. Architecture
 
@@ -112,5 +73,6 @@ The master takes the user's input and schedules assembly, parsing of results, an
 ![](./architecture.png)
 
 ## 5. Feedback and bug reports
+
 Submit feedback and bug reports by using the Issues section of the repository.
 

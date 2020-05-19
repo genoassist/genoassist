@@ -14,40 +14,39 @@ import (
 )
 
 const (
-	Assembly       = "assembly"
-	Parse          = "parse"
+	// Assembly tells the slave that it needs to launch an assembly process
+	Assembly = "assembly"
+	// Parse tells the slave that it needs to launch a parse process
+	Parse = "parse"
+	// QualityControl tells the slave that it needs to launch a quality control process
 	QualityControl = "quality_control"
 )
 
 // the type of component that runs on a specific set of assembly files
 type ComponentWorkType string
 
-// slv defines the structure of a slave
-type slv struct {
-	description string                // name/description of the work performed by the slave
-	filePath    string                // the file the slave is supposed to perform work on
-	outPath     string                // a path to the location where results will be stored
-	config      *config_parser.Config // the GenoMagic configuration that is passed through YAML config file
-	workType    ComponentWorkType     // the type of work that has to be performed by the slave
+// slaveProcess defines the structure of a slave
+type slaveProcess struct {
+	// config is the GenoMagic configuration that is passed through YAML config file
+	config *config_parser.Config
+	// workType is the type of work that has to be performed by the slave
+	workType ComponentWorkType
 }
 
 // New creates and returns a new instance of a slave
-func New(dsc, fnm, out string, cfg *config_parser.Config, wtp ComponentWorkType) Slave {
-	return &slv{
-		description: dsc,
-		filePath:    fnm,
-		outPath:     out,
-		config:      cfg,
-		workType:    wtp,
+func New(config *config_parser.Config, workType ComponentWorkType) Slave {
+	return &slaveProcess{
+		config:   config,
+		workType: workType,
 	}
 }
 
 // Process performs the work that's dictated by the master
-func (s *slv) Process() ([]result.Result, error) {
+func (s *slaveProcess) Process() ([]*result.Result, error) {
 	switch s.workType {
 	case Assembly:
 		for k := range constants.AvailableAssemblers {
-			assemblerWorker, err := assembler.New(s.filePath, s.outPath, k, s.config)
+			assemblerWorker, err := assembler.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k, s.config)
 			if err != nil {
 				return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
 			}
@@ -59,9 +58,9 @@ func (s *slv) Process() ([]result.Result, error) {
 		}
 		return nil, nil
 	case Parse:
-		var results []result.Result
+		var results []*result.Result
 		for k := range constants.AvailableAssemblers {
-			parserWorker, err := parser.New(s.filePath, s.outPath, k)
+			parserWorker, err := parser.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k)
 			if err != nil {
 				return nil, fmt.Errorf("failed to initialize parser worker, err: %v", err)
 			}

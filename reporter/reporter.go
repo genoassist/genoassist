@@ -7,43 +7,57 @@ import (
 	"github.com/genomagic/result"
 )
 
-// report represents the struct that holds the stats that characterize an assembly
-type report struct {
-	assemblyName string        // name of the assembly the report represents
-	result       result.Result // a collection of assembly results, which includes the assembly contigs
-	N50          int32         // N50 score of the assembly
-	L50          int32         // L50 score of the assembly
+// Report represents the struct that holds the stats that characterize an assembly
+type Report struct {
+	// AssemblyName is the name of the assembly the Report represents
+	AssemblyName string
+	// result represents a collection of assembly results, which includes the assembly contigs
+	result *result.Result
+	// processed is an indicator that represents whether the reporter process has been executed
+	processed bool
+	// N50 score of the assembly
+	N50 int32
+	// L50 score of the assembly
+	L50 int32
 }
 
-// New returns a new instance of a report
-func New(an string, rs result.Result) Reporter {
-	return &report{
-		assemblyName: an,
-		result:       rs,
+// New returns a new instance of a Report
+func New(assemblyName string, result *result.Result) Reporter {
+	return &Report{
+		AssemblyName: assemblyName,
+		result:       result,
+		processed:    false,
 	}
 }
 
-// Process constructs the report for the given assembler results
-func (r *report) Process() error {
+// Process constructs the Report for the given assembler results
+func (r *Report) Process() error {
 	if v, err := r.getN50(); err != nil {
-		return fmt.Errorf("failed to compute N50 for assembly %s, err: %v", r.result.GetAssemblyName(), err)
+		return fmt.Errorf("failed to compute N50 for assembly %s, err: %v", r.result.AssemblyName, err)
 	} else {
 		r.N50 = v
 	}
 	if v, err := r.getL50(); err != nil {
-		return fmt.Errorf("failed to compute L50 for assembly %s, err: %v", r.result.GetAssemblyName(), err)
+		return fmt.Errorf("failed to compute L50 for assembly %s, err: %v", r.result.AssemblyName, err)
 	} else {
 		r.L50 = v
 	}
+	r.processed = true
 	return nil
 }
 
-// GetN50 returns the computed N50 value stored on the report
-func (r *report) GetN50() int32 {
-	return r.N50
+// GetN50 returns the computed N50 value stored on the Report. An error is returned if the reporter process has not been executed
+func (r *Report) GetN50() (int32, error) {
+	if !r.processed {
+		return 0, fmt.Errorf("the reporter process has not been executed")
+	}
+	return r.N50, nil
 }
 
-// GetL50 returns the computed L50 value stored on the report
-func (r *report) GetL50() int32 {
-	return r.L50
+// GetL50 returns the computed L50 value stored on the Report. An error is returned if the reporter process has not been executed
+func (r *Report) GetL50() (int32, error) {
+	if !r.processed {
+		return 0, fmt.Errorf("the reporter process has not been executed")
+	}
+	return r.L50, nil
 }
