@@ -5,8 +5,8 @@ const (
 	// Canu is the name of the program GenoMagic uses to perform error correction
 	Canu = "canu"
 
-	// Trimmomatic is the name of the program GenoMagic uses to perform adapter trimming
-	Trimmomatic = "trimmomatic"
+	// Porechop is the name of the program GenoMagic uses to perform adapter trimming
+	Porechop = "porechop"
 )
 
 type (
@@ -23,7 +23,7 @@ var (
 		Canu: {
 			dHubURL: "dockerhub.io/greatfireball/canu",
 		},
-		Trimmomatic: {
+		Porechop: {
 			dHubURL: "dockerhub.io/replikation/porechop",
 		},
 	}
