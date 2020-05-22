@@ -75,7 +75,7 @@ func (p *prep) prep(details constants.Details) error {
 	if details == nil {
 		return fmt.Errorf("prep given nil AssemblerDetails")
 	}
-	reader, err := p.dockerCLI.ImagePull(p.ctx, a.DHubURL, types.ImagePullOptions{})
+	reader, err := p.dockerCLI.ImagePull(p.ctx, details.GetDockerHubURL(), types.ImagePullOptions{})
 	if err != nil {
 		return fmt.Errorf("failed to pull image from DockerHub, err: %v", err)
 	}
