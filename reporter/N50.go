@@ -4,12 +4,12 @@ import (
 	"fmt"
 )
 
-// getN50 computes and returns the N50 score of the report contigs
+// getN50 computes and returns the N50 score of the Report contigs
 // https://en.wikipedia.org/wiki/N50,_L50,_and_related_statistics#N50
-func (r *report) getN50() (int32, error) {
+func (r *Report) getN50() (int32, error) {
 	assemblyLen := 0
-	contigLens := make([]int, len(r.result.GetSequences()))
-	for i, seq := range r.result.GetSequences() {
+	contigLens := make([]int, len(r.result.Sequences))
+	for i, seq := range r.result.Sequences {
 		contigLens[i] = seq.Len()
 		assemblyLen += seq.Len()
 	}

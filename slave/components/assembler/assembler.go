@@ -20,8 +20,8 @@ import (
 	"github.com/genomagic/slave/components"
 )
 
-// structure of the assembler
-type asmbler struct {
+// assemblyProcess is the structure of the assembler process
+type assemblyProcess struct {
 	assemblerName string                // assembler type e.g MegaHit
 	filePath      string                // path to the file the assembler will operate on
 	outPath       string                // path to the directory where results are stored
@@ -37,7 +37,7 @@ func New(fp, op, am string, cfg *config_parser.Config) (components.Component, er
 		return nil, fmt.Errorf("assembler not recognized")
 	}
 
-	a := &asmbler{
+	a := &assemblyProcess{
 		assemblerName: am,
 		filePath:      fp,
 		outPath:       op,
@@ -61,7 +61,7 @@ func New(fp, op, am string, cfg *config_parser.Config) (components.Component, er
 }
 
 // getImageID attempts to find the Docker image of the assembler that is passed to New
-func (a *asmbler) getImageID() (string, error) {
+func (a *assemblyProcess) getImageID() (string, error) {
 	images, err := a.dClient.ImageList(a.ctx, types.ImageListOptions{})
 	if err != nil {
 		return "", fmt.Errorf("failed to get available Docker images, err: %v", err)
@@ -88,7 +88,7 @@ func (a *asmbler) getImageID() (string, error) {
 }
 
 // Process performs the work of the assembler
-func (a *asmbler) Process() (result.Result, error) {
+func (a *assemblyProcess) Process() (*result.Result, error) {
 	ctConfig := &container.Config{
 		Tty:     true,
 		Image:   a.dImageID,
@@ -149,7 +149,7 @@ func (a *asmbler) Process() (result.Result, error) {
 }
 
 // applyConditions iterates over the conditions of a specific assemblers and attempts to fulfil the specific conditions
-func (a *asmbler) applyConditions() error {
+func (a *assemblyProcess) applyConditions() error {
 	if constants.AvailableAssemblers[a.assemblerName].ConditionsPresent {
 		for i, f := range constants.AvailableAssemblers[a.assemblerName].Conditions {
 			switch f {
