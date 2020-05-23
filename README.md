@@ -1,4 +1,4 @@
-<p style="align-content: center">
+<p align="center">
     <img src="https://user-images.githubusercontent.com/19979068/77257398-9cedfe80-6c39-11ea-890a-9167ffd1b374.png" alt="">
     <br /><i>An all-encompassing Bioinformatics tool for genome assembly and annotation projects</i><br>
 </p>
@@ -11,12 +11,15 @@
 1. [Installation](#2-installation)
 1. [GenoMagic Usage](#3-genomagic-usage)
 1. [Architecture](#4-architecture)
+2. [Maintainers](#5-maintainers)
 1. [Feedback and bug reports](#5-feedback-and-bug-reports)
 
 ## 1. About
 
-An all-encompassing Bioinformatics tool for genome assembly and annotation projects. 
-This project is still under development.
+One of the challenges that biologists and bioinformaticians face during genome assembly projects is choosing from the plethora of assembly softwares. This is highly time consuming as there are various parameters for each of the assemblers that the user needs to learn about. And even if the user learns about these various parameters for each assembler; there is still the tedious job of running various assemblers, and comparing the statistics to identify the best assembly.
+
+My aim with GenoMagic is to give the biologist an application which performs genome assemblies with minimal configuration required, which visualizes the comparative statistics for the chosen assemblers. This app enables the bioinformaticians to alter the default parameters of their choosing, making it applicable for users with diverse experiences and skills.
+
  
 ## 2. Installation
 
@@ -72,7 +75,11 @@ The master takes the user's input and schedules assembly, parsing of results, an
 
 ![](./architecture.png)
 
-## 5. Feedback and bug reports
+## 5. Maintainers
+[Tayab Soomro](https://github.com/tayabsoomro)  
+[Flaviu Vadan](https://github.com/flaviuvadan)
+
+## 6. Feedback and bug reports
 
 Submit feedback and bug reports by using the Issues section of the repository.
 
