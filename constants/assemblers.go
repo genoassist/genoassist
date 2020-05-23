@@ -40,13 +40,20 @@ type (
 
 	// AssemblerDetails holds the details of each assembler
 	AssemblerDetails struct {
-		Name              string              // assembler name
-		DHubURL           string              // DockerHub url of the assembler image
-		OutputDir         string              // output directory where to read assembled sequences from, no longer bound to Docker
-		AssemblyFileName  string              // name of the resulting assembly file
-		Comm              getAssemblerCommand // function to return the Docker command of the assembler
-		ConditionsPresent bool                // whether there are any special functions to run
-		Conditions        []Condition         // list of conditions to run before an assembler runs
+		// Name of the assembler
+		Name string
+		// DHubURL is the url of the assembler image
+		DHubURL string
+		// OutputDir is directory where to read assembled sequences from, no longer bound to Docker
+		OutputDir string
+		// AssemblyFileName is the name of the resulting assembly file
+		AssemblyFileName string
+		// Comm is a function that returns the Docker command of the assembler
+		Comm getAssemblerCommand
+		// ConditionsPresent informs whether there are any special functions to run
+		ConditionsPresent bool
+		// Conditions is a list of conditions to run before an assembler runs
+		Conditions []Condition
 	}
 )
 
@@ -90,3 +97,8 @@ var (
 		},
 	}
 )
+
+// GetDockerHubURL returns the DockerHub URL of the assembler
+func (a *AssemblerDetails) GetDockerHubURL() string {
+	return a.DHubURL
+}
