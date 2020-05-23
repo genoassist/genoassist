@@ -52,30 +52,21 @@ func New(config *config_parser.Config) chan error {
 	var wg sync.WaitGroup
 	wg.Add(len(constants.AvailableAssemblers))
 	for _, aa := range constants.AvailableAssemblers {
-		go func(ad *constants.AssemblerDetails) {
-			errs <- p.prep(ad)
+		go func(a *constants.AssemblerDetails) {
+			errs <- p.prep(a)
 			wg.Done()
 		}(aa)
 	}
 	wg.Wait()
-
-	wg.Add(len(constants.AvailableQualityControllers))
-	for _, aqc := range constants.AvailableQualityControllers {
-		go func(qcd *constants.QualityControllerDetails) {
-			errs <- p.prep(qcd)
-		}(aqc)
-	}
-	wg.Wait()
-	wg.Done()
 	return errs
 }
 
-// prep pulls the image and creates the Docker container of the given details
-func (p *prep) prep(details constants.Details) error {
-	if details == nil {
+// prep pulls and creates the container of the given docker image link
+func (p *prep) prep(a *constants.AssemblerDetails) error {
+	if a == nil {
 		return fmt.Errorf("prep given nil AssemblerDetails")
 	}
-	reader, err := p.dockerCLI.ImagePull(p.ctx, details.GetDockerHubURL(), types.ImagePullOptions{})
+	reader, err := p.dockerCLI.ImagePull(p.ctx, a.DHubURL, types.ImagePullOptions{})
 	if err != nil {
 		return fmt.Errorf("failed to pull image from DockerHub, err: %v", err)
 	}
