@@ -25,13 +25,13 @@ func main() {
 	// parsing the flags has to be done after setting up all the flags
 	flag.Parse()
 
-	var cfg *config_parser.Config
-	var err error
-	if *yaml != dummyYAML {
-		cfg, err = config_parser.ParseConfig(*yaml)
-		if err != nil {
-			panic(fmt.Sprintf("the YAML config file was incorrect, err: %s", err))
-		}
+	if *yaml == dummyYAML {
+		panic("ERROR: The flag -yaml is required")
+	}
+
+	cfg, err := config_parser.ParseConfig(*yaml)
+	if err != nil {
+		panic(fmt.Sprintf("the YAML config file was incorrect, err: %s", err))
 	}
 
 	errs := prepper.New(cfg)
