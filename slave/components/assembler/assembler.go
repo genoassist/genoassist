@@ -92,7 +92,7 @@ func (a *assemblyProcess) Process() (*result.Result, error) {
 	ctConfig := &container.Config{
 		Tty:     true,
 		Image:   a.dImageID,
-		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(*a.config),
+		Cmd:     constants.AvailableAssemblers[a.assemblerName].Comm(a.config),
 		Volumes: map[string]struct{}{},
 	}
 
