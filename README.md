@@ -79,6 +79,8 @@ The master takes the user's input and schedules assembly, parsing of results, an
 [Tayab Soomro](https://github.com/tayabsoomro)  
 [Flaviu Vadan](https://github.com/flaviuvadan)
 
+NOTE: Although we are not currently looking for active maintainers, you are welcome to contribute by creating a pull request, which solves current [issues](https://github.com/genomagic/genomagic.git), or even suggest new features.
+
 ## 6. Feedback and bug reports
 
 Submit feedback and bug reports by using the Issues section of the repository.
