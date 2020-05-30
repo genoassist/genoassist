@@ -32,5 +32,8 @@ func NewDecontamination(ctx context.Context, dockerCli *client.Client, config *c
 
 // Process launches the decontamination process
 func (d *decontamination) Process() (string, error) {
-	return "", nil
+
+	decontaminedFile := d.toDecontaminate
+
+	return decontaminedFile, nil
 }
