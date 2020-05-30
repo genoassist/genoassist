@@ -64,7 +64,7 @@ Note: all paths used with GenoMagic have to be absolute paths (a Docker requirem
 If you are encountering problems with Docker, make sure that:
 1. The Docker daemon is running in the background
 1. You have the necessary Docker images, which can be installed via GenoMagic specifying `prep: true` under `genomagic`
-in the specified YAML configuration. This will install the necessary Docker images for the containers that GenoMagic 
+in the YAML configuration. This will install the necessary Docker images for the containers that GenoMagic 
 runs.
 
 ## 4. Architecture
@@ -76,10 +76,14 @@ The master takes the user's input and schedules assembly, parsing of results, an
 ![](./architecture.png)
 
 ## 5. Maintainers
+
 [Tayab Soomro](https://github.com/tayabsoomro)  
 [Flaviu Vadan](https://github.com/flaviuvadan)
 
-NOTE: Although we are not currently looking for active maintainers, you are welcome to contribute by creating a pull request, which solves current [issues](https://github.com/genomagic/genomagic.git), or even suggest new features.
+Feel free to contact any of the maintainers if you would like to be an active 
+maintainer and contributor to GenoMagic! If you would like to contribute only,
+you are encouraged to grab an issue and submit a pull request with proposed
+changes for review! 
 
 ## 6. Feedback and bug reports
 
