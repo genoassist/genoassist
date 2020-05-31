@@ -30,21 +30,20 @@ func (q *qualityController) Process() (string, error) {
 		return "", fmt.Errorf("failed to initialize Docker client, err: %s", err)
 	}
 
-	var correctedFile string
 	trimmer := NewAdapterTrimming(ctx, cli, q.config)
-	correctedFile, err = trimmer.Process()
+	trimmedFile, err := trimmer.Process()
 	if err != nil {
 		return "", fmt.Errorf("failed to perform raw sequence adapter trimming, err: %s", err)
 	}
 
-	decontaminator := NewDecontamination(ctx, cli, q.config, correctedFile)
-	correctedFile, err = decontaminator.Process()
+	decontaminator := NewDecontamination(ctx, cli, q.config, trimmedFile)
+	decontaminatedFile, err := decontaminator.Process()
 	if err != nil {
 		return "", fmt.Errorf("failed to perform trimmed file decontamination, err: %s", err)
 	}
 
-	corrector := NewErrorCorrection(ctx, cli, q.config, correctedFile)
-	correctedFile, err = corrector.Process()
+	corrector := NewErrorCorrection(ctx, cli, q.config, decontaminatedFile)
+	correctedFile, err := corrector.Process()
 	if err != nil {
 		return "", fmt.Errorf("failed to perform error correction on the decontaminated file, err: %s", err)
 	}

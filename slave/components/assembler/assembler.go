@@ -102,6 +102,12 @@ func (a *assemblyProcess) Process() (*result.Result, error) {
 		return nil, err
 	}
 
+	fmt.Println("--MOUNT CONFIG--")
+	fmt.Println("Source1: ", a.filePath)
+	fmt.Println("Target1: ", constants.RawSeqIn)
+	fmt.Println("Source2: ", a.outPath)
+	fmt.Println("Target2: ", constants.BaseOut)
+
 	hostConfig := &container.HostConfig{
 		Mounts: []mount.Mount{
 			{ // Binding the file provided by the user to the docker container

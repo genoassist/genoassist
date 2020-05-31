@@ -76,7 +76,7 @@ func (a *adapterTrimming) Process() (string, error) {
 	}
 
 	if err := a.dockerCLI.ContainerStart(a.ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
-		return "", fmt.Errorf("failed to start container, err: %v", err)
+		return "", fmt.Errorf("failed to start trimmed container, err: %v", err)
 	}
 
 	statCh, errCh := a.dockerCLI.ContainerWait(a.ctx, resp.ID, container.WaitConditionNotRunning)
