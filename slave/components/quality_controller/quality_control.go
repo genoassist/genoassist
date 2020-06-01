@@ -35,17 +35,21 @@ func (q *qualityController) Process() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to perform raw sequence adapter trimming, err: %s", err)
 	}
+	fmt.Println("TrimmerFILE: ", trimmedFile)
 
-	//decontaminator := NewDecontamination(ctx, cli, q.config, trimmedFile)
-	//decontaminatedFile, err := decontaminator.Process()
-	//if err != nil {
-	//	return "", fmt.Errorf("failed to perform trimmed file decontamination, err: %s", err)
-	//}
-	//
-	//corrector := NewErrorCorrection(ctx, cli, q.config, decontaminatedFile)
-	//correctedFile, err := corrector.Process()
-	//if err != nil {
-	//	return "", fmt.Errorf("failed to perform error correction on the decontaminated file, err: %s", err)
-	//}
-	return trimmedFile, nil
+	decontaminator := NewDecontamination(ctx, cli, q.config, trimmedFile)
+	decontaminatedFile, err := decontaminator.Process()
+	if err != nil {
+		return "", fmt.Errorf("failed to perform trimmed file decontamination, err: %s", err)
+	}
+	fmt.Println("DecoFILE: ", decontaminatedFile)
+
+	corrector := NewErrorCorrection(ctx, cli, q.config, decontaminatedFile)
+	correctedFile, err := corrector.Process()
+	if err != nil {
+		return "", fmt.Errorf("failed to perform error correction on the decontaminated file, err: %s", err)
+	}
+	fmt.Println("CorrFILE: ", correctedFile)
+
+	return correctedFile, nil
 }
