@@ -98,4 +98,5 @@ func (a *adapterTrimming) Process() (string, error) {
 		return "", fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
 	return TrimmedFileNameUser, nil
+
 }

@@ -55,7 +55,7 @@ func (e *errorCorrection) Process() (string, error) {
 			"-d", path.Join(constants.BaseOut, "canu-corr"),
 			"-p", "run1",
 			fmt.Sprintf("genomeSize=%s", e.config.Assemblers.Flye.GenomeSize),
-			"-nanopore-raw", e.toDecontaminate,
+			"-nanopore-raw", path.Join(constants.BaseOut, "trimmed.fastq"),
 		},
 		Image: img,
 	}
