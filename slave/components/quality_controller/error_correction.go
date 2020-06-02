@@ -41,7 +41,7 @@ func NewErrorCorrection(ctx context.Context, dockerCli *client.Client, config *c
 // Process performs the error correction process
 func (e *errorCorrection) Process() (string, error) {
 	// correctedFile is the placeholder filename where the corrected reads are going to be stored.
-	correctedFile := path.Join(constants.BaseOut, "canu-corr", "run1.correctedReads.fasta.gz")
+	correctedFile := path.Join(e.config.GenoMagic.OutputPath, "canu-corr", "run1.correctedReads.fasta.gz")
 
 	img, err := getImageID(e.dockerCLI, e.ctx, "greatfireball/canu")
 	if err != nil {
