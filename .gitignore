@@ -8,6 +8,9 @@
 # main binary file
 main
 
+# genomagic binary file
+genomagic
+
 # Test binary, built with `go test -c`
 *.test
 
