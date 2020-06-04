@@ -39,8 +39,7 @@ func NewAdapterTrimming(ctx context.Context, dockerCli *client.Client, config *c
 func (a *adapterTrimming) Process() (string, error) {
 
 	// TrimmedFileName is the filename where the trimmed reads are going to be stored.
-	TrimmedFileNameUser := path.Join(a.config.GenoMagic.OutputPath, "trimmed.fastq")
-	TrimmedFileNameDocker := path.Join(constants.BaseOut, "trimmed.fastq")
+	trimmedOutuptFileName := "trimmed.fastq"
 
 	img, err := getImageID(a.dockerCLI, a.ctx, "replikation/porechop")
 	if err != nil {
@@ -51,7 +50,7 @@ func (a *adapterTrimming) Process() (string, error) {
 		Tty: true,
 		Cmd: []string{
 			"-i", constants.RawSeqIn,
-			"-o", TrimmedFileNameDocker,
+			"-o", path.Join(constants.BaseOut, trimmedOutuptFileName),
 		},
 		Image: img,
 	}
@@ -97,6 +96,6 @@ func (a *adapterTrimming) Process() (string, error) {
 	if _, err := io.Copy(os.Stdout, out); err != nil {
 		return "", fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
-	return TrimmedFileNameUser, nil
+	return path.Join(a.config.GenoMagic.OutputPath, trimmedOutuptFileName), nil
 
 }
