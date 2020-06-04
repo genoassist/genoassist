@@ -98,12 +98,20 @@ var (
 			OutputDir:        FlyeOut,
 			AssemblyFileName: "final.contigs.fa",
 			Comm: func(cfg *config_parser.Config) []string {
-				return []string{
+
+				finalCommand := []string{
 					fmt.Sprintf("--genome-size %s", cfg.Assemblers.Flye.GenomeSize),
-					fmt.Sprintf("--nano-raw %s", RawSeqIn),
 					fmt.Sprintf("--out-dir %s", path.Join(BaseOut, FlyeOut)),
 					fmt.Sprintf("--threads %d", cfg.GenoMagic.Threads),
 				}
+
+				// append appropriate input sequence argument based on type of sequence
+				if cfg.Assemblers.Flye.SeqType == "nano" {
+					finalCommand = append(finalCommand, fmt.Sprintf("--nanopore-raw %s", RawSeqIn))
+				} else {
+					finalCommand = append(finalCommand, fmt.Sprintf("--pacbio-raw %s", RawSeqIn))
+				}
+				return finalCommand
 			},
 			ConditionsPresent: false,
 			Conditions:        nil,
