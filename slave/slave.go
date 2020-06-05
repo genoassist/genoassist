@@ -10,7 +10,6 @@ import (
 	"github.com/genomagic/result"
 	"github.com/genomagic/slave/components/assembler"
 	"github.com/genomagic/slave/components/parser"
-	"github.com/genomagic/slave/components/quality_controller"
 )
 
 const (
@@ -46,39 +45,35 @@ func (s *slaveProcess) Process() ([]*result.Result, error) {
 	switch s.workType {
 	case Assembly:
 		for k := range constants.AvailableAssemblers {
-			assemblerWorker, err := assembler.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k, s.config)
-			if err != nil {
-				return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
-			}
+			if StringInSlice(s.config.GenoMagic.Assemblers, k) {
+				assemblerWorker, err := assembler.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k, s.config)
+				if err != nil {
+					return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
+				}
 
-			_, err = assemblerWorker.Process()
-			if err != nil {
-				return nil, fmt.Errorf("assembler slave process failed, err: %v", err)
+				_, err = assemblerWorker.Process()
+				if err != nil {
+					return nil, fmt.Errorf("assembler slave process failed, err: %v", err)
+				}
 			}
 		}
 		return nil, nil
 	case Parse:
 		var results []*result.Result
 		for k := range constants.AvailableAssemblers {
-			parserWorker, err := parser.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k)
-			if err != nil {
-				return nil, fmt.Errorf("failed to initialize parser worker, err: %v", err)
+			if StringInSlice(s.config.GenoMagic.Assemblers, k) {
+				parserWorker, err := parser.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k)
+				if err != nil {
+					return nil, fmt.Errorf("failed to initialize parser worker, err: %v", err)
+				}
+				res, err := parserWorker.Process()
+				if err != nil {
+					return nil, fmt.Errorf("parser slave process failed, err: %v", err)
+				}
+				results = append(results, res)
 			}
-			res, err := parserWorker.Process()
-			if err != nil {
-				return nil, fmt.Errorf("parser slave process failed, err: %v", err)
-			}
-			results = append(results, res)
 		}
 		return results, nil
-	case QualityControl:
-		qualityController := quality_controller.NewQualityController(s.config)
-		if newSeqFilePath, err := qualityController.Process(); err != nil {
-			return nil, fmt.Errorf("quality control slave failed, err: %s", err)
-		} else {
-			s.config.GenoMagic.InputFilePath = newSeqFilePath
-		}
-		return nil, nil
 	default:
 		return nil, fmt.Errorf("slave presented with unknown operation")
 	}

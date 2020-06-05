@@ -33,6 +33,7 @@ func Test_ParseConfig(t *testing.T) {
 					},
 				},
 				GenoMagic: GenoMagicConfig{
+					Assemblers:    []string{"abyss", "megahit", "flye"},
 					InputFilePath: "/test/input1.fastq",
 					OutputPath:    "/test/output",
 					Threads:       2,
@@ -51,6 +52,7 @@ func Test_ParseConfig(t *testing.T) {
 					Flye:    FlyeConfig{},
 				},
 				GenoMagic: GenoMagicConfig{
+					Assemblers:    []string{"abyss", "megahit", "flye"},
 					InputFilePath: "/test/input1.fastq",
 					OutputPath:    "/test/output",
 					Threads:       2,
@@ -62,6 +64,25 @@ func Test_ParseConfig(t *testing.T) {
 		{
 			name:     "test_process_returns_expected_config_on_additional_data_in_yaml_file",
 			filePath: "test4.yaml",
+			expectedConfig: &Config{
+				Assemblers: AssemblerConfig{
+					Megahit: MegahitConfig{KMers: "27"},
+					Abyss:   AbyssConfig{KMers: "27"},
+					Flye:    FlyeConfig{},
+				},
+				GenoMagic: GenoMagicConfig{
+					Assemblers:    []string{"abyss", "megahit", "flye"},
+					InputFilePath: "/test/input1.fastq",
+					OutputPath:    "/test/output",
+					Threads:       2,
+					Prep:          true,
+				},
+			},
+			expectedError: nil,
+		},
+		{
+			name:     "test_process_returns_expected_config_when_assemblers_are_not_provided",
+			filePath: "test5.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
 					Megahit: MegahitConfig{KMers: "27"},

@@ -7,6 +7,7 @@ assemblers:
     seqType: "nano"
     genomeSize: "5m"
 genomagic:
+  assemblers: ['abyss','megahit','flye']
   inputFilePath: "/test/input1.fastq"
   outputPath: "/test/output"
   threads: 2
