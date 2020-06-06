@@ -26,6 +26,10 @@ const (
 	Abyss    = "abyss"
 	AbyssOut = GenoMagic + "_abyss_out"
 
+	// Flye specific constants
+	Flye    = "flye"
+	FlyeOut = GenoMagic + "_fly_out"
+
 	// CreateDir informs the condition function to create a directory for an assembler
 	CreateDir = "CreateDir"
 )
@@ -33,7 +37,7 @@ const (
 type (
 	// getAssemblerCommand returns the Docker container command associated with an assembler. The commands expects the
 	// number of thread to be specified, as assemblers can run on multiple threads
-	getAssemblerCommand func(config config_parser.Config) []string
+	getAssemblerCommand func(config *config_parser.Config) []string
 
 	// Condition that is run by the condition command
 	Condition string
@@ -57,8 +61,8 @@ var (
 			Name:             MegaHit,
 			DHubURL:          "docker.io/vout/megahit", // https://github.com/voutcn/megahit
 			OutputDir:        MegaHitOut,
-			AssemblyFileName: "/final.contigs.fa",
-			Comm: func(cfg config_parser.Config) []string {
+			AssemblyFileName: "final.contigs.fa",
+			Comm: func(cfg *config_parser.Config) []string {
 				// NOTE: input filePath and outPath are mapped to Docker mounts during creation (slave/components/assembler/assembler.go:87)
 				return []string{
 					"-r", RawSeqIn,
@@ -73,7 +77,7 @@ var (
 			DHubURL:          "docker.io/bcgsc/abyss", // https://github.com/bcgsc/abyss
 			OutputDir:        AbyssOut,
 			AssemblyFileName: "final-contigs.fa",
-			Comm: func(cfg config_parser.Config) []string {
+			Comm: func(cfg *config_parser.Config) []string {
 				return []string{
 					fmt.Sprintf("k=%s", cfg.Assemblers.Abyss.KMers),
 					`name=final`,
@@ -87,6 +91,30 @@ var (
 			Conditions: []Condition{
 				CreateDir,
 			},
+		},
+		Flye: {
+			Name:             Flye,
+			DHubURL:          "dockerhub.io/nanozoo/flye", // https://github.com/fenderglass/Flye
+			OutputDir:        FlyeOut,
+			AssemblyFileName: "final.contigs.fa",
+			Comm: func(cfg *config_parser.Config) []string {
+
+				finalCommand := []string{
+					fmt.Sprintf("--genome-size %s", cfg.Assemblers.Flye.GenomeSize),
+					fmt.Sprintf("--out-dir %s", path.Join(BaseOut, FlyeOut)),
+					fmt.Sprintf("--threads %d", cfg.GenoMagic.Threads),
+				}
+
+				// append appropriate input sequence argument based on type of sequence
+				if cfg.Assemblers.Flye.SeqType == "nano" {
+					finalCommand = append(finalCommand, fmt.Sprintf("--nanopore-raw %s", RawSeqIn))
+				} else {
+					finalCommand = append(finalCommand, fmt.Sprintf("--pacbio-raw %s", RawSeqIn))
+				}
+				return finalCommand
+			},
+			ConditionsPresent: false,
+			Conditions:        nil,
 		},
 	}
 )
