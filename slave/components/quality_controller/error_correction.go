@@ -72,7 +72,7 @@ func (e *errorCorrection) Process() (string, error) {
 
 	resp, err := e.dockerCLI.ContainerCreate(e.ctx, ctConfig, hostConfig, nil, "")
 	if err != nil {
-		return "", fmt.Errorf("fialed to create correction container, err: %v", err)
+		return "", fmt.Errorf("failed to create error correction container, err: %s", err)
 	}
 
 	if err := e.dockerCLI.ContainerStart(e.ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
