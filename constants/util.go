@@ -63,12 +63,16 @@ var (
 			OutputDir:        MegaHitOut,
 			AssemblyFileName: "final.contigs.fa",
 			Comm: func(cfg *config_parser.Config) []string {
-				// NOTE: input filePath and outPath are mapped to Docker mounts during creation (slave/components/assembler/assembler.go:87)
-				return []string{
-					"-r", RawSeqIn,
-					fmt.Sprintf("-t %d", cfg.GenoMagic.Threads),
-					"-o", path.Join(BaseOut, MegaHitOut),
+				var finalCmd = []string{
+					fmt.Sprintf("-r %s", RawSeqIn),
+					fmt.Sprintf("-o %s", path.Join(BaseOut, MegaHitOut)),
 				}
+
+				if cfg.GenoMagic.Threads != 0 {
+					finalCmd = append(finalCmd, fmt.Sprintf("-t %d", cfg.GenoMagic.Threads))
+				}
+
+				return finalCmd
 			},
 			ConditionsPresent: false,
 		},
@@ -78,14 +82,24 @@ var (
 			OutputDir:        AbyssOut,
 			AssemblyFileName: "final-contigs.fa",
 			Comm: func(cfg *config_parser.Config) []string {
-				return []string{
-					fmt.Sprintf("k=%s", cfg.Assemblers.Abyss.KMers),
-					`name=final`,
-					fmt.Sprintf("j=%d", cfg.GenoMagic.Threads),
-					fmt.Sprintf("in='%s'", RawSeqIn),
+
+				var finalCmd = []string{
+					" name=final",
+					fmt.Sprintf("in=%s", RawSeqIn),
 					fmt.Sprintf("--directory=%s", path.Join(BaseOut, AbyssOut)),
-					"contigs",
 				}
+
+				if cfg.Assemblers.Abyss.KMers != "" {
+					finalCmd = append(finalCmd, fmt.Sprintf("k=%s", cfg.Assemblers.Abyss.KMers))
+				}
+
+				if cfg.GenoMagic.Threads != 0 {
+					finalCmd = append(finalCmd, fmt.Sprintf("j=%d", cfg.GenoMagic.Threads))
+				}
+
+				finalCmd = append(finalCmd, "contigs")
+
+				return finalCmd
 			},
 			ConditionsPresent: true,
 			Conditions: []Condition{
@@ -102,10 +116,12 @@ var (
 				finalCommand := []string{
 					fmt.Sprintf("--genome-size %s", cfg.Assemblers.Flye.GenomeSize),
 					fmt.Sprintf("--out-dir %s", path.Join(BaseOut, FlyeOut)),
-					fmt.Sprintf("--threads %d", cfg.GenoMagic.Threads),
 				}
 
-				// append appropriate input sequence argument based on type of sequence
+				if cfg.GenoMagic.Threads != 0 {
+					finalCommand = append(finalCommand, fmt.Sprintf("--threads %d", cfg.GenoMagic.Threads))
+				}
+
 				if cfg.Assemblers.Flye.SeqType == "nano" {
 					finalCommand = append(finalCommand, fmt.Sprintf("--nanopore-raw %s", RawSeqIn))
 				} else {
