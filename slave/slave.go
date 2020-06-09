@@ -45,8 +45,8 @@ func (s *slaveProcess) Process() ([]*result.Result, error) {
 	switch s.workType {
 	case Assembly:
 		for k := range constants.AvailableAssemblers {
-			if StringInSlice(s.config.GenoMagic.Assemblers, k) {
-				assemblerWorker, err := assembler.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k, s.config)
+			if IsUserRequestedAssembler(s.config.GenoMagic.Assemblers, k) {
+				assemblerWorker, err := assembler.New(k, s.config)
 				if err != nil {
 					return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
 				}
@@ -61,7 +61,7 @@ func (s *slaveProcess) Process() ([]*result.Result, error) {
 	case Parse:
 		var results []*result.Result
 		for k := range constants.AvailableAssemblers {
-			if StringInSlice(s.config.GenoMagic.Assemblers, k) {
+			if IsUserRequestedAssembler(s.config.GenoMagic.Assemblers, k) {
 				parserWorker, err := parser.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k)
 				if err != nil {
 					return nil, fmt.Errorf("failed to initialize parser worker, err: %v", err)
