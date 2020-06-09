@@ -16,6 +16,9 @@ import (
 	"github.com/genomagic/constants"
 )
 
+// canuDir is directory where canu related files reside
+const canuDir = "canu-corr"
+
 // errorCorrection is a representation of the error correction process
 type errorCorrection struct {
 	// context of the process
@@ -57,7 +60,7 @@ func (e *errorCorrection) Process() (string, error) {
 		Tty: true,
 		Cmd: []string{
 			"-correct",
-			"-d", path.Join(constants.BaseOut, "canu-corr"),
+			"-d", path.Join(constants.BaseOut, canuDir),
 			"-p", "run1",
 			fmt.Sprintf("genomeSize=%s", e.config.Assemblers.Flye.GenomeSize),
 			"-nanopore-raw", path.Join(constants.BaseOut, inFile),
@@ -101,5 +104,5 @@ func (e *errorCorrection) Process() (string, error) {
 	if _, err := io.Copy(os.Stdout, out); err != nil {
 		return "", fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
-	return path.Join(e.config.GenoMagic.OutputPath, "canu-corr", correctedOutuptFile), nil
+	return path.Join(e.config.GenoMagic.OutputPath, canuDir, correctedOutuptFile), nil
 }
