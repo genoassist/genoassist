@@ -24,17 +24,17 @@ type errorCorrection struct {
 	dockerCLI *client.Client
 	// config is the GenoMagic global configuration
 	config *config_parser.Config
-	// toDecontaminate represents the path to the file to decontaminate
-	toDecontaminate string
+	// toCorrect represents the path to the input file to perform error correction on
+	toCorrect string
 }
 
 // NewErrorCorrection constructs and returns an errorCorrection struct, which implements the Controller interface
 func NewErrorCorrection(ctx context.Context, dockerCli *client.Client, config *config_parser.Config, fileToCorrect string) Controller {
 	return &errorCorrection{
-		ctx:             ctx,
-		dockerCLI:       dockerCli,
-		config:          config,
-		toDecontaminate: fileToCorrect,
+		ctx:       ctx,
+		dockerCLI: dockerCli,
+		config:    config,
+		toCorrect: fileToCorrect,
 	}
 }
 
@@ -48,6 +48,11 @@ func (e *errorCorrection) Process() (string, error) {
 		return "", fmt.Errorf("cannot get image ID for greatfireball/canu, err: %v", err)
 	}
 
+	inFile, pathErr := getFilenameFromPath(e.toCorrect)
+	if pathErr != nil {
+		return "", fmt.Errorf("cannot get file name from path, err: %v", pathErr)
+	}
+
 	ctConfig := &container.Config{
 		Tty: true,
 		Cmd: []string{
@@ -55,7 +60,7 @@ func (e *errorCorrection) Process() (string, error) {
 			"-d", path.Join(constants.BaseOut, "canu-corr"),
 			"-p", "run1",
 			fmt.Sprintf("genomeSize=%s", e.config.Assemblers.Flye.GenomeSize),
-			"-nanopore-raw", path.Join(constants.BaseOut, "trimmed.fastq"),
+			"-nanopore-raw", path.Join(constants.BaseOut, inFile),
 		},
 		Image: img,
 	}
