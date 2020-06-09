@@ -38,8 +38,8 @@ func NewAdapterTrimming(ctx context.Context, dockerCli *client.Client, config *c
 // Process does the adapter trimming on raw input data
 func (a *adapterTrimming) Process() (string, error) {
 
-	// TrimmedFileName is the filename where the trimmed reads are going to be stored.
-	TrimmedFileName := path.Join(constants.BaseOut, "trimmed.fastq")
+	// trimmedOutputFilename is the filename where the trimmed reads are going to be stored.
+	trimmedOutputFilename := "trimmed.fastq"
 
 	img, err := getImageID(a.dockerCLI, a.ctx, "replikation/porechop")
 	if err != nil {
@@ -50,7 +50,7 @@ func (a *adapterTrimming) Process() (string, error) {
 		Tty: true,
 		Cmd: []string{
 			"-i", constants.RawSeqIn,
-			"-o", TrimmedFileName,
+			"-o", path.Join(constants.BaseOut, trimmedOutputFilename),
 		},
 		Image: img,
 	}
@@ -76,7 +76,7 @@ func (a *adapterTrimming) Process() (string, error) {
 	}
 
 	if err := a.dockerCLI.ContainerStart(a.ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
-		return "", fmt.Errorf("failed to start container, err: %v", err)
+		return "", fmt.Errorf("failed to start adapter trimming container, err: %s", err)
 	}
 
 	statCh, errCh := a.dockerCLI.ContainerWait(a.ctx, resp.ID, container.WaitConditionNotRunning)
@@ -96,5 +96,6 @@ func (a *adapterTrimming) Process() (string, error) {
 	if _, err := io.Copy(os.Stdout, out); err != nil {
 		return "", fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
-	return TrimmedFileName, nil
+	return path.Join(a.config.GenoMagic.OutputPath, trimmedOutputFilename), nil
+
 }

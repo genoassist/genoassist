@@ -16,6 +16,9 @@ import (
 	"github.com/genomagic/constants"
 )
 
+// canuDir is directory where canu related files reside
+const canuDir = "canu-corr"
+
 // errorCorrection is a representation of the error correction process
 type errorCorrection struct {
 	// context of the process
@@ -24,38 +27,43 @@ type errorCorrection struct {
 	dockerCLI *client.Client
 	// config is the GenoMagic global configuration
 	config *config_parser.Config
-	// toDecontaminate represents the path to the file to decontaminate
-	toDecontaminate string
+	// toCorrect represents the path to the input file to perform error correction on
+	toCorrect string
 }
 
 // NewErrorCorrection constructs and returns an errorCorrection struct, which implements the Controller interface
 func NewErrorCorrection(ctx context.Context, dockerCli *client.Client, config *config_parser.Config, fileToCorrect string) Controller {
 	return &errorCorrection{
-		ctx:             ctx,
-		dockerCLI:       dockerCli,
-		config:          config,
-		toDecontaminate: fileToCorrect,
+		ctx:       ctx,
+		dockerCLI: dockerCli,
+		config:    config,
+		toCorrect: fileToCorrect,
 	}
 }
 
 // Process performs the error correction process
 func (e *errorCorrection) Process() (string, error) {
 	// correctedFile is the placeholder filename where the corrected reads are going to be stored.
-	correctedFile := path.Join(constants.BaseOut, "canu-corr", "run1.correctedReads.fasta.gz")
+	correctedOutuptFile := "run1.correctedReads.fasta.gz"
 
 	img, err := getImageID(e.dockerCLI, e.ctx, "greatfireball/canu")
 	if err != nil {
 		return "", fmt.Errorf("cannot get image ID for greatfireball/canu, err: %v", err)
 	}
 
+	inFile, pathErr := getFilenameFromPath(e.toCorrect)
+	if pathErr != nil {
+		return "", fmt.Errorf("cannot get file name from path, err: %v", pathErr)
+	}
+
 	ctConfig := &container.Config{
 		Tty: true,
 		Cmd: []string{
 			"-correct",
-			"-d", path.Join(constants.BaseOut, "canu-corr"),
+			"-d", path.Join(constants.BaseOut, canuDir),
 			"-p", "run1",
 			fmt.Sprintf("genomeSize=%s", e.config.Assemblers.Flye.GenomeSize),
-			"-nanopore-raw", e.toDecontaminate,
+			"-nanopore-raw", path.Join(constants.BaseOut, inFile),
 		},
 		Image: img,
 	}
@@ -72,7 +80,7 @@ func (e *errorCorrection) Process() (string, error) {
 
 	resp, err := e.dockerCLI.ContainerCreate(e.ctx, ctConfig, hostConfig, nil, "")
 	if err != nil {
-		return "", fmt.Errorf("fialed to create container, err: %v", err)
+		return "", fmt.Errorf("failed to create error correction container, err: %s", err)
 	}
 
 	if err := e.dockerCLI.ContainerStart(e.ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
@@ -96,5 +104,5 @@ func (e *errorCorrection) Process() (string, error) {
 	if _, err := io.Copy(os.Stdout, out); err != nil {
 		return "", fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
-	return correctedFile, nil
+	return path.Join(e.config.GenoMagic.OutputPath, canuDir, correctedOutuptFile), nil
 }

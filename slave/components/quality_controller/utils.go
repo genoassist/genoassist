@@ -35,3 +35,14 @@ func getImageID(client *client.Client, ctx context.Context, term string) (string
 	}
 	return assemblerID, nil
 }
+
+// getFilenameFromPath attempts to get the filename from an absolute path
+func getFilenameFromPath(path string) (string, error) {
+	if path != "" {
+		absPathList := strings.SplitAfter(path, "/")
+		fname := absPathList[len(absPathList)-1:][0]
+		return fname, nil
+	} else {
+		return "", fmt.Errorf("failed to get filename of empty path, err")
+	}
+}
