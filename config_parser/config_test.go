@@ -25,8 +25,12 @@ func Test_ParseConfig(t *testing.T) {
 			filePath: "test2.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
-					Megahit: MegahitConfig{KMers: "27"},
-					Abyss:   AbyssConfig{KMers: "27"},
+					Megahit: MegahitConfig{
+						KMers: "27",
+					},
+					Abyss: AbyssConfig{
+						KMers: "27",
+					},
 					Flye: FlyeConfig{
 						SeqType:    "nano",
 						GenomeSize: "5m",
@@ -47,9 +51,13 @@ func Test_ParseConfig(t *testing.T) {
 			filePath: "test3.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
-					Megahit: MegahitConfig{KMers: "27"},
-					Abyss:   AbyssConfig{KMers: "27"},
-					Flye:    FlyeConfig{},
+					Megahit: MegahitConfig{
+						KMers: "27",
+					},
+					Abyss: AbyssConfig{
+						KMers: "27",
+					},
+					Flye: FlyeConfig{},
 				},
 				GenoMagic: GenoMagicConfig{
 					Assemblers:    []string{"abyss", "megahit", "flye"},
@@ -66,9 +74,13 @@ func Test_ParseConfig(t *testing.T) {
 			filePath: "test4.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
-					Megahit: MegahitConfig{KMers: "27"},
-					Abyss:   AbyssConfig{KMers: "27"},
-					Flye:    FlyeConfig{},
+					Megahit: MegahitConfig{
+						KMers: "27",
+					},
+					Abyss: AbyssConfig{
+						KMers: "27",
+					},
+					Flye: FlyeConfig{},
 				},
 				GenoMagic: GenoMagicConfig{
 					Assemblers:    []string{"abyss", "megahit", "flye"},
@@ -85,9 +97,13 @@ func Test_ParseConfig(t *testing.T) {
 			filePath: "test5.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
-					Megahit: MegahitConfig{KMers: "27"},
-					Abyss:   AbyssConfig{KMers: "27"},
-					Flye:    FlyeConfig{},
+					Megahit: MegahitConfig{
+						KMers: "27",
+					},
+					Abyss: AbyssConfig{
+						KMers: "27",
+					},
+					Flye: FlyeConfig{},
 				},
 				GenoMagic: GenoMagicConfig{
 					InputFilePath: "/test/input1.fastq",
@@ -103,9 +119,13 @@ func Test_ParseConfig(t *testing.T) {
 			filePath: "test6.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
-					Megahit: MegahitConfig{KMers: "27"},
-					Abyss:   AbyssConfig{KMers: "27"},
-					Flye:    FlyeConfig{},
+					Megahit: MegahitConfig{
+						KMers: "27",
+					},
+					Abyss: AbyssConfig{
+						KMers: "27",
+					},
+					Flye: FlyeConfig{},
 				},
 				GenoMagic: GenoMagicConfig{
 					Assemblers:    []string{"abYss", "Megahit", "flye"},
@@ -122,9 +142,13 @@ func Test_ParseConfig(t *testing.T) {
 			filePath: "test7.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
-					Megahit: MegahitConfig{KMers: "27"},
-					Abyss:   AbyssConfig{KMers: "27"},
-					Flye:    FlyeConfig{},
+					Megahit: MegahitConfig{
+						KMers: "27",
+					},
+					Abyss: AbyssConfig{
+						KMers: "27",
+					},
+					Flye: FlyeConfig{},
 				},
 				GenoMagic: GenoMagicConfig{
 					Assemblers:     []string{"abYss", "Megahit", "flye"},
@@ -142,9 +166,13 @@ func Test_ParseConfig(t *testing.T) {
 			filePath: "test8.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
-					Megahit: MegahitConfig{KMers: "27"},
-					Abyss:   AbyssConfig{KMers: "27"},
-					Flye:    FlyeConfig{},
+					Megahit: MegahitConfig{
+						KMers: "27",
+					},
+					Abyss: AbyssConfig{
+						KMers: "27",
+					},
+					Flye: FlyeConfig{},
 				},
 				GenoMagic: GenoMagicConfig{
 					Assemblers:     []string{"abYss", "Megahit", "flye"},
