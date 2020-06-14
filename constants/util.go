@@ -123,7 +123,7 @@ var (
 				}
 
 				if cfg.Assemblers.Flye.SeqType == "nano" {
-					finalCommand = append(finalCommand, fmt.Sprintf("--nanopore-raw %s", RawSeqIn))
+					finalCommand = append(finalCommand, fmt.Sprintf("--nano-raw %s", RawSeqIn))
 				} else {
 					finalCommand = append(finalCommand, fmt.Sprintf("--pacbio-raw %s", RawSeqIn))
 				}
