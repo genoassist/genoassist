@@ -4,6 +4,7 @@ package slave
 
 import (
 	"fmt"
+	"github.com/genomagic/slave/components/quality_controller"
 
 	"github.com/genomagic/config_parser"
 	"github.com/genomagic/constants"
@@ -74,6 +75,14 @@ func (s *slaveProcess) Process() ([]*result.Result, error) {
 			}
 		}
 		return results, nil
+	case QualityControl:
+		qualityController := quality_controller.NewQualityController(s.config)
+		if newSeqFilePath, err := qualityController.Process(); err != nil {
+			return nil, fmt.Errorf("quality control slave failed, err: %s", err)
+		} else {
+			s.config.GenoMagic.InputFilePath = newSeqFilePath
+		}
+		return nil, nil
 	default:
 		return nil, fmt.Errorf("slave presented with unknown operation")
 	}
