@@ -9,6 +9,9 @@ import (
 )
 
 const (
+	// dockerURL denotes the source URL for the Docker image repository
+	dockerURL = "docker.io"
+
 	// GenoMagic represents the name of this program
 	GenoMagic = "genomagic"
 
@@ -19,16 +22,19 @@ const (
 	RawSeqIn = "/raw_sequence_input.fastq"
 
 	// MegaHit specific constants
-	MegaHit    = "megahit"
-	MegaHitOut = GenoMagic + "_megahit_out"
+	MegaHit          = "megahit"
+	MegaHitOut       = GenoMagic + "_megahit_out"
+	MegaHitDockerURL = dockerURL + "/vout/megahit" // https://github.com/voutcn/megahit
 
 	// Abyss specific constants
-	Abyss    = "abyss"
-	AbyssOut = GenoMagic + "_abyss_out"
+	Abyss          = "abyss"
+	AbyssOut       = GenoMagic + "_abyss_out"
+	AbyssDockerURL = dockerURL + "/bcgsc/abyss" // https://github.com/bcgsc/abyss
 
 	// Flye specific constants
-	Flye    = "flye"
-	FlyeOut = GenoMagic + "_fly_out"
+	Flye          = "flye"
+	FlyeOut       = GenoMagic + "_fly_out"
+	FlyeDockerURL = dockerURL + "nanozoo/flye" // https://github.com/fenderglass/Flye"
 
 	// CreateDir informs the condition function to create a directory for an assembler
 	CreateDir = "CreateDir"
@@ -59,7 +65,7 @@ var (
 	AvailableAssemblers = map[string]*AssemblerDetails{
 		MegaHit: {
 			Name:             MegaHit,
-			DHubURL:          "docker.io/vout/megahit", // https://github.com/voutcn/megahit
+			DHubURL:          MegaHitDockerURL,
 			OutputDir:        MegaHitOut,
 			AssemblyFileName: "final.contigs.fa",
 			Comm: func(cfg *config_parser.Config) []string {
@@ -78,7 +84,7 @@ var (
 		},
 		Abyss: {
 			Name:             Abyss,
-			DHubURL:          "docker.io/bcgsc/abyss", // https://github.com/bcgsc/abyss
+			DHubURL:          AbyssDockerURL,
 			OutputDir:        AbyssOut,
 			AssemblyFileName: "final-contigs.fa",
 			Comm: func(cfg *config_parser.Config) []string {
@@ -108,7 +114,7 @@ var (
 		},
 		Flye: {
 			Name:             Flye,
-			DHubURL:          "dockerhub.io/nanozoo/flye", // https://github.com/fenderglass/Flye
+			DHubURL:          FlyeDockerURL,
 			OutputDir:        FlyeOut,
 			AssemblyFileName: "final.contigs.fa",
 			Comm: func(cfg *config_parser.Config) []string {
@@ -134,3 +140,8 @@ var (
 		},
 	}
 )
+
+// GetDockerURL returns the DockerHub URL of the assembler
+func (a *AssemblerDetails) GetDockerURL() string {
+	return a.DHubURL
+}
