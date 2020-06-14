@@ -27,7 +27,6 @@ func New(config *config_parser.Config) Master {
 
 // Process launches the assembly of the contigs it was created with
 func (m *masterProcess) Process() error {
-
 	if m.config.GenoMagic.QualityControl {
 		qualityControlSlave := slave.New(m.config, slave.QualityControl)
 		if _, err := qualityControlSlave.Process(); err != nil {
