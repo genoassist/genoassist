@@ -34,7 +34,7 @@ func main() {
 		panic(fmt.Sprintf("the YAML config file was incorrect, err: %s", err))
 	}
 
-	errs := prepper.New(cfg)
+	errs := prepper.NewPrep(cfg)
 	for len(errs) > 0 {
 		select {
 		case err := <-errs:
