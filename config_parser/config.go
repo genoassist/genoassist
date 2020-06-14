@@ -20,11 +20,12 @@ type (
 	}
 
 	GenoMagicConfig struct {
-		Assemblers    []string `yaml:"assemblers,flow"`
-		InputFilePath string   `yaml:"inputFilePath"`
-		OutputPath    string   `yaml:"outputPath"`
-		Threads       int      `yaml:"threads"`
-		Prep          bool     `yaml:"prep"`
+		Assemblers     []string `yaml:"assemblers,flow"`
+		InputFilePath  string   `yaml:"inputFilePath"`
+		OutputPath     string   `yaml:"outputPath"`
+		Threads        int      `yaml:"threads"`
+		Prep           bool     `yaml:"prep"`
+		QualityControl bool     `yaml:"qualityControl"`
 	}
 
 	MegahitConfig struct {
