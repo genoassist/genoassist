@@ -56,6 +56,7 @@ genomagic:
   outputPath: "/test/output"
   threads: 2
   prep: true
+  qualityControl: true
 ```
 Notes: 
  - all paths used with GenoMagic have to be absolute paths (a Docker requirement)
