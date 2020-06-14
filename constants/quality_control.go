@@ -3,10 +3,12 @@ package constants
 
 const (
 	// Canu is the name of the program GenoMagic uses to perform error correction
-	Canu = "canu"
+	Canu          = "canu"
+	CanuDockerURL = dockerURL + "/greatfireball/canu" // https://github.com/greatfireball/ime_canu"
 
 	// Porechop is the name of the program GenoMagic uses to perform adapter trimming
-	Porechop = "porechop"
+	Porechop          = "porechop"
+	PorechopDockerURL = dockerURL + "/replikation/porechop" // https://github.com/rrwick/porechop"
 )
 
 type (
@@ -21,15 +23,15 @@ var (
 	// AvailableQualityControllers defines the mapping of quality controller names to their associated details
 	AvailableQualityControllers = map[string]*QualityControllerDetails{
 		Canu: {
-			dHubURL: "dockerhub.io/greatfireball/canu",
+			dHubURL: CanuDockerURL,
 		},
 		Porechop: {
-			dHubURL: "dockerhub.io/replikation/porechop",
+			dHubURL: PorechopDockerURL,
 		},
 	}
 )
 
-// GetDockerHubURL returns the DockerHub URL of the quality controller
-func (q *QualityControllerDetails) GetDockerHubURL() string {
+// GetDockerURL returns the DockerHub URL of the quality controller
+func (q *QualityControllerDetails) GetDockerURL() string {
 	return q.dHubURL
 }
