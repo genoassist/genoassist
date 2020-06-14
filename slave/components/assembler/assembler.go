@@ -32,15 +32,15 @@ type assemblyProcess struct {
 }
 
 // New returns a new assembler for the specified file
-func New(fp, op, am string, cfg *config_parser.Config) (components.Component, error) {
+func New(am string, cfg *config_parser.Config) (components.Component, error) {
 	if constants.AvailableAssemblers[am] == nil {
 		return nil, fmt.Errorf("assembler not recognized")
 	}
 
 	a := &assemblyProcess{
 		assemblerName: am,
-		filePath:      fp,
-		outPath:       op,
+		filePath:      cfg.GenoMagic.InputFilePath,
+		outPath:       cfg.GenoMagic.OutputPath,
 		config:        cfg,
 		ctx:           context.Background(),
 	}

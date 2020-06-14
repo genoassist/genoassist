@@ -3,12 +3,11 @@ assemblers:
     kmers: "27"
   abyss:
     kmers: "27"
-  flye:
-    seqType: "nano"
-    genomeSize: "5m"
 genomagic:
-  assemblers: ['abyss','megahit','flye']
+  assemblers: ['abYss', 'Megahit', 'flye']
   inputFilePath: "/test/input1.fastq"
   outputPath: "/test/output"
   threads: 2
   prep: true
+redundant:
+  field: "this is redundant data"

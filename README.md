@@ -11,8 +11,8 @@
 1. [Installation](#2-installation)
 1. [GenoMagic Usage](#3-genomagic-usage)
 1. [Architecture](#4-architecture)
-2. [Maintainers](#5-maintainers)
-1. [Feedback and bug reports](#5-feedback-and-bug-reports)
+1. [Maintainers](#5-maintainers)
+1. [Feedback and bug reports](#6-feedback-and-bug-reports)
 
 ## 1. About
 
@@ -32,7 +32,7 @@ My aim with GenoMagic is to give the biologist an application which performs gen
     ```sh
     $ git clone https://github.com/genomagic/genomagic
     ```
-2. Build the `main.go` file
+1. Build the `main.go` file
     ```sh
     $ go build main.go
     ```
@@ -51,13 +51,18 @@ assemblers:
   abyss:
     kmers: "27"
 genomagic:
+  assemblers: ['abyss','megahit','flye']
   inputFilePath: "/test/raw_sequences.fastq"
   outputPath: "/test/output"
   threads: 2
   prep: true
 ```
-
-Note: all paths used with GenoMagic have to be absolute paths (a Docker requirement).
+Notes: 
+ - all paths used with GenoMagic have to be absolute paths (a Docker requirement)
+ - the accepted assembler values are:
+1. 'abyss'
+1. 'megahit'
+1. 'flye'
 
 ### Installing Docker images through GenoMagic
 
