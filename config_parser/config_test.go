@@ -99,6 +99,25 @@ func Test_ParseConfig(t *testing.T) {
 			expectedError: nil,
 		},
 		{
+			name:     "test_process_returns_expected_config_when_assemblers_are_not_provided",
+			filePath: "test5.yaml",
+			expectedConfig: &Config{
+				Assemblers: AssemblerConfig{
+					Megahit: MegahitConfig{KMers: "27"},
+					Abyss:   AbyssConfig{KMers: "27"},
+					Flye:    FlyeConfig{},
+				},
+				GenoMagic: GenoMagicConfig{
+					Assemblers:    []string{"abYss", "Megahit", "flye"},
+					InputFilePath: "/test/input1.fastq",
+					OutputPath:    "/test/output",
+					Threads:       2,
+					Prep:          true,
+				},
+			},
+			expectedError: nil,
+		},
+		{
 			name:           "test_process_returns_error_when_invalid_file_path_to_YAML_is_provided",
 			filePath:       "",
 			expectedConfig: nil,

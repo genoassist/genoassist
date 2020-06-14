@@ -11,8 +11,8 @@
 1. [Installation](#2-installation)
 1. [GenoMagic Usage](#3-genomagic-usage)
 1. [Architecture](#4-architecture)
-2. [Maintainers](#5-maintainers)
-1. [Feedback and bug reports](#5-feedback-and-bug-reports)
+1. [Maintainers](#5-maintainers)
+1. [Feedback and bug reports](#6-feedback-and-bug-reports)
 
 ## 1. About
 
@@ -51,13 +51,15 @@ assemblers:
   abyss:
     kmers: "27"
 genomagic:
+  assemblers: ['abyss','megahit','flye']
   inputFilePath: "/test/raw_sequences.fastq"
   outputPath: "/test/output"
   threads: 2
   prep: true
 ```
-
-Note: all paths used with GenoMagic have to be absolute paths (a Docker requirement).
+Note: 
+ - all paths used with GenoMagic have to be absolute paths (a Docker requirement).
+ - values for the `assemblers` field have to be lowercase as written in [constants/util.go](https://github.com/genomagic/genomagic/blob/master/constants/util.go#L21-L31).
 
 ### Installing Docker images through GenoMagic
 
