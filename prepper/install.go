@@ -63,22 +63,25 @@ func NewPrep(config *config_parser.Config) chan error {
 			wg.Done()
 		}(availableQualityController)
 	}
-
 	wg.Wait()
+
 	return errs
 }
 
 // prep pulls and creates the container of the given docker image link
 func (p *prep) prep(d constants.Details) error {
 	if d == nil {
-		return fmt.Errorf("prep given nil AssemblerDetails")
+		return fmt.Errorf("prep given nil details")
 	}
-	reader, err := p.dockerCLI.ImagePull(p.ctx, d.GetDockerHubURL(), types.ImagePullOptions{})
+	reader, err := p.dockerCLI.ImagePull(p.ctx, d.GetDockerURL(), types.ImagePullOptions{})
 	if err != nil {
-		return fmt.Errorf("failed to pull image from DockerHub, err: %v", err)
+		return fmt.Errorf("failed to pull image from DockerHub, err: %s", err)
 	}
 	if _, err := io.Copy(os.Stdout, reader); err != nil {
-		return fmt.Errorf("failed to copy stdout to internal reader, err: %v", err)
+		return fmt.Errorf("failed to copy stdout to internal reader, err: %s", err)
+	}
+	if err := reader.Close(); err != nil {
+		return fmt.Errorf("failed to close the reader, err: %s", err)
 	}
 	return nil
 }
