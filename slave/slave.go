@@ -4,13 +4,13 @@ package slave
 
 import (
 	"fmt"
-	"github.com/genomagic/slave/components/quality_controller"
 
 	"github.com/genomagic/config_parser"
 	"github.com/genomagic/constants"
 	"github.com/genomagic/result"
 	"github.com/genomagic/slave/components/assembler"
 	"github.com/genomagic/slave/components/parser"
+	"github.com/genomagic/slave/components/quality_controller"
 )
 
 const (
@@ -46,7 +46,7 @@ func (s *slaveProcess) Process() ([]*result.Result, error) {
 	switch s.workType {
 	case Assembly:
 		for k := range constants.AvailableAssemblers {
-			if IsUserRequestedAssembler(s.config.GenoMagic.Assemblers, k) {
+			if contains(s.config.GenoMagic.Assemblers, k) {
 				assemblerWorker, err := assembler.New(k, s.config)
 				if err != nil {
 					return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
@@ -62,7 +62,7 @@ func (s *slaveProcess) Process() ([]*result.Result, error) {
 	case Parse:
 		var results []*result.Result
 		for k := range constants.AvailableAssemblers {
-			if IsUserRequestedAssembler(s.config.GenoMagic.Assemblers, k) {
+			if contains(s.config.GenoMagic.Assemblers, k) {
 				parserWorker, err := parser.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k)
 				if err != nil {
 					return nil, fmt.Errorf("failed to initialize parser worker, err: %v", err)

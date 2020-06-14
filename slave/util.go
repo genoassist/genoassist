@@ -1,17 +1,9 @@
 package slave
 
-import (
-	"fmt"
-)
-
-// StrSlice a slide of string
-type StrSlice []string
-
-// IsUserRequestedAssembler checks if list
-func IsUserRequestedAssembler(list StrSlice, a string) bool {
-	for _, b := range list {
-		if b == a {
-			fmt.Println("DEBUG: ", a)
+// contains checks if the source contains the given element
+func contains(src []string, el string) bool {
+	for _, b := range src {
+		if b == el {
 			return true
 		}
 	}
