@@ -9,11 +9,10 @@ import (
 	"os"
 	"sync"
 
-	"github.com/genomagic/config_parser"
-
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 
+	"github.com/genomagic/config_parser"
 	"github.com/genomagic/constants"
 )
 
