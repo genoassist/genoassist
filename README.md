@@ -32,7 +32,7 @@ My aim with GenoMagic is to give the biologist an application which performs gen
     ```sh
     $ git clone https://github.com/genomagic/genomagic
     ```
-2. Build the `main.go` file
+1. Build the `main.go` file
     ```sh
     $ go build main.go
     ```
@@ -57,9 +57,12 @@ genomagic:
   threads: 2
   prep: true
 ```
-Note: 
- - all paths used with GenoMagic have to be absolute paths (a Docker requirement).
- - values for the `assemblers` field have to be lowercase as written in [constants/util.go](https://github.com/genomagic/genomagic/blob/master/constants/util.go#L21-L31).
+Notes: 
+ - all paths used with GenoMagic have to be absolute paths (a Docker requirement)
+ - the accepted assembler values are:
+1. 'abyss'
+1. 'megahit'
+1. 'flye'
 
 ### Installing Docker images through GenoMagic
 
