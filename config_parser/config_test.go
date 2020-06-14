@@ -99,8 +99,8 @@ func Test_ParseConfig(t *testing.T) {
 			expectedError: nil,
 		},
 		{
-			name:     "test_process_returns_expected_config_when_assemblers_are_not_provided",
-			filePath: "test5.yaml",
+			name:     "test_process_returns_expected_config_when_assemblers_dont_follow_correct_capitalization",
+			filePath: "test6.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
 					Megahit: MegahitConfig{KMers: "27"},
