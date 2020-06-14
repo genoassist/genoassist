@@ -134,3 +134,8 @@ var (
 		},
 	}
 )
+
+// GetDockerHubURL returns the DockerHub URL of the assembler
+func (a *AssemblerDetails) GetDockerHubURL() string {
+	return a.DHubURL
+}
