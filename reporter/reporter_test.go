@@ -90,7 +90,7 @@ func TestReport_Process(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rep := New(TestAssembly, tt.result)
+			rep := NewReporter(TestAssembly, tt.result)
 			if err := rep.Process(); err != nil {
 				assert.EqualError(t, err, tt.expectedErr.Error())
 			}
