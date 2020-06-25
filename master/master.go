@@ -18,7 +18,7 @@ type masterProcess struct {
 	config *config_parser.Config
 }
 
-// New creates and returns a new master struct for the file located at the given file path
+// NewReporter creates and returns a new master struct for the file located at the given file path
 func New(config *config_parser.Config) Master {
 	return &masterProcess{
 		config: config,
@@ -47,7 +47,7 @@ func (m *masterProcess) Process() error {
 
 	var reports []reporter.Reporter
 	for _, r := range results {
-		rep := reporter.New("", r)
+		rep := reporter.NewReporter("", r)
 		if err := rep.Process(); err != nil {
 			return fmt.Errorf("failed to construct report")
 		}

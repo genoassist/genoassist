@@ -21,8 +21,8 @@ type Report struct {
 	L50 int32
 }
 
-// New returns a new instance of a Report
-func New(assemblyName string, result *result.Result) Reporter {
+// NewReporter returns a new instance of a Report that implements the Reporter interface
+func NewReporter(assemblyName string, result *result.Result) Reporter {
 	return &Report{
 		AssemblyName: assemblyName,
 		result:       result,
