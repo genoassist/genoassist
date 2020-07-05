@@ -1,5 +1,5 @@
 // slave is responsible for launching and coordinating processes such as
-// assembly and parsing for the master
+// assembly and parsing for the primary
 package slave
 
 import (
@@ -41,7 +41,7 @@ func New(config *config_parser.Config, workType ComponentWorkType) Slave {
 	}
 }
 
-// Process performs the work that's dictated by the master
+// Process performs the work that's dictated by the primary
 func (s *slaveProcess) Process() ([]*result.Result, error) {
 	switch s.workType {
 	case Assembly:

@@ -1,7 +1,7 @@
-// master is responsible for interacting with the user to take in the contigs that need to be assembled. Files
+// primary is responsible for interacting with the user to take in the contigs that need to be assembled. Files
 // that are specified by the user are passed to a slave that knows how to schedule Docker containers for all the
 // assemblers that are integrated with genomagic
-package master
+package primary
 
 import (
 	"fmt"
@@ -11,22 +11,22 @@ import (
 	"github.com/genomagic/slave"
 )
 
-// masterProcess defines the master struct, which is used to coordinate slaves and launch assembly, parsing, and
+// primaryProcess defines the primary struct, which is used to coordinate slaves and launch assembly, parsing, and
 // reporting slaves
-type masterProcess struct {
+type primaryProcess struct {
 	// config is the configuration of GenoMagic obtained through YAML config file
 	config *config_parser.Config
 }
 
-// NewReporter creates and returns a new master struct for the file located at the given file path
-func New(config *config_parser.Config) Master {
-	return &masterProcess{
+// NewReporter creates and returns a new primary struct for the file located at the given file path
+func New(config *config_parser.Config) Primary {
+	return &primaryProcess{
 		config: config,
 	}
 }
 
 // Process launches the assembly of the contigs it was created with
-func (m *masterProcess) Process() error {
+func (m *primaryProcess) Process() error {
 	if m.config.GenoMagic.QualityControl {
 		qualityControlSlave := slave.New(m.config, slave.QualityControl)
 		if _, err := qualityControlSlave.Process(); err != nil {

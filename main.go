@@ -1,5 +1,5 @@
 // main package, and file, is responsible for taking in users arguments, parsing them, and
-// calling on the master to perform the work that genomagic does
+// calling on the primary to perform the work that genomagic does
 package main
 
 import (
@@ -7,8 +7,8 @@ import (
 	"fmt"
 
 	"github.com/genomagic/config_parser"
-	"github.com/genomagic/master"
 	"github.com/genomagic/prepper"
+	"github.com/genomagic/primary"
 )
 
 const (
@@ -46,8 +46,8 @@ func main() {
 		}
 	}
 
-	mst := master.New(cfg)
-	if err := mst.Process(); err != nil {
-		panic(fmt.Sprintf("failed to run master process, err: %v", err))
+	prim := primary.New(cfg)
+	if err := prim.Process(); err != nil {
+		panic(fmt.Sprintf("failed to run primary process, err: %v", err))
 	}
 }
