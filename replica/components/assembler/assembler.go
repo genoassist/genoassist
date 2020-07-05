@@ -16,8 +16,8 @@ import (
 
 	"github.com/genomagic/config_parser"
 	"github.com/genomagic/constants"
+	"github.com/genomagic/replica/components"
 	"github.com/genomagic/result"
-	"github.com/genomagic/slave/components"
 )
 
 // assemblyProcess is the structure of the assembler process

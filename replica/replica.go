@@ -1,48 +1,48 @@
-// slave is responsible for launching and coordinating processes such as
-// assembly and parsing for the master
-package slave
+// replica is responsible for launching and coordinating processes such as
+// assembly and parsing for the primary
+package replica
 
 import (
 	"fmt"
 
 	"github.com/genomagic/config_parser"
 	"github.com/genomagic/constants"
+	"github.com/genomagic/replica/components/assembler"
+	"github.com/genomagic/replica/components/parser"
+	"github.com/genomagic/replica/components/quality_controller"
 	"github.com/genomagic/result"
-	"github.com/genomagic/slave/components/assembler"
-	"github.com/genomagic/slave/components/parser"
-	"github.com/genomagic/slave/components/quality_controller"
 )
 
 const (
-	// Assembly tells the slave that it needs to launch an assembly process
+	// Assembly tells the replica that it needs to launch an assembly process
 	Assembly = "assembly"
-	// Parse tells the slave that it needs to launch a parse process
+	// Parse tells the replica that it needs to launch a parse process
 	Parse = "parse"
-	// QualityControl tells the slave that it needs to launch a quality control process
+	// QualityControl tells the replica that it needs to launch a quality control process
 	QualityControl = "quality_control"
 )
 
 // the type of component that runs on a specific set of assembly files
 type ComponentWorkType string
 
-// slaveProcess defines the structure of a slave
-type slaveProcess struct {
+// replicaProcess defines the structure of a replica
+type replicaProcess struct {
 	// config is the GenoMagic configuration that is passed through YAML config file
 	config *config_parser.Config
-	// workType is the type of work that has to be performed by the slave
+	// workType is the type of work that has to be performed by the replica
 	workType ComponentWorkType
 }
 
-// New creates and returns a new instance of a slave
-func New(config *config_parser.Config, workType ComponentWorkType) Slave {
-	return &slaveProcess{
+// New creates and returns a new instance of a replica
+func New(config *config_parser.Config, workType ComponentWorkType) Replica {
+	return &replicaProcess{
 		config:   config,
 		workType: workType,
 	}
 }
 
-// Process performs the work that's dictated by the master
-func (s *slaveProcess) Process() ([]*result.Result, error) {
+// Process performs the work that's dictated by the primary
+func (s *replicaProcess) Process() ([]*result.Result, error) {
 	switch s.workType {
 	case Assembly:
 		for k := range constants.AvailableAssemblers {
@@ -54,7 +54,7 @@ func (s *slaveProcess) Process() ([]*result.Result, error) {
 
 				_, err = assemblerWorker.Process()
 				if err != nil {
-					return nil, fmt.Errorf("assembler slave process failed, err: %v", err)
+					return nil, fmt.Errorf("assembler replica process failed, err: %v", err)
 				}
 			}
 		}
@@ -69,7 +69,7 @@ func (s *slaveProcess) Process() ([]*result.Result, error) {
 				}
 				res, err := parserWorker.Process()
 				if err != nil {
-					return nil, fmt.Errorf("parser slave process failed, err: %v", err)
+					return nil, fmt.Errorf("parser replica process failed, err: %v", err)
 				}
 				results = append(results, res)
 			}
@@ -78,12 +78,12 @@ func (s *slaveProcess) Process() ([]*result.Result, error) {
 	case QualityControl:
 		qualityController := quality_controller.NewQualityController(s.config)
 		if newSeqFilePath, err := qualityController.Process(); err != nil {
-			return nil, fmt.Errorf("quality control slave failed, err: %s", err)
+			return nil, fmt.Errorf("quality control replica failed, err: %s", err)
 		} else {
 			s.config.GenoMagic.InputFilePath = newSeqFilePath
 		}
 		return nil, nil
 	default:
-		return nil, fmt.Errorf("slave presented with unknown operation")
+		return nil, fmt.Errorf("replica presented with unknown operation")
 	}
 }

@@ -1,4 +1,4 @@
-package slave
+package replica
 
 // contains checks if the source contains the given element
 func contains(src []string, el string) bool {
