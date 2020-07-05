@@ -1,5 +1,5 @@
 // primary is responsible for interacting with the user to take in the contigs that need to be assembled. Files
-// that are specified by the user are passed to a slave that knows how to schedule Docker containers for all the
+// that are specified by the user are passed to a replica that knows how to schedule Docker containers for all the
 // assemblers that are integrated with genomagic
 package primary
 
@@ -7,12 +7,12 @@ import (
 	"fmt"
 
 	"github.com/genomagic/config_parser"
+	"github.com/genomagic/replica"
 	"github.com/genomagic/reporter"
-	"github.com/genomagic/slave"
 )
 
-// primaryProcess defines the primary struct, which is used to coordinate slaves and launch assembly, parsing, and
-// reporting slaves
+// primaryProcess defines the primary struct, which is used to coordinate replicas and launch assembly, parsing, and
+// reporting replicas
 type primaryProcess struct {
 	// config is the configuration of GenoMagic obtained through YAML config file
 	config *config_parser.Config
@@ -28,21 +28,21 @@ func New(config *config_parser.Config) Primary {
 // Process launches the assembly of the contigs it was created with
 func (m *primaryProcess) Process() error {
 	if m.config.GenoMagic.QualityControl {
-		qualityControlSlave := slave.New(m.config, slave.QualityControl)
-		if _, err := qualityControlSlave.Process(); err != nil {
-			return fmt.Errorf("slave quality control process failed, err: %s", err)
+		qualityControlReplica := replica.New(m.config, replica.QualityControl)
+		if _, err := qualityControlReplica.Process(); err != nil {
+			return fmt.Errorf("replica quality control process failed, err: %s", err)
 		}
 	}
 
-	assemblySlave := slave.New(m.config, slave.Assembly)
-	if _, err := assemblySlave.Process(); err != nil {
-		return fmt.Errorf("slave assembly process failed with err: %s", err)
+	assemblyReplica := replica.New(m.config, replica.Assembly)
+	if _, err := assemblyReplica.Process(); err != nil {
+		return fmt.Errorf("replica assembly process failed with err: %s", err)
 	}
 
-	parserSlave := slave.New(m.config, slave.Parse)
-	results, err := parserSlave.Process()
+	parseReplica := replica.New(m.config, replica.Parse)
+	results, err := parseReplica.Process()
 	if err != nil {
-		return fmt.Errorf("slave parsing process failed with err: %s", err)
+		return fmt.Errorf("replica parsing process failed with err: %s", err)
 	}
 
 	var reports []reporter.Reporter

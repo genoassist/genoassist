@@ -77,7 +77,7 @@ runs.
 
 ## 4. Architecture
 
-The overall model follows the primary/slave architecture. The primary is what users interact with. 
+The overall model follows the primary/replica architecture. The primary is what users interact with. 
 The users specify the files containing the contigs and what type of read they have e.g Illumina. 
 The primary takes the user's input and schedules assembly, parsing of results, and reporting, in that order. 
 

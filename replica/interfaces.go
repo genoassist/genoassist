@@ -1,9 +1,9 @@
-package slave
+package replica
 
 import "github.com/genomagic/result"
 
-// Slave defines the operations that are accessible on a slave
-type Slave interface {
+// Replica defines the operations that are accessible on a replica
+type Replica interface {
 	// Process performs the work that's dictated by the primary
 	Process() ([]*result.Result, error)
 }

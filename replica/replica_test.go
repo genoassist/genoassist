@@ -1,4 +1,4 @@
-package slave
+package replica
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/genomagic/config_parser"
 )
 
-func TestSlaveProcess(t *testing.T) {
+func TestReplicaProcess(t *testing.T) {
 	tests := []struct {
 		name        string
 		config      *config_parser.Config
@@ -42,7 +42,7 @@ func TestSlaveProcess(t *testing.T) {
 				},
 			},
 			workType:    Assembly,
-			expectedErr: fmt.Errorf("slave process failed"),
+			expectedErr: fmt.Errorf("replica process failed"),
 		},
 		{
 			name: "test_process_returns_nil_on_success",
