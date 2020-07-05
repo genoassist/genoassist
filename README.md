@@ -16,10 +16,12 @@
 
 ## 1. About
 
-One of the challenges that biologists and bioinformaticians face during genome assembly projects is choosing from the plethora of assembly softwares. This is highly time consuming as there are various parameters for each of the assemblers that the user needs to learn about. And even if the user learns about these various parameters for each assembler; there is still the tedious job of running various assemblers, and comparing the statistics to identify the best assembly.
-
-My aim with GenoMagic is to give the biologist an application which performs genome assemblies with minimal configuration required, which visualizes the comparative statistics for the chosen assemblers. This app enables the bioinformaticians to alter the default parameters of their choosing, making it applicable for users with diverse experiences and skills.
-
+One of the challenges that computational biologists face during genome assembly projects is choosing 
+from the plethora of assembly software. This is highly time-consuming as there are various parameters for each of the 
+assemblers that the user needs to learn about. In addition, even if users learn about the various parameters of each 
+assembler, various assemblers still need to be run, and statistical results need to be compared to identify the best 
+assembly. GenoMagic helps computational biologists by centralizing all the assemblers, their parameters, running 
+environments, and results reporting in a single place. 
  
 ## 2. Installation
 
@@ -75,9 +77,9 @@ runs.
 
 ## 4. Architecture
 
-The overall model follows the master/slave architecture. The master is what users interact with. 
+The overall model follows the primary/slave architecture. The primary is what users interact with. 
 The users specify the files containing the contigs and what type of read they have e.g Illumina. 
-The master takes the user's input and schedules assembly, parsing of results, and reporting, in that order. 
+The primary takes the user's input and schedules assembly, parsing of results, and reporting, in that order. 
 
 ![](./architecture.png)
 
