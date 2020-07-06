@@ -75,6 +75,10 @@ If you are encountering problems with Docker, make sure that:
 in the YAML configuration. This will install the necessary Docker images for the containers that GenoMagic 
 runs.
 
+### Sample assembly result visualization
+
+![](example_viz.png)
+
 ## 4. Architecture
 
 The overall model follows the primary/replica architecture. The primary is what users interact with. 
