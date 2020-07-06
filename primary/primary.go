@@ -7,11 +7,10 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/genomagic/visualizer"
-
 	"github.com/genomagic/config_parser"
 	"github.com/genomagic/replica"
 	"github.com/genomagic/reporter"
+	"github.com/genomagic/visualizer"
 )
 
 // primaryProcess defines the primary struct, which is used to coordinate replicas and launch assembly, parsing, and
