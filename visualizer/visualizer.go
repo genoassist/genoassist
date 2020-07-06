@@ -3,6 +3,7 @@ package visualizer
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/go-echarts/go-echarts/charts"
 
@@ -28,9 +29,11 @@ func NewVisualizer(reports []reporter.Report, name string) Visualizer {
 // Process creates the plots associated with reporting the N50 and L50 scores for assembly reports
 func (v *visualize) Process() error {
 	if v.reports == nil || len(v.reports) == 0 {
-		return fmt.Errorf("visualizer has no reports to visualize")
+		return fmt.Errorf("visualizer process cannot create a visualizer with no reports")
 	}
-
+	if !strings.Contains(v.name, ".html") {
+		return fmt.Errorf("visualizer process cannot take in a name without an .html extension")
+	}
 	var err error
 	names := make([]string, len(v.reports))
 	l50s := make([]int32, len(v.reports))

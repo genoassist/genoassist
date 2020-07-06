@@ -33,7 +33,7 @@ func TestVisualize_Process(t *testing.T) {
 			testName:    "test_returns_error_on_nil_reports",
 			vizName:     "test2.html",
 			reports:     nil,
-			expectedErr: fmt.Errorf("visualizer has no reports to visualize"),
+			expectedErr: fmt.Errorf("visualizer process cannot create a visualizer with no reports"),
 		},
 		{
 			testName: "test_visualizes_single_report",
