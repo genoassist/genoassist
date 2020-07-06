@@ -35,3 +35,7 @@ jobs:
             # Build the project to make sure an executable can be created
             - name: Run build
               run: go build -o magic ./
+
+            # Add the necessary dependencies in the vendor folder
+            - name: Add dependencies
+              run: go mod vendor

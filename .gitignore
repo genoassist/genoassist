@@ -22,3 +22,6 @@ genomagic
 
 # Ignore IDE configurations
 .idea
+
+# Ignore dependencies as building the vendor folder is part of GitHub Actions
+vendor
