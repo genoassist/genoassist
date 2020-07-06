@@ -8,4 +8,6 @@ type Reporter interface {
 	GetL50() (int32, error)
 	// GetN50 returns the N50 score of the Report contigs. An error is returned if the reporter process has not been executed
 	GetN50() (int32, error)
+	// GetAssemblyName returns the name of the reporter
+	GetAssemblyName() string
 }
