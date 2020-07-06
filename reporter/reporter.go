@@ -13,8 +13,8 @@ type Report struct {
 	AssemblyName string
 	// result represents a collection of assembly results, which includes the assembly contigs
 	result *result.Result
-	// processed is an indicator that represents whether the reporter process has been executed
-	processed bool
+	// Processed is an indicator that represents whether the reporter process has been executed
+	Processed bool
 	// N50 score of the assembly
 	N50 int32
 	// L50 score of the assembly
@@ -26,7 +26,7 @@ func NewReporter(assemblyName string, result *result.Result) Reporter {
 	return &Report{
 		AssemblyName: assemblyName,
 		result:       result,
-		processed:    false,
+		Processed:    false,
 	}
 }
 
@@ -42,13 +42,13 @@ func (r *Report) Process() error {
 	} else {
 		r.L50 = v
 	}
-	r.processed = true
+	r.Processed = true
 	return nil
 }
 
 // GetN50 returns the computed N50 value stored on the Report. An error is returned if the reporter process has not been executed
 func (r *Report) GetN50() (int32, error) {
-	if !r.processed {
+	if !r.Processed {
 		return 0, fmt.Errorf("the reporter process has not been executed")
 	}
 	return r.N50, nil
@@ -56,7 +56,7 @@ func (r *Report) GetN50() (int32, error) {
 
 // GetL50 returns the computed L50 value stored on the Report. An error is returned if the reporter process has not been executed
 func (r *Report) GetL50() (int32, error) {
-	if !r.processed {
+	if !r.Processed {
 		return 0, fmt.Errorf("the reporter process has not been executed")
 	}
 	return r.L50, nil
