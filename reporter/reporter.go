@@ -61,3 +61,8 @@ func (r *Report) GetL50() (int32, error) {
 	}
 	return r.L50, nil
 }
+
+// GetAssemblyName returns the reporter assembly name
+func (r *Report) GetAssemblyName() string {
+	return r.AssemblyName
+}

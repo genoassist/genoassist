@@ -5,6 +5,9 @@ package primary
 
 import (
 	"fmt"
+	"path"
+
+	"github.com/genomagic/visualizer"
 
 	"github.com/genomagic/config_parser"
 	"github.com/genomagic/replica"
@@ -36,22 +39,28 @@ func (m *primaryProcess) Process() error {
 
 	assemblyReplica := replica.New(m.config, replica.Assembly)
 	if _, err := assemblyReplica.Process(); err != nil {
-		return fmt.Errorf("replica assembly process failed with err: %s", err)
+		return fmt.Errorf("replica assembly process failed, err: %s", err)
 	}
 
 	parseReplica := replica.New(m.config, replica.Parse)
 	results, err := parseReplica.Process()
 	if err != nil {
-		return fmt.Errorf("replica parsing process failed with err: %s", err)
+		return fmt.Errorf("replica parsing process failed, err: %s", err)
 	}
 
 	var reports []reporter.Reporter
 	for _, r := range results {
-		rep := reporter.NewReporter("", r)
+		rep := reporter.NewReporter(r.AssemblyName, r)
 		if err := rep.Process(); err != nil {
-			return fmt.Errorf("failed to construct report")
+			return fmt.Errorf("replica failed to construct report, err: %s", err)
 		}
 		reports = append(reports, rep)
+	}
+
+	vizOutPath := path.Join(m.config.GenoMagic.OutputPath, "report.html")
+	viz := visualizer.NewVisualizer(reports, vizOutPath)
+	if err := viz.Process(); err != nil {
+		return fmt.Errorf("replica failed to visualize the reports, err: %s", err)
 	}
 	return nil
 }
