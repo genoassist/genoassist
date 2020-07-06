@@ -2,6 +2,7 @@ package visualizer
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -80,6 +81,11 @@ func TestVisualize_Process(t *testing.T) {
 			err := viz.Process()
 			if tt.expectedErr != nil {
 				assert.EqualError(t, err, tt.expectedErr.Error())
+			} else {
+				// if there's no error, a chart should be created by Process(). The chart can be removed at this step.
+				// Comment out os.Remove while testing the visualizer package locally in order to not delete generated
+				// visualizations
+				_ = os.Remove(tt.vizName)
 			}
 		})
 	}
