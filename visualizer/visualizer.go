@@ -1,6 +1,7 @@
 package visualizer
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/go-echarts/go-echarts/charts"
@@ -12,18 +13,24 @@ type (
 	// visualize implements the Visualizer interface for visualizing assembly reports
 	visualize struct {
 		reports []reporter.Report // the collection of reports to visualize the scores of
+		name    string            // the testName of the file to save the report to
 	}
 )
 
 // NewVisualizer creates and returns a new instance of a struct that implements the Visualizer interface
-func NewVisualizer(reports []reporter.Report) Visualizer {
+func NewVisualizer(reports []reporter.Report, name string) Visualizer {
 	return &visualize{
 		reports: reports,
+		name:    name,
 	}
 }
 
 // Process creates the plots associated with reporting the N50 and L50 scores for assembly reports
 func (v *visualize) Process() error {
+	if v.reports == nil || len(v.reports) == 0 {
+		return fmt.Errorf("visualizer has no reports to visualize")
+	}
+
 	var err error
 	names := make([]string, len(v.reports))
 	l50s := make([]int32, len(v.reports))
@@ -44,7 +51,7 @@ func (v *visualize) Process() error {
 	bar.AddXAxis(names).
 		AddYAxis("N50", l50s).
 		AddYAxis("L50", n50s)
-	if f, err := os.Create("bar.html"); err != nil {
+	if f, err := os.Create(v.name); err != nil {
 		return err
 	} else {
 		return bar.Render(f)
