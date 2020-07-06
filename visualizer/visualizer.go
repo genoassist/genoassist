@@ -13,13 +13,13 @@ import (
 type (
 	// visualize implements the Visualizer interface for visualizing assembly reports
 	visualize struct {
-		reports []reporter.Report // the collection of reports to visualize the scores of
-		name    string            // the testName of the file to save the report to
+		reports []reporter.Reporter // the collection of reports to visualize the scores of
+		name    string              // the testName of the file to save the report to
 	}
 )
 
 // NewVisualizer creates and returns a new instance of a struct that implements the Visualizer interface
-func NewVisualizer(reports []reporter.Report, name string) Visualizer {
+func NewVisualizer(reports []reporter.Reporter, name string) Visualizer {
 	return &visualize{
 		reports: reports,
 		name:    name,
@@ -39,7 +39,7 @@ func (v *visualize) Process() error {
 	l50s := make([]int32, len(v.reports))
 	n50s := make([]int32, len(v.reports))
 	for i, n := range v.reports {
-		names[i] = n.AssemblyName
+		names[i] = n.GetAssemblyName()
 		if l50s[i], err = n.GetL50(); err != nil {
 			return err
 		}

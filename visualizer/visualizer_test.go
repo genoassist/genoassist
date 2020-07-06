@@ -13,14 +13,14 @@ func TestVisualize_Process(t *testing.T) {
 	tests := []struct {
 		testName    string
 		vizName     string
-		reports     []reporter.Report
+		reports     []reporter.Reporter
 		expectedErr error
 	}{
 		{
 			testName: "test_returns_error_on_unprocessed_report",
 			vizName:  "test1.html",
-			reports: []reporter.Report{
-				{
+			reports: []reporter.Reporter{
+				&reporter.Report{
 					AssemblyName: "Assembly 1",
 					Processed:    false,
 					N50:          0,
@@ -38,8 +38,8 @@ func TestVisualize_Process(t *testing.T) {
 		{
 			testName: "test_visualizes_single_report",
 			vizName:  "test3.html",
-			reports: []reporter.Report{
-				{
+			reports: []reporter.Reporter{
+				&reporter.Report{
 					AssemblyName: "Assembly 1",
 					Processed:    true,
 					N50:          10,
@@ -51,20 +51,20 @@ func TestVisualize_Process(t *testing.T) {
 		{
 			testName: "test_visualizes_multiple_reports",
 			vizName:  "test4.html",
-			reports: []reporter.Report{
-				{
+			reports: []reporter.Reporter{
+				&reporter.Report{
 					AssemblyName: "Assembly 1",
 					Processed:    true,
 					N50:          10,
 					L50:          11,
 				},
-				{
+				&reporter.Report{
 					AssemblyName: "Assembly 2",
 					Processed:    true,
 					N50:          15,
 					L50:          16,
 				},
-				{
+				&reporter.Report{
 					AssemblyName: "Assembly 3",
 					Processed:    true,
 					N50:          20,
