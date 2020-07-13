@@ -1,7 +1,7 @@
-<p align="center">
-    <img src="https://user-images.githubusercontent.com/19979068/77257398-9cedfe80-6c39-11ea-890a-9167ffd1b374.png" alt="">
-    <br /><i>An all-encompassing Bioinformatics tool for genome assembly and annotation projects</i><br>
-</p>
+<div align="center">
+    <h1>GenoAssist</h1>
+    <br /><i>An all-encompassing bioinformatics tool for genome assembly and annotation projects</i><br>
+</div>
 
 ---
 
@@ -9,7 +9,7 @@
 
 1. [About](#1-about) </br>
 1. [Installation](#2-installation)
-1. [GenoMagic Usage](#3-genomagic-usage)
+1. [GenoAssist Usage](#3-genoassist-usage)
 1. [Architecture](#4-architecture)
 1. [Maintainers](#5-maintainers)
 1. [Feedback and bug reports](#6-feedback-and-bug-reports)
@@ -20,19 +20,19 @@ One of the challenges that computational biologists face during genome assembly 
 from the plethora of assembly software. This is highly time-consuming as there are various parameters for each of the 
 assemblers that the user needs to learn about. In addition, even if users learn about the various parameters of each 
 assembler, various assemblers still need to be run, and statistical results need to be compared to identify the best 
-assembly. GenoMagic helps computational biologists by centralizing all the assemblers, their parameters, running 
+assembly. GenoAssist helps computational biologists by centralizing all the assemblers, their parameters, running 
 environments, and results reporting in a single place. 
  
 ## 2. Installation
 
 1. You can either use go (will be added to `$GOPATH/`):
     ```sh
-    $ go get -u github.com/genomagic
+    $ go get -u github.com/genoassist
     ```
     
     Or clone the repository:  
     ```sh
-    $ git clone https://github.com/genomagic/genomagic
+    $ git clone https://github.com/genoassist/genoassist
     ```
 1. Build the `main.go` file
     ```sh
@@ -41,9 +41,9 @@ environments, and results reporting in a single place.
 
 If you are missing packages, run `go mod vendor` to collect the necessary packages
 
-## 3. GenoMagic usage
+## 3. GenoAssist usage
 
-GenoMagic only requires a YAML file that contains the configuration it should use to run its processes. A template can 
+GenoAssist only requires a YAML file that contains the configuration it should use to run its processes. A template can 
 be found in this repository. For convenience, here's an example specification:
 
 ```yaml
@@ -52,7 +52,7 @@ assemblers:
     kmers: "27"
   abyss:
     kmers: "27"
-genomagic:
+genoassist:
   assemblers: ['abyss','megahit','flye']
   inputFilePath: "/test/raw_sequences.fastq"
   outputPath: "/test/output"
@@ -61,18 +61,18 @@ genomagic:
   qualityControl: true
 ```
 Notes: 
- - all paths used with GenoMagic have to be absolute paths (a Docker requirement)
+ - all paths used with GenoAssist have to be absolute paths (a Docker requirement)
  - the accepted assembler values are:
 1. 'abyss'
 1. 'megahit'
 1. 'flye'
 
-### Installing Docker images through GenoMagic
+### Installing Docker images through GenoAssist
 
 If you are encountering problems with Docker, make sure that:
 1. The Docker daemon is running in the background
-1. You have the necessary Docker images, which can be installed via GenoMagic specifying `prep: true` under `genomagic`
-in the YAML configuration. This will install the necessary Docker images for the containers that GenoMagic 
+1. You have the necessary Docker images, which can be installed via GenoAssist specifying `prep: true` under `genoassist`
+in the YAML configuration. This will install the necessary Docker images for the containers that GenoAssist 
 runs.
 
 ### Sample assembly result visualization
@@ -93,7 +93,7 @@ The primary takes the user's input and schedules assembly, parsing of results, a
 [Flaviu Vadan](https://github.com/flaviuvadan)
 
 Feel free to contact any of the maintainers if you would like to be an active 
-maintainer and contributor to GenoMagic! If you would like to contribute only,
+maintainer and contributor to GenoAssist! If you would like to contribute only,
 you are encouraged to grab an issue and submit a pull request with proposed
 changes for review! 
 

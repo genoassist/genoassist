@@ -3,7 +3,7 @@ package result
 
 import "github.com/biogo/biogo/seq"
 
-// Result represents the result that the parser function returns and is used by reporting component of genomagic
+// Result represents the result that the parser function returns and is used by reporting component of genoassist
 type Result struct {
 	// name of the assembly performed to obtain the contigs
 	AssemblyName string

@@ -2,11 +2,11 @@
 package constants
 
 const (
-	// Canu is the name of the program GenoMagic uses to perform error correction
+	// Canu is the name of the program GenoAssist uses to perform error correction
 	Canu          = "canu"
 	CanuDockerURL = dockerURL + "/greatfireball/canu" // https://github.com/greatfireball/ime_canu"
 
-	// Porechop is the name of the program GenoMagic uses to perform adapter trimming
+	// Porechop is the name of the program GenoAssist uses to perform adapter trimming
 	Porechop          = "porechop"
 	PorechopDockerURL = dockerURL + "/replikation/porechop" // https://github.com/rrwick/porechop"
 )

@@ -11,9 +11,9 @@ import (
 	"github.com/biogo/biogo/seq"
 	"github.com/biogo/biogo/seq/linear"
 
-	"github.com/genomagic/constants"
-	"github.com/genomagic/replica/components"
-	"github.com/genomagic/result"
+	"github.com/genoassist/constants"
+	"github.com/genoassist/replica/components"
+	"github.com/genoassist/result"
 )
 
 // structure of the parser

@@ -3,7 +3,7 @@ assemblers:
     kmers: "27"
   abyss:
     kmers: "27"
-genomagic:
+genoassist:
   inputFilePath: "/test/input1.fastq"
   outputPath: "/test/output"
   threads: 2

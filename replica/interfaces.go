@@ -1,6 +1,6 @@
 package replica
 
-import "github.com/genomagic/result"
+import "github.com/genoassist/result"
 
 // Replica defines the operations that are accessible on a replica
 type Replica interface {

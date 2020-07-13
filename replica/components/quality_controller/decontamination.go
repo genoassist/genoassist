@@ -5,7 +5,7 @@ import (
 
 	"github.com/docker/docker/client"
 
-	"github.com/genomagic/config_parser"
+	"github.com/genoassist/config_parser"
 )
 
 // decontamination is the representation of the decontamination process
@@ -14,7 +14,7 @@ type decontamination struct {
 	ctx context.Context
 	// dockerCLI is used for launching a Docker container that perform adapter trimming
 	dockerCLI *client.Client
-	// config is the GenoMagic global configuration
+	// config is the GenoAssist global configuration
 	config *config_parser.Config
 	// toDecontaminate represents the path to the file to decontaminate
 	toDecontaminate string

@@ -6,12 +6,12 @@ import (
 
 	"github.com/docker/docker/client"
 
-	"github.com/genomagic/config_parser"
+	"github.com/genoassist/config_parser"
 )
 
 // qualityController is the struct representation of the quality control process
 type qualityController struct {
-	// config represents the GenoMagic configuration
+	// config represents the GenoAssist configuration
 	config *config_parser.Config
 }
 

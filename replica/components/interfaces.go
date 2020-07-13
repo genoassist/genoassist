@@ -1,7 +1,7 @@
 // defines interfaces that have to be satisfied by components
 package components
 
-import "github.com/genomagic/result"
+import "github.com/genoassist/result"
 
 // Component defines the operations that apply to replica components such as assemblers and parsers
 type Component interface {

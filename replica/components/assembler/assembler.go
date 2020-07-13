@@ -14,10 +14,10 @@ import (
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
 
-	"github.com/genomagic/config_parser"
-	"github.com/genomagic/constants"
-	"github.com/genomagic/replica/components"
-	"github.com/genomagic/result"
+	"github.com/genoassist/config_parser"
+	"github.com/genoassist/constants"
+	"github.com/genoassist/replica/components"
+	"github.com/genoassist/result"
 )
 
 // assemblyProcess is the structure of the assembler process
@@ -27,7 +27,7 @@ type assemblyProcess struct {
 	outPath       string                // path to the directory where results are stored
 	dClient       *client.Client        // the Docker client the assembler will use to spin up containers
 	dImageID      string                // the image ID of the struct assembler
-	config        *config_parser.Config // the GenoMagic configuration as passed through YAML config file
+	config        *config_parser.Config // the GenoAssist configuration as passed through YAML config file
 	ctx           context.Context       // context of requests performed to the Docker daemon
 }
 
@@ -39,8 +39,8 @@ func New(am string, cfg *config_parser.Config) (components.Component, error) {
 
 	a := &assemblyProcess{
 		assemblerName: am,
-		filePath:      cfg.GenoMagic.InputFilePath,
-		outPath:       cfg.GenoMagic.OutputPath,
+		filePath:      cfg.GenoAssist.InputFilePath,
+		outPath:       cfg.GenoAssist.OutputPath,
 		config:        cfg,
 		ctx:           context.Background(),
 	}

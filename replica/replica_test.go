@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/genomagic/config_parser"
+	"github.com/genoassist/config_parser"
 )
 
 func TestReplicaProcess(t *testing.T) {
@@ -20,7 +20,7 @@ func TestReplicaProcess(t *testing.T) {
 			name: "test_process_returns_err_on_unrecognized_work_type",
 			config: &config_parser.Config{
 				Assemblers: config_parser.AssemblerConfig{},
-				GenoMagic: config_parser.GenoMagicConfig{
+				GenoAssist: config_parser.GenoAssistConfig{
 					InputFilePath: "in",
 					OutputPath:    "out",
 					Threads:       0,
@@ -34,7 +34,7 @@ func TestReplicaProcess(t *testing.T) {
 			name: "test_process_fails_when_worker_process_fails",
 			config: &config_parser.Config{
 				Assemblers: config_parser.AssemblerConfig{},
-				GenoMagic: config_parser.GenoMagicConfig{
+				GenoAssist: config_parser.GenoAssistConfig{
 					InputFilePath: "in",
 					OutputPath:    "out",
 					Threads:       0,
@@ -48,7 +48,7 @@ func TestReplicaProcess(t *testing.T) {
 			name: "test_process_returns_nil_on_success",
 			config: &config_parser.Config{
 				Assemblers: config_parser.AssemblerConfig{},
-				GenoMagic: config_parser.GenoMagicConfig{
+				GenoAssist: config_parser.GenoAssistConfig{
 					InputFilePath: "in",
 					OutputPath:    "out",
 					Threads:       0,

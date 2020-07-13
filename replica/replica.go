@@ -5,12 +5,12 @@ package replica
 import (
 	"fmt"
 
-	"github.com/genomagic/config_parser"
-	"github.com/genomagic/constants"
-	"github.com/genomagic/replica/components/assembler"
-	"github.com/genomagic/replica/components/parser"
-	"github.com/genomagic/replica/components/quality_controller"
-	"github.com/genomagic/result"
+	"github.com/genoassist/config_parser"
+	"github.com/genoassist/constants"
+	"github.com/genoassist/replica/components/assembler"
+	"github.com/genoassist/replica/components/parser"
+	"github.com/genoassist/replica/components/quality_controller"
+	"github.com/genoassist/result"
 )
 
 const (
@@ -27,7 +27,7 @@ type ComponentWorkType string
 
 // replicaProcess defines the structure of a replica
 type replicaProcess struct {
-	// config is the GenoMagic configuration that is passed through YAML config file
+	// config is the GenoAssist configuration that is passed through YAML config file
 	config *config_parser.Config
 	// workType is the type of work that has to be performed by the replica
 	workType ComponentWorkType
@@ -46,7 +46,7 @@ func (s *replicaProcess) Process() ([]*result.Result, error) {
 	switch s.workType {
 	case Assembly:
 		for k := range constants.AvailableAssemblers {
-			if contains(s.config.GenoMagic.Assemblers, k) {
+			if contains(s.config.GenoAssist.Assemblers, k) {
 				assemblerWorker, err := assembler.New(k, s.config)
 				if err != nil {
 					return nil, fmt.Errorf("failed to initialize assembler worker, err %v", err)
@@ -62,8 +62,8 @@ func (s *replicaProcess) Process() ([]*result.Result, error) {
 	case Parse:
 		var results []*result.Result
 		for k := range constants.AvailableAssemblers {
-			if contains(s.config.GenoMagic.Assemblers, k) {
-				parserWorker, err := parser.New(s.config.GenoMagic.InputFilePath, s.config.GenoMagic.OutputPath, k)
+			if contains(s.config.GenoAssist.Assemblers, k) {
+				parserWorker, err := parser.New(s.config.GenoAssist.InputFilePath, s.config.GenoAssist.OutputPath, k)
 				if err != nil {
 					return nil, fmt.Errorf("failed to initialize parser worker, err: %v", err)
 				}
@@ -80,7 +80,7 @@ func (s *replicaProcess) Process() ([]*result.Result, error) {
 		if newSeqFilePath, err := qualityController.Process(); err != nil {
 			return nil, fmt.Errorf("quality control replica failed, err: %s", err)
 		} else {
-			s.config.GenoMagic.InputFilePath = newSeqFilePath
+			s.config.GenoAssist.InputFilePath = newSeqFilePath
 		}
 		return nil, nil
 	default:

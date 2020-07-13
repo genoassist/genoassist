@@ -13,7 +13,7 @@ import (
 	"github.com/biogo/biogo/seq/linear"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/genomagic/result"
+	"github.com/genoassist/result"
 )
 
 const (

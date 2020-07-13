@@ -12,15 +12,15 @@ import (
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
 
-	"github.com/genomagic/config_parser"
-	"github.com/genomagic/constants"
+	"github.com/genoassist/config_parser"
+	"github.com/genoassist/constants"
 )
 
 // adapterTrimming is the struct representation of the adapter trimming process
 type adapterTrimming struct {
 	// dockerCLI is used for launching a Docker container that perform adapter trimming
 	dockerCLI *client.Client
-	// config is the GenoMagic global configuration
+	// config is the GenoAssist global configuration
 	config *config_parser.Config
 	// the context of the process
 	ctx context.Context
@@ -59,12 +59,12 @@ func (a *adapterTrimming) Process() (string, error) {
 		Mounts: []mount.Mount{
 			{ // Binding the input raw sequence file provided by the user
 				Type:   mount.TypeBind,
-				Source: a.config.GenoMagic.InputFilePath,
+				Source: a.config.GenoAssist.InputFilePath,
 				Target: constants.RawSeqIn,
 			},
 			{ // Binding the output directory path provided by the user for saving trimmed file in.
 				Type:   mount.TypeBind,
-				Source: a.config.GenoMagic.OutputPath,
+				Source: a.config.GenoAssist.OutputPath,
 				Target: constants.BaseOut,
 			},
 		},
@@ -96,6 +96,6 @@ func (a *adapterTrimming) Process() (string, error) {
 	if _, err := io.Copy(os.Stdout, out); err != nil {
 		return "", fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
-	return path.Join(a.config.GenoMagic.OutputPath, trimmedOutputFilename), nil
+	return path.Join(a.config.GenoAssist.OutputPath, trimmedOutputFilename), nil
 
 }

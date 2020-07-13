@@ -3,7 +3,7 @@ assemblers:
     kmers: "27"
   abyss:
     kmers: "27"
-genomagic:
+genoassist:
   assemblers: ['abYss', 'Megahit', 'flye']
   inputFilePath: "/test/input1.fastq"
   outputPath: "/test/output"

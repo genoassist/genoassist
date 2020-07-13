@@ -9,8 +9,8 @@ import (
 
 type (
 	Config struct {
-		Assemblers AssemblerConfig `yaml:"assemblers"`
-		GenoMagic  GenoMagicConfig `yaml:"genomagic"`
+		Assemblers AssemblerConfig  `yaml:"assemblers"`
+		GenoAssist GenoAssistConfig `yaml:"genoassist"`
 	}
 
 	AssemblerConfig struct {
@@ -19,7 +19,7 @@ type (
 		Flye    FlyeConfig    `yaml:"flye"`
 	}
 
-	GenoMagicConfig struct {
+	GenoAssistConfig struct {
 		Assemblers     []string `yaml:"assemblers,flow"`
 		InputFilePath  string   `yaml:"inputFilePath"`
 		OutputPath     string   `yaml:"outputPath"`

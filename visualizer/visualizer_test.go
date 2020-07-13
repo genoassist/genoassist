@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/genomagic/reporter"
+	"github.com/genoassist/reporter"
 )
 
 func TestVisualize_Process(t *testing.T) {

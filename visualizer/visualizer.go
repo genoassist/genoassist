@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-echarts/go-echarts/charts"
 
-	"github.com/genomagic/reporter"
+	"github.com/genoassist/reporter"
 )
 
 type (

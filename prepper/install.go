@@ -1,4 +1,4 @@
-// responsible for preparing GenoMagic to perform assemblies by pulling all the necessary
+// responsible for preparing GenoAssist to perform assemblies by pulling all the necessary
 // Docker containers from DockerHub
 package prepper
 
@@ -12,8 +12,8 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 
-	"github.com/genomagic/config_parser"
-	"github.com/genomagic/constants"
+	"github.com/genoassist/config_parser"
+	"github.com/genoassist/constants"
 )
 
 // prep holds the Docker client for pulling images
@@ -24,14 +24,14 @@ type prep struct {
 	dockerCLI *client.Client
 }
 
-// NewPrep attempts to install all the necessary Docker images for GenoMagic. NewPrep launches go routines for
+// NewPrep attempts to install all the necessary Docker images for GenoAssist. NewPrep launches go routines for
 // installing the necessary images and collects the errors in a channel. When the go routines are finished, an error
 // channel is returned, with the consumer being responsible to report whether errors have occurred and alert users about
 // whether a specific assembler will be skipped
 func NewPrep(config *config_parser.Config) chan error {
 	ctx := context.Background()
 	errs := make(chan error, len(constants.AvailableAssemblers))
-	if !config.GenoMagic.Prep {
+	if !config.GenoAssist.Prep {
 		return errs
 	}
 

@@ -1,14 +1,14 @@
 // main package, and file, is responsible for taking in users arguments, parsing them, and
-// calling on the primary to perform the work that genomagic does
+// calling on the primary to perform the work that genoassist does
 package main
 
 import (
 	"flag"
 	"fmt"
 
-	"github.com/genomagic/config_parser"
-	"github.com/genomagic/prepper"
-	"github.com/genomagic/primary"
+	"github.com/genoassist/config_parser"
+	"github.com/genoassist/prepper"
+	"github.com/genoassist/primary"
 )
 
 const (

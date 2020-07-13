@@ -12,8 +12,8 @@ import (
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
 
-	"github.com/genomagic/config_parser"
-	"github.com/genomagic/constants"
+	"github.com/genoassist/config_parser"
+	"github.com/genoassist/constants"
 )
 
 // canuDir is directory where canu related files reside
@@ -25,7 +25,7 @@ type errorCorrection struct {
 	ctx context.Context
 	// dockerCLI is used for launching a Docker container that perform adapter trimming
 	dockerCLI *client.Client
-	// config is the GenoMagic global configuration
+	// config is the GenoAssist global configuration
 	config *config_parser.Config
 	// toCorrect represents the path to the input file to perform error correction on
 	toCorrect string
@@ -72,7 +72,7 @@ func (e *errorCorrection) Process() (string, error) {
 		Mounts: []mount.Mount{
 			{ // Binding the output directory path provided by the user for saving error-corrected file in.
 				Type:   mount.TypeBind,
-				Source: e.config.GenoMagic.OutputPath,
+				Source: e.config.GenoAssist.OutputPath,
 				Target: constants.BaseOut,
 			},
 		},
@@ -104,5 +104,5 @@ func (e *errorCorrection) Process() (string, error) {
 	if _, err := io.Copy(os.Stdout, out); err != nil {
 		return "", fmt.Errorf("failed to capture stdout from Docker assembly container, err: %v", err)
 	}
-	return path.Join(e.config.GenoMagic.OutputPath, canuDir, correctedOutuptFile), nil
+	return path.Join(e.config.GenoAssist.OutputPath, canuDir, correctedOutuptFile), nil
 }

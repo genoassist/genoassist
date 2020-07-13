@@ -1,22 +1,22 @@
 // primary is responsible for interacting with the user to take in the contigs that need to be assembled. Files
 // that are specified by the user are passed to a replica that knows how to schedule Docker containers for all the
-// assemblers that are integrated with genomagic
+// assemblers that are integrated with genoassist
 package primary
 
 import (
 	"fmt"
 	"path"
 
-	"github.com/genomagic/config_parser"
-	"github.com/genomagic/replica"
-	"github.com/genomagic/reporter"
-	"github.com/genomagic/visualizer"
+	"github.com/genoassist/config_parser"
+	"github.com/genoassist/replica"
+	"github.com/genoassist/reporter"
+	"github.com/genoassist/visualizer"
 )
 
 // primaryProcess defines the primary struct, which is used to coordinate replicas and launch assembly, parsing, and
 // reporting replicas
 type primaryProcess struct {
-	// config is the configuration of GenoMagic obtained through YAML config file
+	// config is the configuration of GenoAssist obtained through YAML config file
 	config *config_parser.Config
 }
 
@@ -29,7 +29,7 @@ func New(config *config_parser.Config) Primary {
 
 // Process launches the assembly of the contigs it was created with
 func (m *primaryProcess) Process() error {
-	if m.config.GenoMagic.QualityControl {
+	if m.config.GenoAssist.QualityControl {
 		qualityControlReplica := replica.New(m.config, replica.QualityControl)
 		if _, err := qualityControlReplica.Process(); err != nil {
 			return fmt.Errorf("replica quality control process failed, err: %s", err)
@@ -56,7 +56,7 @@ func (m *primaryProcess) Process() error {
 		reports = append(reports, rep)
 	}
 
-	vizOutPath := path.Join(m.config.GenoMagic.OutputPath, "report.html")
+	vizOutPath := path.Join(m.config.GenoAssist.OutputPath, "report.html")
 	viz := visualizer.NewVisualizer(reports, vizOutPath)
 	if err := viz.Process(); err != nil {
 		return fmt.Errorf("replica failed to visualize the reports, err: %s", err)

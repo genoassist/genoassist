@@ -36,7 +36,7 @@ func Test_ParseConfig(t *testing.T) {
 						GenomeSize: "5m",
 					},
 				},
-				GenoMagic: GenoMagicConfig{
+				GenoAssist: GenoAssistConfig{
 					Assemblers:    []string{"abyss", "megahit", "flye"},
 					InputFilePath: "/test/input1.fastq",
 					OutputPath:    "/test/output",
@@ -59,7 +59,7 @@ func Test_ParseConfig(t *testing.T) {
 					},
 					Flye: FlyeConfig{},
 				},
-				GenoMagic: GenoMagicConfig{
+				GenoAssist: GenoAssistConfig{
 					Assemblers:    []string{"abyss", "megahit", "flye"},
 					InputFilePath: "/test/input1.fastq",
 					OutputPath:    "/test/output",
@@ -82,7 +82,7 @@ func Test_ParseConfig(t *testing.T) {
 					},
 					Flye: FlyeConfig{},
 				},
-				GenoMagic: GenoMagicConfig{
+				GenoAssist: GenoAssistConfig{
 					Assemblers:    []string{"abyss", "megahit", "flye"},
 					InputFilePath: "/test/input1.fastq",
 					OutputPath:    "/test/output",
@@ -105,7 +105,7 @@ func Test_ParseConfig(t *testing.T) {
 					},
 					Flye: FlyeConfig{},
 				},
-				GenoMagic: GenoMagicConfig{
+				GenoAssist: GenoAssistConfig{
 					InputFilePath: "/test/input1.fastq",
 					OutputPath:    "/test/output",
 					Threads:       2,
@@ -127,7 +127,7 @@ func Test_ParseConfig(t *testing.T) {
 					},
 					Flye: FlyeConfig{},
 				},
-				GenoMagic: GenoMagicConfig{
+				GenoAssist: GenoAssistConfig{
 					Assemblers:    []string{"abYss", "Megahit", "flye"},
 					InputFilePath: "/test/input1.fastq",
 					OutputPath:    "/test/output",
@@ -150,7 +150,7 @@ func Test_ParseConfig(t *testing.T) {
 					},
 					Flye: FlyeConfig{},
 				},
-				GenoMagic: GenoMagicConfig{
+				GenoAssist: GenoAssistConfig{
 					Assemblers:     []string{"abYss", "Megahit", "flye"},
 					InputFilePath:  "/test/input1.fastq",
 					OutputPath:     "/test/output",
@@ -174,7 +174,7 @@ func Test_ParseConfig(t *testing.T) {
 					},
 					Flye: FlyeConfig{},
 				},
-				GenoMagic: GenoMagicConfig{
+				GenoAssist: GenoAssistConfig{
 					Assemblers:     []string{"abYss", "Megahit", "flye"},
 					InputFilePath:  "/test/input1.fastq",
 					OutputPath:     "/test/output",

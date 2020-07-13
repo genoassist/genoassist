@@ -1,4 +1,4 @@
-module github.com/genomagic
+module github.com/genoassist
 
 go 1.13
 

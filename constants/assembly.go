@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/genomagic/config_parser"
+	"github.com/genoassist/config_parser"
 )
 
 const (
 	// dockerURL denotes the source URL for the Docker image repository
 	dockerURL = "docker.io"
 
-	// GenoMagic represents the name of this program
-	GenoMagic = "genomagic"
+	// GenoAssist represents the name of this program
+	GenoAssist = "genoassist"
 
 	// BaseOut is the base directory used as the output, mounted by Docker
 	BaseOut = "/output"
@@ -23,17 +23,17 @@ const (
 
 	// MegaHit specific constants
 	MegaHit          = "megahit"
-	MegaHitOut       = GenoMagic + "_megahit_out"
+	MegaHitOut       = GenoAssist + "_megahit_out"
 	MegaHitDockerURL = dockerURL + "/vout/megahit" // https://github.com/voutcn/megahit
 
 	// Abyss specific constants
 	Abyss          = "abyss"
-	AbyssOut       = GenoMagic + "_abyss_out"
+	AbyssOut       = GenoAssist + "_abyss_out"
 	AbyssDockerURL = dockerURL + "/bcgsc/abyss" // https://github.com/bcgsc/abyss
 
 	// Flye specific constants
 	Flye          = "flye"
-	FlyeOut       = GenoMagic + "_fly_out"
+	FlyeOut       = GenoAssist + "_fly_out"
 	FlyeDockerURL = dockerURL + "nanozoo/flye" // https://github.com/fenderglass/Flye"
 
 	// CreateDir informs the condition function to create a directory for an assembler
@@ -74,8 +74,8 @@ var (
 					fmt.Sprintf("-o %s", path.Join(BaseOut, MegaHitOut)),
 				}
 
-				if cfg.GenoMagic.Threads != 0 {
-					finalCmd = append(finalCmd, fmt.Sprintf("-t %d", cfg.GenoMagic.Threads))
+				if cfg.GenoAssist.Threads != 0 {
+					finalCmd = append(finalCmd, fmt.Sprintf("-t %d", cfg.GenoAssist.Threads))
 				}
 
 				return finalCmd
@@ -99,8 +99,8 @@ var (
 					finalCmd = append(finalCmd, fmt.Sprintf("k=%s", cfg.Assemblers.Abyss.KMers))
 				}
 
-				if cfg.GenoMagic.Threads != 0 {
-					finalCmd = append(finalCmd, fmt.Sprintf("j=%d", cfg.GenoMagic.Threads))
+				if cfg.GenoAssist.Threads != 0 {
+					finalCmd = append(finalCmd, fmt.Sprintf("j=%d", cfg.GenoAssist.Threads))
 				}
 
 				finalCmd = append(finalCmd, "contigs")
@@ -124,8 +124,8 @@ var (
 					fmt.Sprintf("--out-dir %s", path.Join(BaseOut, FlyeOut)),
 				}
 
-				if cfg.GenoMagic.Threads != 0 {
-					finalCommand = append(finalCommand, fmt.Sprintf("--threads %d", cfg.GenoMagic.Threads))
+				if cfg.GenoAssist.Threads != 0 {
+					finalCommand = append(finalCommand, fmt.Sprintf("--threads %d", cfg.GenoAssist.Threads))
 				}
 
 				if cfg.Assemblers.Flye.SeqType == "nano" {

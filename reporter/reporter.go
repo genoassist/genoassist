@@ -4,7 +4,7 @@ package reporter
 import (
 	"fmt"
 
-	"github.com/genomagic/result"
+	"github.com/genoassist/result"
 )
 
 // Report represents the struct that holds the stats that characterize an assembly

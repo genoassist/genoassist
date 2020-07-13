@@ -3,7 +3,7 @@ package replica
 import (
 	"github.com/stretchr/testify/mock"
 
-	"github.com/genomagic/config_parser"
+	"github.com/genoassist/config_parser"
 )
 
 // Mock is a replica mock

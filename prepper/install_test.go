@@ -5,11 +5,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/genomagic/config_parser"
+	"github.com/genoassist/config_parser"
 )
 
 // TestNewPrep is used for locally testing whether the prepper package managed to pull
-// all the necessary images for running GenoMagic. The test is prevented from running upon
+// all the necessary images for running GenoAssist. The test is prevented from running upon
 // deploys as the environment in which the build runs cannot/should not pull Docker images.
 // This should be run at least once when adding a new assembler or a new quality controller.
 // Before running the test, local images can be removed via:
@@ -23,7 +23,7 @@ func TestNewPrep(t *testing.T) {
 			Abyss:   config_parser.AbyssConfig{},
 			Flye:    config_parser.FlyeConfig{},
 		},
-		GenoMagic: config_parser.GenoMagicConfig{
+		GenoAssist: config_parser.GenoAssistConfig{
 			Assemblers:    nil,
 			InputFilePath: "",
 			OutputPath:    "",
