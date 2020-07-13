@@ -1,4 +1,4 @@
-# This is the GitHub Actions Workflow that builds the GenoMagic project
+# This is the GitHub Actions Workflow that builds the GenoAssist project
 
 name: CI
 
