@@ -27,7 +27,7 @@ environments, and results reporting in a single place.
 
 1. You can either use go (will be added to `$GOPATH/`):
     ```sh
-    $ go get -u github.com/genoassist
+    $ go get -u github.com/genoassist/genoassist
     ```
     
     Or clone the repository:  
