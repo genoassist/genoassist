@@ -70,12 +70,12 @@ var (
 			AssemblyFileName: "final.contigs.fa",
 			Comm: func(cfg *config_parser.Config) []string {
 				var finalCmd = []string{
-					fmt.Sprintf("-r %s", RawSeqIn),
-					fmt.Sprintf("-o %s", path.Join(BaseOut, MegaHitOut)),
+					fmt.Sprintf("--read=%s", RawSeqIn),
+					fmt.Sprintf("--out-dir=%s", path.Join(BaseOut, MegaHitOut)),
 				}
 
 				if cfg.GenoAssist.Threads != 0 {
-					finalCmd = append(finalCmd, fmt.Sprintf("-t %d", cfg.GenoAssist.Threads))
+					finalCmd = append(finalCmd, fmt.Sprintf("--num-cpu-threads=%d", cfg.GenoAssist.Threads))
 				}
 
 				return finalCmd
@@ -90,13 +90,15 @@ var (
 			Comm: func(cfg *config_parser.Config) []string {
 
 				var finalCmd = []string{
-					" name=final",
+					"name=final",
 					fmt.Sprintf("in=%s", RawSeqIn),
 					fmt.Sprintf("--directory=%s", path.Join(BaseOut, AbyssOut)),
 				}
 
 				if cfg.Assemblers.Abyss.KMers != "" {
 					finalCmd = append(finalCmd, fmt.Sprintf("k=%s", cfg.Assemblers.Abyss.KMers))
+				} else {
+					finalCmd = append(finalCmd, fmt.Sprintf("k=25"))
 				}
 
 				if cfg.GenoAssist.Threads != 0 {
@@ -104,7 +106,6 @@ var (
 				}
 
 				finalCmd = append(finalCmd, "contigs")
-
 				return finalCmd
 			},
 			ConditionsPresent: true,
@@ -120,19 +121,22 @@ var (
 			Comm: func(cfg *config_parser.Config) []string {
 
 				finalCommand := []string{
-					fmt.Sprintf("--genome-size %s", cfg.Assemblers.Flye.GenomeSize),
-					fmt.Sprintf("--out-dir %s", path.Join(BaseOut, FlyeOut)),
+					"flye",
+					"--genome-size", cfg.Assemblers.Flye.GenomeSize,
+					"--out-dir", path.Join(BaseOut, FlyeOut),
 				}
 
 				if cfg.GenoAssist.Threads != 0 {
-					finalCommand = append(finalCommand, fmt.Sprintf("--threads %d", cfg.GenoAssist.Threads))
+					finalCommand = append(finalCommand, "--threads")
+					finalCommand = append(finalCommand, fmt.Sprintf("%d", cfg.GenoAssist.Threads))
 				}
 
 				if cfg.Assemblers.Flye.SeqType == "nano" {
-					finalCommand = append(finalCommand, fmt.Sprintf("--nano-raw %s", RawSeqIn))
+					finalCommand = append(finalCommand, "--nano-raw")
 				} else {
-					finalCommand = append(finalCommand, fmt.Sprintf("--pacbio-raw %s", RawSeqIn))
+					finalCommand = append(finalCommand, "--pacbio-raw")
 				}
+				finalCommand = append(finalCommand, RawSeqIn)
 				return finalCommand
 			},
 			ConditionsPresent: false,
