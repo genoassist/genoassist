@@ -117,7 +117,7 @@ var (
 			Name:             Flye,
 			DHubURL:          FlyeDockerURL,
 			OutputDir:        FlyeOut,
-			AssemblyFileName: "final.contigs.fa",
+			AssemblyFileName: "assembly.fasta",
 			Comm: func(cfg *config_parser.Config) []string {
 
 				finalCommand := []string{
