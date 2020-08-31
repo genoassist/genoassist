@@ -107,7 +107,7 @@ func (a *assemblyProcess) Process() (*result.Result, error) {
 			{ // Binding the file provided by the user to the docker container
 				Type:     mount.TypeBind,
 				Source:   a.filePath,
-				Target:   constants.RawSeqIn,
+				Target:   constants.InputTarget[a.config.GenoAssist.FileType],
 				ReadOnly: false,
 			},
 			{ // Binding the output directory provided by the user to the docker container

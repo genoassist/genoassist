@@ -18,9 +18,6 @@ const (
 	// BaseOut is the base directory used as the output, mounted by Docker
 	BaseOut = "/output"
 
-	// RawSeqIn is the mapping of the user-specified reads file to the Docker mount file
-	RawSeqIn = "/raw_sequence_input.fastq"
-
 	// MegaHit specific constants
 	MegaHit          = "megahit"
 	MegaHitOut       = GenoAssist + "_megahit_out"
@@ -70,7 +67,7 @@ var (
 			AssemblyFileName: "final.contigs.fa",
 			Comm: func(cfg *config_parser.Config) []string {
 				var finalCmd = []string{
-					fmt.Sprintf("--read=%s", RawSeqIn),
+					fmt.Sprintf("--read=%s", InputTarget[cfg.GenoAssist.FileType]),
 					fmt.Sprintf("--out-dir=%s", path.Join(BaseOut, MegaHitOut)),
 				}
 
@@ -91,7 +88,7 @@ var (
 
 				var finalCmd = []string{
 					"name=final",
-					fmt.Sprintf("in=%s", RawSeqIn),
+					fmt.Sprintf("in=%s", InputTarget[cfg.GenoAssist.FileType]),
 					fmt.Sprintf("--directory=%s", path.Join(BaseOut, AbyssOut)),
 				}
 
@@ -136,7 +133,7 @@ var (
 				} else {
 					finalCommand = append(finalCommand, "--pacbio-raw")
 				}
-				finalCommand = append(finalCommand, RawSeqIn)
+				finalCommand = append(finalCommand, InputTarget[cfg.GenoAssist.FileType])
 				return finalCommand
 			},
 			ConditionsPresent: false,
