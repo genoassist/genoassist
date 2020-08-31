@@ -15,13 +15,13 @@ func Test_ParseConfig(t *testing.T) {
 		expectedError  error
 	}{
 		{
-			name:           "test_process_returns_nil_on_empty_yaml_file",
+			name:           "test_returns_err_on_empty_config",
 			filePath:       "test1.yaml",
-			expectedConfig: &Config{},
-			expectedError:  nil,
+			expectedConfig: nil,
+			expectedError:  fmt.Errorf("failed config validation, err: invalid file type, allowed [fastq, fasta]"),
 		},
 		{
-			name:     "test_process_returns_expected_config_on_standard_yaml_file",
+			name:     "test_returns_expected_config_on_standard_yaml_file",
 			filePath: "test2.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
@@ -37,17 +37,19 @@ func Test_ParseConfig(t *testing.T) {
 					},
 				},
 				GenoAssist: GenoAssistConfig{
-					Assemblers:    []string{"abyss", "megahit", "flye"},
-					InputFilePath: "/test/input1.fastq",
-					OutputPath:    "/test/output",
-					Threads:       2,
-					Prep:          true,
+					Assemblers:     []string{"abyss", "megahit", "flye"},
+					InputFilePath:  "/test/input1.fastq",
+					OutputPath:     "/test/output",
+					Threads:        2,
+					Prep:           true,
+					QualityControl: false,
+					FileType:       FASTA,
 				},
 			},
 			expectedError: nil,
 		},
 		{
-			name:     "test_process_returns_expected_config_on_missing_flye_in_yaml_file",
+			name:     "test_returns_expected_config_on_missing_flye_in_yaml_file",
 			filePath: "test3.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
@@ -60,17 +62,19 @@ func Test_ParseConfig(t *testing.T) {
 					Flye: FlyeConfig{},
 				},
 				GenoAssist: GenoAssistConfig{
-					Assemblers:    []string{"abyss", "megahit", "flye"},
-					InputFilePath: "/test/input1.fastq",
-					OutputPath:    "/test/output",
-					Threads:       2,
-					Prep:          true,
+					Assemblers:     []string{"abyss", "megahit", "flye"},
+					InputFilePath:  "/test/input1.fastq",
+					OutputPath:     "/test/output",
+					Threads:        2,
+					Prep:           true,
+					QualityControl: false,
+					FileType:       FASTA,
 				},
 			},
 			expectedError: nil,
 		},
 		{
-			name:     "test_process_returns_expected_config_on_additional_data_in_yaml_file",
+			name:     "test_returns_expected_config_on_additional_data_in_yaml_file",
 			filePath: "test4.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
@@ -83,17 +87,19 @@ func Test_ParseConfig(t *testing.T) {
 					Flye: FlyeConfig{},
 				},
 				GenoAssist: GenoAssistConfig{
-					Assemblers:    []string{"abyss", "megahit", "flye"},
-					InputFilePath: "/test/input1.fastq",
-					OutputPath:    "/test/output",
-					Threads:       2,
-					Prep:          true,
+					Assemblers:     []string{"abyss", "megahit", "flye"},
+					InputFilePath:  "/test/input1.fastq",
+					OutputPath:     "/test/output",
+					Threads:        2,
+					Prep:           true,
+					QualityControl: false,
+					FileType:       FASTA,
 				},
 			},
 			expectedError: nil,
 		},
 		{
-			name:     "test_process_returns_expected_config_when_assemblers_are_not_provided",
+			name:     "test_returns_expected_config_when_assemblers_are_not_provided",
 			filePath: "test5.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
@@ -106,16 +112,19 @@ func Test_ParseConfig(t *testing.T) {
 					Flye: FlyeConfig{},
 				},
 				GenoAssist: GenoAssistConfig{
-					InputFilePath: "/test/input1.fastq",
-					OutputPath:    "/test/output",
-					Threads:       2,
-					Prep:          true,
+					Assemblers:     nil,
+					InputFilePath:  "/test/input1.fastq",
+					OutputPath:     "/test/output",
+					Threads:        2,
+					Prep:           true,
+					QualityControl: false,
+					FileType:       FASTA,
 				},
 			},
 			expectedError: nil,
 		},
 		{
-			name:     "test_process_returns_expected_config_when_assemblers_dont_follow_correct_capitalization",
+			name:     "test_returns_expected_config_when_assemblers_dont_follow_correct_capitalization",
 			filePath: "test6.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
@@ -128,17 +137,19 @@ func Test_ParseConfig(t *testing.T) {
 					Flye: FlyeConfig{},
 				},
 				GenoAssist: GenoAssistConfig{
-					Assemblers:    []string{"abYss", "Megahit", "flye"},
-					InputFilePath: "/test/input1.fastq",
-					OutputPath:    "/test/output",
-					Threads:       2,
-					Prep:          true,
+					Assemblers:     []string{"abYss", "Megahit", "flye"},
+					InputFilePath:  "/test/input1.fastq",
+					OutputPath:     "/test/output",
+					Threads:        2,
+					Prep:           true,
+					QualityControl: false,
+					FileType:       "FaStA",
 				},
 			},
 			expectedError: nil,
 		},
 		{
-			name:     "test_process_returns_expected_config_when_quality_control_option_is_given",
+			name:     "test_returns_expected_config_when_quality_control_option_is_given",
 			filePath: "test7.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
@@ -157,12 +168,13 @@ func Test_ParseConfig(t *testing.T) {
 					Threads:        2,
 					Prep:           true,
 					QualityControl: true,
+					FileType:       FASTA,
 				},
 			},
 			expectedError: nil,
 		},
 		{
-			name:     "test_process_returns_expected_config_when_quality_control_option_is_not_given",
+			name:     "test_returns_expected_config_when_quality_control_option_is_not_given",
 			filePath: "test8.yaml",
 			expectedConfig: &Config{
 				Assemblers: AssemblerConfig{
@@ -181,6 +193,7 @@ func Test_ParseConfig(t *testing.T) {
 					Threads:        2,
 					Prep:           true,
 					QualityControl: false,
+					FileType:       FASTA,
 				},
 			},
 			expectedError: nil,

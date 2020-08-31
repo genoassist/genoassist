@@ -8,5 +8,6 @@ genoassist:
   outputPath: "/test/output"
   threads: 2
   prep: true
+  fileType: "fasta"
 redundant:
   field: "this is redundant data"
