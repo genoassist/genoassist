@@ -49,7 +49,7 @@ func (a *adapterTrimming) Process() (string, error) {
 	ctConfig := &container.Config{
 		Tty: true,
 		Cmd: []string{
-			"-i", constants.RawSeqIn,
+			"-i", constants.InputTarget[a.config.GenoAssist.FileType],
 			"-o", path.Join(constants.BaseOut, trimmedOutputFilename),
 		},
 		Image: img,
@@ -60,7 +60,7 @@ func (a *adapterTrimming) Process() (string, error) {
 			{ // Binding the input raw sequence file provided by the user
 				Type:   mount.TypeBind,
 				Source: a.config.GenoAssist.InputFilePath,
-				Target: constants.RawSeqIn,
+				Target: constants.InputTarget[a.config.GenoAssist.FileType],
 			},
 			{ // Binding the output directory path provided by the user for saving trimmed file in.
 				Type:   mount.TypeBind,

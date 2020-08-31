@@ -59,13 +59,18 @@ genoassist:
   threads: 2
   prep: true
   qualityControl: true
+  fileType: "fasta"
 ```
-Notes: 
- - all paths used with GenoAssist have to be absolute paths (a Docker requirement)
- - the accepted assembler values are:
+
+#### Notes: 
+ - All paths used with GenoAssist have to be absolute paths (a Docker requirement)
+ - The accepted assembler values are:
 1. 'abyss'
 1. 'megahit'
 1. 'flye'
+- The accepted file types are:
+1. FASTA
+1. FASTQ
 
 ### Installing Docker images through GenoAssist
 

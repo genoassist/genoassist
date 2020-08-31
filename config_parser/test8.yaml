@@ -10,5 +10,6 @@ genoassist:
   threads: 2
   prep: true
   qualityControl: false
+  fileType: "fasta"
 redundant:
   field: "this is redundant data"

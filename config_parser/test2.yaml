@@ -12,3 +12,4 @@ genoassist:
   outputPath: "/test/output"
   threads: 2
   prep: true
+  fileType: "fasta"
