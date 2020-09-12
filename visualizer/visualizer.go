@@ -52,8 +52,8 @@ func (v *visualize) Process() error {
 		Title: "Assembly results",
 	})
 	bar.AddXAxis(names).
-		AddYAxis("N50", l50s).
-		AddYAxis("L50", n50s)
+		AddYAxis("N50", n50s).
+		AddYAxis("L50", l50s)
 	if f, err := os.Create(v.name); err != nil {
 		return err
 	} else {
