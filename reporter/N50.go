@@ -19,10 +19,10 @@ func (r *Report) getN50() (int32, error) {
 	}
 	sumToHalf := 0
 	for i, cl := range contigLens {
-		if sumToHalf == halfAssemblyLen || sumToHalf > halfAssemblyLen {
+		sumToHalf += cl
+		if sumToHalf >= halfAssemblyLen {
 			return int32(contigLens[i]), nil
 		}
-		sumToHalf += cl
 	}
 	return 0, fmt.Errorf("failed to compute N50 for an unknown reason")
 }
