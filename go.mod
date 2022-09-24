@@ -1,4 +1,4 @@
-module github.com/genoassist
+module github.com/genoassist/genoassist
 
 go 1.15
 
